@@ -38,6 +38,7 @@ export class AuthService {
       // Создаем пользователя
       const user = await this.prisma.user.create({
         data: {
+          nickName: dto.nickName,
           email: dto.email,
           hash: hash,
         },
@@ -60,7 +61,7 @@ export class AuthService {
     // Ищем пользователя по почте
     const user = await this.prisma.user.findFirst({
       where: {
-        email: dto.email,
+        nickName: dto.nickName,
       },
     });
 
