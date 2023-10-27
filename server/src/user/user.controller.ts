@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -13,7 +14,6 @@ import { GetUser } from '../auth/decorator';
 import { EditUserDto } from './dto';
 import { User } from '@prisma/client';
 import { JwtGuard } from '../auth/guard';
-import { PrismaService } from '../prisma/prisma.service';
 
 @UseGuards(JwtGuard)
 @Controller('users')
