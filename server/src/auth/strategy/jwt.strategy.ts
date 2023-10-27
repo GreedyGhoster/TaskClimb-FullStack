@@ -27,9 +27,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       return user;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
-        if (err.code === 'P2002') {
-          throw new ForbiddenException('The user does not exist');
-        }
         throw err;
       }
     }

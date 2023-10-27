@@ -23,6 +23,10 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Get('me')
   userInfo(@GetUser() user: User) {
+    delete user.id;
+    delete user.createdAt;
+    delete user.updatedAt;
+
     return user;
   }
 

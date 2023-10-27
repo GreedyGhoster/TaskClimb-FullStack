@@ -17,7 +17,9 @@ export class UserService {
         ...dto,
       },
     });
-
+    delete user.id;
+    delete user.createdAt;
+    delete user.updatedAt;
     delete user.hash;
 
     return user;
