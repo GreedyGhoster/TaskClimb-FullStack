@@ -16,6 +16,7 @@ import { GetUser } from '../auth/decorator';
 import { EditProjectDto, ProjectDto } from './dto';
 import { JwtGuard } from '../auth/guard';
 import { TaskService } from './task/task.service';
+import { EditTaskDto, TaskDto } from './task/dto';
 
 @UseGuards(JwtGuard)
 @Controller('projects')
@@ -31,12 +32,12 @@ export class ProjectController {
     return this.projectService.createProject(userId, dto);
   }
 
-  @Get(':id')
+  @Get(':projectId')
   getProjectById(
     @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) projectId: number,
+    @Param('projectId', ParseIntPipe) projectId: number,
   ) {
-    return this.projectService.getProjectById(userId, projectId);
+    return this.projectService.getProjectAndTasksById(userId, projectId);
   }
 
   @Get()
@@ -44,53 +45,56 @@ export class ProjectController {
     return this.projectService.getProjects(userId);
   }
 
-  @Patch(':id')
+  @Patch(':projectId')
   updateProjectById(
     @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) projectId: number,
+    @Param('projectId', ParseIntPipe) projectId: number,
     @Body() dto: EditProjectDto,
   ) {
     return this.projectService.updateProjectById(userId, projectId, dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':id')
+  @Delete(':projectId')
   deleteProjectById(
     @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) projectId: number,
+    @Param('projectId', ParseIntPipe) projectId: number,
   ) {
     return this.projectService.deleteProjectById(userId, projectId);
   }
 
   // Everything about tasks
-  @Post()
-  createTask(@GetUser('id') userId: number, @Body() dto: ProjectDto) {
-    return this.projectService.createProject(userId, dto);
+  @Post(':projectId')
+  createTask(
+    @Param('projectId', ParseIntPipe) projectId: number,
+    @Body() dto: TaskDto,
+  ) {
+    return this.taskService.createTask(projectId, dto);
   }
 
-  @Get(':id')
+  @Get(':projectId/:taskId')
   getTaskById(
-    @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) projectId: number,
+    @Param('projectId', ParseIntPipe) projectId: number,
+    @Param('taskId', ParseIntPipe) taskId: number,
   ) {
-    return this.projectService.getProjectById(userId, projectId);
+    return this.taskService.getTaskById(projectId, taskId);
   }
 
-  @Patch(':id')
+  @Patch(':projectId/:taskId')
   updateTaskById(
-    @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) projectId: number,
-    @Body() dto: EditProjectDto,
+    @Param('projectId', ParseIntPipe) projectId: number,
+    @Param('taskId', ParseIntPipe) taskId: number,
+    @Body() dto: EditTaskDto,
   ) {
-    return this.projectService.updateProjectById(userId, projectId, dto);
+    return this.taskService.updateTaskById(projectId, taskId, dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':id')
+  @Delete(':projectId/:taskId')
   deleteTaskById(
-    @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) projectId: number,
+    @Param('projectId', ParseIntPipe) projectId: number,
+    @Param('taskId', ParseIntPipe) taskId: number,
   ) {
-    return this.projectService.deleteProjectById(userId, projectId);
+    return this.taskService.deleteTaskById(projectId, taskId);
   }
 }
