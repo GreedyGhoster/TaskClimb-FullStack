@@ -17,9 +17,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   nickName String @unique
-  email    String @unique
-
-  hash String
+  hash     String
 
   projects Project[]
 }
@@ -44,7 +42,8 @@ model Task {
   updatedAt DateTime @updatedAt
 
   title       String
-  description String
+  status      String
+  description String?
 
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId Int?

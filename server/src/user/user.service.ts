@@ -14,12 +14,10 @@ export class UserService {
         id: userId,
       },
       data: {
-        ...dto,
+        nickName: dto.nickName,
       },
     });
     delete user.id;
-    delete user.createdAt;
-    delete user.updatedAt;
     delete user.hash;
 
     return user;

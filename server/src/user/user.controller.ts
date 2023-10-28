@@ -24,9 +24,6 @@ export class UserController {
   @Get('me')
   userInfo(@GetUser() user: User) {
     delete user.id;
-    delete user.createdAt;
-    delete user.updatedAt;
-
     return user;
   }
 

@@ -35,12 +35,11 @@ export class AuthService {
       const user = await this.prisma.user.create({
         data: {
           nickName: dto.nickName,
-          email: dto.email,
           hash: hash,
         },
       });
 
-      return this.signToken(user.id, user.email);
+      return this.signToken(user.id, user.nickName);
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
@@ -51,7 +50,7 @@ export class AuthService {
     }
   }
   async signin(dto: UserDto) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: {
         nickName: dto.nickName,
       },
@@ -62,6 +61,6 @@ export class AuthService {
 
     if (!pwMatches) throw new ForbiddenException('Password is incorrect');
 
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.nickName);
   }
 }
