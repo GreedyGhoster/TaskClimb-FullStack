@@ -68,18 +68,11 @@ export class ProjectService {
   }
 
   async deleteProjectById(userId: number, projectId: number) {
-    return this.prisma.$transaction([
-      this.prisma.project.delete({
-        where: {
-          id: projectId,
-          userId: userId,
-        },
-      }),
-      this.prisma.task.deleteMany({
-        where: {
-          projectId: projectId,
-        },
-      }),
-    ]);
+    return this.prisma.project.delete({
+      where: {
+        id: projectId,
+        userId: userId,
+      },
+    });
   }
 }
