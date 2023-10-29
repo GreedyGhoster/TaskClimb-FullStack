@@ -17,7 +17,6 @@ export class UserService {
         nickName: dto.nickName,
       },
     });
-    delete user.id;
     delete user.hash;
 
     return user;
