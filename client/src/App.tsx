@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./global.css";
+import { AppRouter } from "./routes";
+import { LinkProps } from "@mui/material/Link";
+import { ThemeProvider, createTheme } from "@mui/material";
+import { createContext, useMemo, useState } from "react";
+import LinkBehaviour from "./custom/theme";
 
-function App() {
-  const [count, setCount] = useState(0)
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    mobile: true; // adds the `mobile` breakpoint
+    tablet: true;
+    laptop: true;
+    desktop: true;
+  }
+}
+
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
+export default function App() {
+  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        breakpoints: {
+          values: {
+            mobile: 0,
+            tablet: 640,
+            laptop: 1024,
+            desktop: 1200,
+          },
+        },
+        palette: {
+          mode,
+          secondary: {
+            light: "#ffae42",
+            main: "#ffae42",
+            dark: "#ba000d",
+            contrastText: "#000",
+          },
+        },
+        components: {
+          MuiLink: {
+            defaultProps: {
+              component: LinkBehaviour,
+            } as LinkProps,
+          },
+          MuiButtonBase: {
+            defaultProps: {
+              LinkComponent: LinkBehaviour,
+            },
+          },
+        },
+      }),
+    [mode]
+  );
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <AppRouter />
+        </ThemeProvider>
+      </ColorModeContext.Provider>
     </>
-  )
+  );
 }
-
-export default App
