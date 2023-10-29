@@ -1,3 +1,4 @@
+import { Status } from '@prisma/client';
 import { IsOptional, IsString } from 'class-validator';
 
 export class EditTaskDto {
@@ -7,7 +8,7 @@ export class EditTaskDto {
 
   @IsOptional()
   @IsString()
-  status?: string;
+  status?: Status;
 
   @IsOptional()
   @IsString()

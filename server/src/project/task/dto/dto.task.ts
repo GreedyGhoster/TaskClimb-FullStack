@@ -1,3 +1,4 @@
+import { Status } from '@prisma/client';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class TaskDto {
@@ -7,7 +8,7 @@ export class TaskDto {
 
   @IsNotEmpty()
   @IsString()
-  status: string;
+  status: Status;
 
   @IsOptional()
   @IsString()
