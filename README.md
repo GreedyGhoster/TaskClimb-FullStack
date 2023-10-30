@@ -6,7 +6,7 @@ $ git https://github.com/IuanPR/TaskClimb-FullStack.git
 ```
 
 ### Server
-> Server side was built using Nest and "yarn" package manager
+Server side was built using Nest and "yarn" package manager
 
 > For using TaskClimb-FullStack must to install ***Docker*** 
 
@@ -24,7 +24,7 @@ $ yarn start:dev
 > To see all commands in /server need to go to server/packege.json
 
 ### Client
-> Client side was built using React(Vite) and "yarn" package manager
+Client side was built using React(Vite) and "yarn" package manager
 * Client: [React](https://ru.legacy.reactjs.org/)
 
 ```shell
