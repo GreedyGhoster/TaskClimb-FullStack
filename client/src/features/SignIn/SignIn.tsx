@@ -6,8 +6,36 @@ import {
   Container,
   Box,
 } from "@mui/material";
+import { useTodo } from "../../hooks";
+import axios from "axios";
+import { useState } from "react";
 
 export default function SignUp() {
+  const { getToken } = useTodo();
+
+  const [nickName, setNickName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const URL = "http://localhost:4580/auth/signin";
+
+  const data = {
+    nickName: nickName,
+    password: password,
+  };
+
+  const FetchData = () => {
+    axios
+      .post(URL, data)
+      .then((res) => {
+        getToken(res.data);
+      })
+      .catch(() => {
+        alert("The user does not exist or Password is incorrect");
+      });
+    setNickName("");
+    setPassword("");
+  };
+
   return (
     <Container maxWidth="tablet">
       <Box
@@ -26,16 +54,20 @@ export default function SignUp() {
         </Typography>
 
         <TextField
-          label="Email address or Nickname"
+          label="Nickname"
+          value={nickName}
+          onChange={(e) => setNickName(e.target.value)}
           fullWidth
           variant="outlined"
           type="email"
-          placeholder="Enter email or Nickname"
+          placeholder="Nickname"
           sx={{ marginBottom: "10px" }}
         />
 
         <TextField
           label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           fullWidth
           variant="outlined"
           type="password"
@@ -49,6 +81,7 @@ export default function SignUp() {
           size="large"
           fullWidth
           sx={{ marginBottom: "20px" }}
+          onClick={() => FetchData()}
         >
           Sign In
         </Button>
@@ -63,7 +96,7 @@ export default function SignUp() {
             margin: "0",
           }}
         >
-          Have not registered yet <Link href="/signup">sign up?</Link>
+          Have not registered yet <Link href="/auth/signup">sign up?</Link>
         </Typography>
       </Box>
     </Container>

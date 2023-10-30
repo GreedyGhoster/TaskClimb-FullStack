@@ -9,6 +9,10 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  app.enableCors({
+    origin: 'http://localhost:5173', // Замените на URL вашего фронтенда
+    allowedHeaders: 'Content-Type, Authorization',
+  });
   await app.listen(4580);
 }
 bootstrap();

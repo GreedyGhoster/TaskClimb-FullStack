@@ -49,13 +49,13 @@ const AccountMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <ListItemButton href="signin">
+        <ListItemButton href="auth/signin">
           <ListItemIcon>
             <LoginIcon />
           </ListItemIcon>
           Sign in
         </ListItemButton>
-        <ListItemButton href="signup">
+        <ListItemButton href="auth/signup">
           <ListItemIcon>
             <PersonAddIcon />
           </ListItemIcon>

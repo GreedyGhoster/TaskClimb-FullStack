@@ -14,8 +14,8 @@ export default function AppRouter() {
         <Route path="" element={<Greeting />} />
         <Route path=":projectId" element={<ProjectPage />} />
         <Route path=":projectId/:taskId" element={<TaskPage />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="signin" element={<SignIn />} />
+        <Route path="auth/signup" element={<SignUp />} />
+        <Route path="auth/signin" element={<SignIn />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

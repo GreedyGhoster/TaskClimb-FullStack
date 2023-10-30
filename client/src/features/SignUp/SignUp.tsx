@@ -6,8 +6,36 @@ import {
   Container,
   Box,
 } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
+import { useTodo } from "../../hooks";
 
 export default function SignUp() {
+  const { getToken } = useTodo();
+
+  const [nickName, setNickName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const URL = "http://localhost:4580/auth/signup";
+
+  const data = {
+    nickName: nickName,
+    password: password,
+  };
+
+  const FetchData = () => {
+    axios
+      .post(URL, data)
+      .then((res) => {
+        getToken(res.data);
+      })
+      .catch(() => {
+        alert("The user already exists");
+      });
+    setNickName("");
+    setPassword("");
+  };
+
   return (
     <Container maxWidth="tablet">
       <Box
@@ -27,6 +55,8 @@ export default function SignUp() {
 
         <TextField
           label="Nickname"
+          value={nickName}
+          onChange={(e) => setNickName(e.target.value)}
           fullWidth
           variant="outlined"
           placeholder="Nickname"
@@ -34,16 +64,9 @@ export default function SignUp() {
         />
 
         <TextField
-          label="Email address"
-          fullWidth
-          variant="outlined"
-          type="email"
-          placeholder="Enter email"
-          sx={{ marginBottom: "20px" }}
-        />
-
-        <TextField
           label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           fullWidth
           variant="outlined"
           type="password"
@@ -57,6 +80,7 @@ export default function SignUp() {
           size="large"
           fullWidth
           sx={{ marginBottom: "20px" }}
+          onClick={() => FetchData()}
         >
           Sign Up
         </Button>
@@ -71,7 +95,7 @@ export default function SignUp() {
             margin: "0",
           }}
         >
-          Already registered <Link href="/signin">sign in?</Link>
+          Already registered <Link href="/auth/signin">sign in?</Link>
         </Typography>
       </Box>
     </Container>

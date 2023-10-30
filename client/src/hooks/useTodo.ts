@@ -17,6 +17,12 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
 
+  const [token, setToken] = useState<string>("");
+
+  const getToken = useCallback((token: string) => {
+    return setToken(token);
+  }, []);
+
   const addProject = useCallback((projectName: string) => {
     setProjects((prev) => [{ id: uuidv4(), title: projectName }, ...prev]);
   }, []);
@@ -154,6 +160,8 @@ function useTodoFunc() {
   return useMemo(
     () => ({
       projects,
+      token,
+      getToken,
       addProject,
       findProject,
       addTask,
@@ -167,6 +175,8 @@ function useTodoFunc() {
     }),
     [
       projects,
+      token,
+      getToken,
       addProject,
       findProject,
       addTask,
