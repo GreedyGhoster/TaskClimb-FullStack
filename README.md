@@ -39,3 +39,6 @@ Uncaught Error: Cannot find module 'react'
 ```shell
 $ npm install --save react react-dom @types/react @types/react-dom
 ```
+
+## License
+TaskClimb-FullStack MIT Licensed
