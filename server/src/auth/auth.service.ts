@@ -26,7 +26,7 @@ export class AuthService {
       secret: secret,
     });
 
-    return { token: token };
+    return token;
   }
   async signup(dto: UserDto) {
     try {

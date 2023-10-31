@@ -37,7 +37,7 @@ model Project {
   title String
   tasks Task[]
 
-  User   User?   @relation(fields: [userId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String?
 }
 
@@ -51,6 +51,6 @@ model Task {
   status      Status  @default(New)
   description String?
 
-  Project   Project? @relation(fields: [projectId], references: [id])
+  Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String?
 }

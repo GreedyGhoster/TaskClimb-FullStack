@@ -23,8 +23,10 @@ export default function SignUp() {
     password: password,
   };
 
-  const FetchData = () => {
-    axios
+  const FetchData = async () => {
+    setNickName("");
+    setPassword("");
+    return axios
       .post(URL, data)
       .then((res) => {
         getToken(res.data);
@@ -32,8 +34,6 @@ export default function SignUp() {
       .catch(() => {
         alert("The user already exists");
       });
-    setNickName("");
-    setPassword("");
   };
 
   return (

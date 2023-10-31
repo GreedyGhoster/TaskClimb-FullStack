@@ -18,8 +18,6 @@ export const AppSidebar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
-  console.log(token);
-
   const URL = "http://localhost:4580/projects";
 
   const authToken = `Bearer ${token}`;
@@ -29,7 +27,7 @@ export const AppSidebar = () => {
       title: title,
     };
 
-    axios
+    return axios
       .post(URL, data, { headers: { Authorization: authToken } })
       .then((res) => {
         console.log(res);

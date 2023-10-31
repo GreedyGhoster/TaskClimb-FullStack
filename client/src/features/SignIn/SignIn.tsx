@@ -11,7 +11,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function SignUp() {
-  const { getToken, token } = useTodo();
+  const { getToken } = useTodo();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,18 +23,17 @@ export default function SignUp() {
     password: password,
   };
 
-  const FetchData = () => {
-    axios
+  const FetchData = async () => {
+    setNickName("");
+    setPassword("");
+    return axios
       .post(URL, data)
       .then((res) => {
         getToken(res.data);
-        console.log(token);
       })
       .catch(() => {
         alert("The user does not exist or Password is incorrect");
       });
-    setNickName("");
-    setPassword("");
   };
 
   return (

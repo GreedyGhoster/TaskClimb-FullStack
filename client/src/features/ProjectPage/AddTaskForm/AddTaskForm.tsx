@@ -4,33 +4,13 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoTaskFormValues, ToDoTaskStatus } from "../../../types";
 import { useTodo } from "../../../hooks";
 import Box from "@mui/material/Box";
-import axios from "axios";
 
 interface Props {
   projectId: string;
 }
 
 const AddTaskForm: FC<Props> = ({ projectId }) => {
-  const { addTask, token } = useTodo();
-
-  // const URL = `http://localhost:4580/projects/${projectId}`;
-
-  // const authToken = `Bearer ${token}`;
-
-  // const fetchData = (title: string) => {
-  //   const data = {
-  //     title: title,
-  //   };
-
-  //   axios
-  //     .post(URL, data, { headers: { Authorization: authToken } })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch(() => {
-  //       alert("The user does not exist or Password is incorrect");
-  //     });
-  // };
+  const { addTask } = useTodo();
 
   const formMethods = useForm<AddToDoTaskFormValues>({
     defaultValues: {
