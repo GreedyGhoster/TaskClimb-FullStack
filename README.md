@@ -2,7 +2,7 @@
 
 ## Quick Start
 ``` shell
-$ git https://github.com/IuanPR/TaskClimb-FullStack.git
+git https://github.com/IuanPR/TaskClimb-FullStack.git
 ```
 
 ### Server
@@ -16,10 +16,10 @@ Server side was built using Nest and "yarn" package manager
 * [Docker](https://www.docker.com/)
 
 ```shell
-$ cd server
-$ yarn
-$ yarn db:dev:restart
-$ yarn start:dev
+cd server
+yarn
+yarn db:dev:restart
+yarn start:dev
 ```
 > To see all commands in /server need to go to server/packege.json
 
@@ -28,9 +28,9 @@ Client side was built using React(Vite) and "yarn" package manager
 * Client: [React](https://ru.legacy.reactjs.org/)
 
 ```shell
-$ cd client
-$ yarn
-$ yarn dev
+cd client
+yarn
+yarn dev
 ```
 > Or refer to the [Vite](https://vitejs.dev/guide/) website
 
