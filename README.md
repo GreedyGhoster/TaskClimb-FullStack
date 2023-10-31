@@ -2,7 +2,7 @@
 
 ## Quick Start
 ``` shell
-git https://github.com/IuanPR/TaskClimb-FullStack.git
+git clone https://github.com/IuanPR/TaskClimb-FullStack.git
 ```
 
 ### Server
