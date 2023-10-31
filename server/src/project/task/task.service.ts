@@ -2,12 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EditTaskDto, TaskDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { Status } from '@prisma/client';
 
 @Injectable()
 export class TaskService {
   constructor(private prisma: PrismaService) {}
-  async createTask(projectId: number, dto: TaskDto) {
+  async createTask(projectId: string, dto: TaskDto) {
     const task = await this.prisma.task.create({
       data: {
         projectId: projectId,
@@ -22,7 +21,7 @@ export class TaskService {
     return task;
   }
 
-  async getTaskById(projectId: number, taskId: number) {
+  async getTaskById(projectId: string, taskId: string) {
     try {
       const task = await this.prisma.task.findFirst({
         where: {
@@ -43,7 +42,7 @@ export class TaskService {
     }
   }
 
-  async updateTaskById(projectId: number, taskId: number, dto: EditTaskDto) {
+  async updateTaskById(projectId: string, taskId: string, dto: EditTaskDto) {
     const task = await this.prisma.task.update({
       where: {
         id: taskId,
@@ -61,7 +60,7 @@ export class TaskService {
     return task;
   }
 
-  async deleteTaskById(projectId: number, taskId: number) {
+  async deleteTaskById(projectId: string, taskId: string) {
     return this.prisma.task.delete({
       where: {
         id: taskId,

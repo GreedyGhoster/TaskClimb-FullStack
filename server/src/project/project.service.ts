@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditProjectDto, ProjectDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ProjectService {
   constructor(private prisma: PrismaService) {}
 
-  async createProject(userId: number, dto: ProjectDto) {
+  async createProject(userId: string, dto: ProjectDto) {
     return this.prisma.project.create({
       data: {
         userId: userId,
@@ -16,7 +17,7 @@ export class ProjectService {
     });
   }
 
-  async getProjectAndTasksById(userId: number, projectId: number) {
+  async getProjectAndTasksById(userId: string, projectId: string) {
     try {
       const tasks = await this.prisma.task.findMany({
         where: {
@@ -43,7 +44,7 @@ export class ProjectService {
     }
   }
 
-  async getProjects(userId: number) {
+  async getProjects(userId: string) {
     return this.prisma.project.findMany({
       where: {
         userId: userId,
@@ -52,8 +53,8 @@ export class ProjectService {
   }
 
   async updateProjectById(
-    userId: number,
-    projectId: number,
+    userId: string,
+    projectId: string,
     dto: EditProjectDto,
   ) {
     return this.prisma.project.update({
@@ -67,7 +68,7 @@ export class ProjectService {
     });
   }
 
-  async deleteProjectById(userId: number, projectId: number) {
+  async deleteProjectById(userId: string, projectId: string) {
     return this.prisma.project.delete({
       where: {
         id: projectId,

@@ -28,13 +28,13 @@ export class UserController {
   }
 
   @Patch('me')
-  userEdit(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
+  userEdit(@GetUser('id') userId: string, @Body() dto: EditUserDto) {
     return this.userService.userEdit(userId, dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('me')
-  userDelete(@GetUser('id') userId: number) {
+  userDelete(@GetUser('id') userId: string) {
     return this.userService.userDelete(userId);
   }
 }

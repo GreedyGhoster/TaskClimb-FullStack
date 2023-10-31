@@ -28,27 +28,27 @@ export class ProjectController {
 
   // Everything about projects
   @Post()
-  createProject(@GetUser('id') userId: number, @Body() dto: ProjectDto) {
+  createProject(@GetUser('id') userId: string, @Body() dto: ProjectDto) {
     return this.projectService.createProject(userId, dto);
   }
 
   @Get(':projectId')
   getProjectById(
-    @GetUser('id') userId: number,
-    @Param('projectId', ParseIntPipe) projectId: number,
+    @GetUser('id') userId: string,
+    @Param('projectId') projectId: string,
   ) {
     return this.projectService.getProjectAndTasksById(userId, projectId);
   }
 
   @Get()
-  getProjects(@GetUser('id') userId: number) {
+  getProjects(@GetUser('id') userId: string) {
     return this.projectService.getProjects(userId);
   }
 
   @Patch(':projectId')
   updateProjectById(
-    @GetUser('id') userId: number,
-    @Param('projectId', ParseIntPipe) projectId: number,
+    @GetUser('id') userId: string,
+    @Param('projectId') projectId: string,
     @Body() dto: EditProjectDto,
   ) {
     return this.projectService.updateProjectById(userId, projectId, dto);
@@ -57,8 +57,8 @@ export class ProjectController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':projectId')
   deleteProjectById(
-    @GetUser('id') userId: number,
-    @Param('projectId', ParseIntPipe) projectId: number,
+    @GetUser('id') userId: string,
+    @Param('projectId') projectId: string,
   ) {
     return this.projectService.deleteProjectById(userId, projectId);
   }
@@ -66,7 +66,8 @@ export class ProjectController {
   // Everything about tasks
   @Post(':projectId')
   createTask(
-    @Param('projectId', ParseIntPipe) projectId: number,
+    @Param('projectId') projectId: string,
+
     @Body() dto: TaskDto,
   ) {
     return this.taskService.createTask(projectId, dto);
@@ -74,16 +75,16 @@ export class ProjectController {
 
   @Get(':projectId/:taskId')
   getTaskById(
-    @Param('projectId', ParseIntPipe) projectId: number,
-    @Param('taskId', ParseIntPipe) taskId: number,
+    @Param('projectId') projectId: string,
+    @Param('taskId') taskId: string,
   ) {
     return this.taskService.getTaskById(projectId, taskId);
   }
 
   @Patch(':projectId/:taskId')
   updateTaskById(
-    @Param('projectId', ParseIntPipe) projectId: number,
-    @Param('taskId', ParseIntPipe) taskId: number,
+    @Param('projectId') projectId: string,
+    @Param('taskId') taskId: string,
     @Body() dto: EditTaskDto,
   ) {
     return this.taskService.updateTaskById(projectId, taskId, dto);
@@ -92,8 +93,8 @@ export class ProjectController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':projectId/:taskId')
   deleteTaskById(
-    @Param('projectId', ParseIntPipe) projectId: number,
-    @Param('taskId', ParseIntPipe) taskId: number,
+    @Param('projectId') projectId: string,
+    @Param('taskId') taskId: string,
   ) {
     return this.taskService.deleteTaskById(projectId, taskId);
   }

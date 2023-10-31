@@ -11,11 +11,33 @@ import TextField from "@mui/material/TextField";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
+import axios from "axios";
 
 export const AppSidebar = () => {
-  const { projects, addProject } = useTodo();
+  const { projects, addProject, token } = useTodo();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
+
+  console.log(token);
+
+  const URL = "http://localhost:4580/projects";
+
+  const authToken = `Bearer ${token}`;
+
+  const fetchData = (title: string) => {
+    const data = {
+      title: title,
+    };
+
+    axios
+      .post(URL, data, { headers: { Authorization: authToken } })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch(() => {
+        alert("The user does not exist or Password is incorrect");
+      });
+  };
 
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {
@@ -29,6 +51,7 @@ export const AppSidebar = () => {
       if (values.title.trim() !== "") {
         addProject(values.title);
         reset({ title: "" });
+        fetchData(values.title);
       }
     },
     [addProject, reset]

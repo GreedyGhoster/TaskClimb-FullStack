@@ -17,7 +17,7 @@ enum Status {
 }
 
 model User {
-  id Int @id @unique @default(autoincrement())
+  id String @id @default(uuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -29,7 +29,7 @@ model User {
 }
 
 model Project {
-  id Int @id @unique @default(autoincrement())
+  id String @id @default(uuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -37,12 +37,12 @@ model Project {
   title String
   tasks Task[]
 
-  User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int?
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
 
 model Task {
-  id Int @id @unique @default(autoincrement())
+  id String @id @default(uuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,6 +51,6 @@ model Task {
   status      Status  @default(New)
   description String?
 
-  Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId Int?
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
 }

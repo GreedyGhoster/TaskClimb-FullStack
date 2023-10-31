@@ -11,7 +11,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function SignUp() {
-  const { getToken } = useTodo();
+  const { getToken, token } = useTodo();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -28,6 +28,7 @@ export default function SignUp() {
       .post(URL, data)
       .then((res) => {
         getToken(res.data);
+        console.log(token);
       })
       .catch(() => {
         alert("The user does not exist or Password is incorrect");

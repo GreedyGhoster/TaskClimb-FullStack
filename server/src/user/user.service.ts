@@ -8,7 +8,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async userEdit(userId: number, dto: EditUserDto) {
+  async userEdit(userId: string, dto: EditUserDto) {
     const user = await this.prisma.user.update({
       where: {
         id: userId,
@@ -22,7 +22,7 @@ export class UserService {
     return user;
   }
 
-  async userDelete(userId: number) {
+  async userDelete(userId: string) {
     return this.prisma.user.delete({
       where: {
         id: userId,
