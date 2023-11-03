@@ -55,11 +55,11 @@ const AccountMenu = () => {
           </ListItemIcon>
           Sign in
         </ListItemButton>
-        <ListItemButton href="auth/signup">
+        <ListItemButton href="auth/register">
           <ListItemIcon>
             <PersonAddIcon />
           </ListItemIcon>
-          Sign up
+          Register
         </ListItemButton>
         <ListItemButton>
           <ListItemIcon>

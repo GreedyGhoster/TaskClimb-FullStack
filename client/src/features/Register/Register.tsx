@@ -10,7 +10,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useTodo } from "../../hooks";
 
-export default function SignUp() {
+export default function Register() {
   const { getToken } = useTodo();
 
   const [nickName, setNickName] = useState<string>("");
@@ -50,7 +50,7 @@ export default function SignUp() {
         }}
       >
         <Typography variant="h3" align="center" sx={{ paddingBottom: "20px" }}>
-          Sign Up
+          Register
         </Typography>
 
         <TextField
@@ -82,7 +82,7 @@ export default function SignUp() {
           sx={{ marginBottom: "20px" }}
           onClick={() => FetchData()}
         >
-          Sign Up
+          Register
         </Button>
 
         <Typography

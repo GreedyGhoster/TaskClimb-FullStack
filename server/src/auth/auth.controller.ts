@@ -7,9 +7,9 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post('signup')
+  @Post('register')
   signup(@Body() dto: UserDto) {
-    return this.authService.signup(dto);
+    return this.authService.register(dto);
   }
 
   @Post('signin')

@@ -4,8 +4,8 @@ import { AppLayout } from "../features/layouts/AppLayout";
 import { ProjectPage } from "../features/ProjectPage";
 import { TaskPage } from "../features/TaskPage";
 import { Greeting } from "../components/Greeting";
-import { SignUp } from "../features/SignUp";
 import { SignIn } from "../features/SignIn";
+import { Register } from "../features/Register";
 
 export default function AppRouter() {
   return (
@@ -14,7 +14,7 @@ export default function AppRouter() {
         <Route path="" element={<Greeting />} />
         <Route path=":projectId" element={<ProjectPage />} />
         <Route path=":projectId/:taskId" element={<TaskPage />} />
-        <Route path="auth/signup" element={<SignUp />} />
+        <Route path="auth/register" element={<Register />} />
         <Route path="auth/signin" element={<SignIn />} />
       </Route>
       <Route path="*" element={<NotFound />} />

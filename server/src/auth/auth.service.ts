@@ -28,7 +28,7 @@ export class AuthService {
 
     return token;
   }
-  async signup(dto: UserDto) {
+  async register(dto: UserDto) {
     try {
       const hash = await argon.hash(dto.password);
 

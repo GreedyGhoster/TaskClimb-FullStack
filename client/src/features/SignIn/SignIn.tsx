@@ -96,7 +96,7 @@ export default function SignUp() {
             margin: "0",
           }}
         >
-          Have not registered yet <Link href="/auth/signup">sign up?</Link>
+          Have not registered yet <Link href="/auth/register">register?</Link>
         </Typography>
       </Box>
     </Container>
