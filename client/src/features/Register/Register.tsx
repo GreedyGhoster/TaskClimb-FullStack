@@ -16,7 +16,7 @@ export default function Register() {
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const URL = "http://localhost:4580/auth/signup";
+  const URL = "http://localhost:4580/auth/register";
 
   const data = {
     nickName: nickName,
