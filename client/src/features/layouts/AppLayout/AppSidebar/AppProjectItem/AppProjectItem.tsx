@@ -72,7 +72,7 @@ const AppProjectItem: FC<Props> = ({ project }) => {
               >
                 <ListItemButton
                   selected={project.id === currentProjectId}
-                  href={project.id}
+                  href={`projects/${project.id}`}
                 >
                   <ListItemText
                     sx={{

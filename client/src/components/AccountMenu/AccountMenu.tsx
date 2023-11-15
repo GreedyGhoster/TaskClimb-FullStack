@@ -13,8 +13,10 @@ import {
   DialogTitle,
   ListItemButton,
 } from "@mui/material";
+import { useTodo } from "../../hooks";
 
 const AccountMenu = () => {
+  const { setToken } = useTodo();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
@@ -32,6 +34,11 @@ const AccountMenu = () => {
   };
 
   const handleCloseReq = () => {
+    setOpen(false);
+  };
+
+  const handleAgree = () => {
+    setToken(undefined);
     setOpen(false);
   };
 
@@ -84,7 +91,7 @@ const AccountMenu = () => {
           </DialogTitle>
           <DialogActions>
             <Button onClick={handleCloseReq}>Close</Button>
-            <Button onClick={handleCloseReq} autoFocus>
+            <Button onClick={handleAgree} autoFocus>
               Yes
             </Button>
           </DialogActions>

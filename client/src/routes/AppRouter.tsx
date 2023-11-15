@@ -7,13 +7,14 @@ import { Greeting } from "../components/Greeting";
 import { SignIn } from "../features/SignIn";
 import { Register } from "../features/Register";
 
+// TODO: Сделать так, чтобы страница авторизации была начальной страницей
 export default function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route path="" element={<Greeting />} />
-        <Route path=":projectId" element={<ProjectPage />} />
-        <Route path=":projectId/:taskId" element={<TaskPage />} />
+        <Route path="/projects/:projectId" element={<ProjectPage />} />
+        <Route path="/projects/:projectId/:taskId" element={<TaskPage />} />
         <Route path="auth/register" element={<Register />} />
         <Route path="auth/signin" element={<SignIn />} />
       </Route>

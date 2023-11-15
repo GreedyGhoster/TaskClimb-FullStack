@@ -42,7 +42,7 @@ export function TaskPage() {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(`/${projectId}`);
+    navigate(`/projects/${projectId}`);
   };
 
   if (!project || !task) {

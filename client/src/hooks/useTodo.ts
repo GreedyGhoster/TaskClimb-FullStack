@@ -17,7 +17,7 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
 
-  const [token, setToken] = useState<string>("");
+  const [token, setToken] = useState<string | undefined>();
 
   const getToken = useCallback((token: string) => {
     return setToken(token);
@@ -161,6 +161,7 @@ function useTodoFunc() {
     () => ({
       projects,
       token,
+      setToken,
       getToken,
       addProject,
       findProject,
@@ -176,6 +177,7 @@ function useTodoFunc() {
     [
       projects,
       token,
+      setToken,
       getToken,
       addProject,
       findProject,

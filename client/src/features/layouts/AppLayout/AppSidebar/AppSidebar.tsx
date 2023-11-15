@@ -18,23 +18,23 @@ export const AppSidebar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
-  const URL = "http://localhost:4580/projects";
+  const fetchData = async (title: string) => {
+    const URL = "http://localhost:4580/projects";
 
-  const authToken = `Bearer ${token}`;
+    const authToken = `Bearer ${token}`;
 
-  const fetchData = (title: string) => {
     const data = {
       title: title,
     };
 
-    return axios
-      .post(URL, data, { headers: { Authorization: authToken } })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(() => {
-        alert("The user does not exist or Password is incorrect");
+    try {
+      const res = await axios.post(URL, data, {
+        headers: { Authorization: authToken },
       });
+      console.log(res);
+    } catch {
+      alert("Please sign in");
+    }
   };
 
   const formMethods = useForm<AddToDoProjectFormValues>({
@@ -47,12 +47,12 @@ export const AppSidebar = () => {
   const handleSubmitForm = useCallback(
     async (values: AddToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
+        fetchData(values.title);
         addProject(values.title);
         reset({ title: "" });
-        fetchData(values.title);
       }
     },
-    [addProject, reset]
+    [addProject, reset, fetchData]
   );
 
   return (

@@ -1,3 +1,3 @@
-export const ProjectRoute = (projectId: string) => `/${projectId}`;
+export const ProjectRoute = (projectId: string) => `/projects/${projectId}`;
 export const TaskRoute = (projectId: string, taskId: string) =>
-  `/${projectId}/${taskId}`;
+  `/projects/${projectId}/${taskId}`;
