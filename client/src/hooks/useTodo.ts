@@ -20,6 +20,7 @@ function useTodoFunc() {
   const [token, setToken] = useState<string | undefined>();
 
   const getToken = useCallback((token: string) => {
+    console.log(token);
     return setToken(token);
   }, []);
 

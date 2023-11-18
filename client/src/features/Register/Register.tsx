@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { useTodo } from "../../hooks";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const { getToken } = useTodo();
@@ -21,6 +22,12 @@ export default function Register() {
   const data = {
     nickName: nickName,
     password: password,
+  };
+
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(`/projects`);
   };
 
   const FetchData = async () => {
@@ -80,7 +87,10 @@ export default function Register() {
           size="large"
           fullWidth
           sx={{ marginBottom: "20px" }}
-          onClick={() => FetchData()}
+          onClick={() => {
+            FetchData();
+            goBack();
+          }}
         >
           Register
         </Button>

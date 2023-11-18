@@ -9,6 +9,7 @@ import {
 import { useTodo } from "../../hooks";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const { getToken } = useTodo();
@@ -21,6 +22,12 @@ export default function SignUp() {
   const data = {
     nickName: nickName,
     password: password,
+  };
+
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate("/projects/home");
   };
 
   const FetchData = async () => {
@@ -81,7 +88,10 @@ export default function SignUp() {
           size="large"
           fullWidth
           sx={{ marginBottom: "20px" }}
-          onClick={() => FetchData()}
+          onClick={() => {
+            FetchData();
+            goBack();
+          }}
         >
           Sign In
         </Button>
