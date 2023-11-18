@@ -17,12 +17,17 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
 
-  const [token, setToken] = useState<string | undefined>();
+  function saveTokenToLocalStorage(token: string) {
+    localStorage.setItem("jwtToken", token);
+  }
 
-  const getToken = useCallback((token: string) => {
-    console.log(token);
-    return setToken(token);
-  }, []);
+  function getTokenFromLocalStorage(): string | null {
+    return localStorage.getItem("jwtToken");
+  }
+
+  function removeTokenFromLocalStorage() {
+    localStorage.removeItem("jwtToken");
+  }
 
   const addProject = useCallback((projectName: string) => {
     setProjects((prev) => [{ id: uuidv4(), title: projectName }, ...prev]);
@@ -161,9 +166,9 @@ function useTodoFunc() {
   return useMemo(
     () => ({
       projects,
-      token,
-      setToken,
-      getToken,
+      saveTokenToLocalStorage,
+      getTokenFromLocalStorage,
+      removeTokenFromLocalStorage,
       addProject,
       findProject,
       addTask,
@@ -177,9 +182,9 @@ function useTodoFunc() {
     }),
     [
       projects,
-      token,
-      setToken,
-      getToken,
+      saveTokenToLocalStorage,
+      getTokenFromLocalStorage,
+      removeTokenFromLocalStorage,
       addProject,
       findProject,
       addTask,

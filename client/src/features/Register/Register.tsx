@@ -12,7 +12,7 @@ import { useTodo } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { getToken } = useTodo();
+  const { saveTokenToLocalStorage } = useTodo();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -27,7 +27,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(`/projects`);
+    navigate("/");
   };
 
   const FetchData = async () => {
@@ -36,7 +36,7 @@ export default function Register() {
     return axios
       .post(URL, data)
       .then((res) => {
-        getToken(res.data);
+        saveTokenToLocalStorage(res.data);
       })
       .catch(() => {
         alert("The user already exists");

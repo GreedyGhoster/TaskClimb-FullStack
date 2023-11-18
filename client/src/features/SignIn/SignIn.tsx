@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-  const { getToken } = useTodo();
+  const { saveTokenToLocalStorage } = useTodo();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -27,7 +27,7 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate("/projects/home");
+    navigate("/");
   };
 
   const FetchData = async () => {
@@ -36,7 +36,7 @@ export default function SignUp() {
     return axios
       .post(URL, data)
       .then((res) => {
-        getToken(res.data);
+        saveTokenToLocalStorage(res.data);
       })
       .catch(() => {
         alert("The user does not exist or Password is incorrect");

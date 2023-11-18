@@ -4,16 +4,16 @@ import { useTodo } from "../hooks";
 import { useState, useEffect } from "react";
 
 function PrivateRoute() {
-  const { token } = useTodo();
+  const { getTokenFromLocalStorage } = useTodo();
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
   useEffect(() => {
-    if (token) {
+    if (getTokenFromLocalStorage()) {
       setIsAuth(true);
     } else {
       setIsAuth(false);
     }
-  }, [token]);
+  }, [getTokenFromLocalStorage()]);
 
   return isAuth ? <Outlet /> : <Register />;
 }
