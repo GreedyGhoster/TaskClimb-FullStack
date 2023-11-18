@@ -5,15 +5,12 @@ import { useState, useEffect } from "react";
 
 function PrivateRoute() {
   const { getTokenFromLocalStorage } = useTodo();
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const token = getTokenFromLocalStorage();
+  const [isAuth, setIsAuth] = useState<boolean>(true);
 
   useEffect(() => {
-    if (getTokenFromLocalStorage()) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-    }
-  }, [getTokenFromLocalStorage()]);
+    setIsAuth(!!token);
+  }, [token]);
 
   return isAuth ? <Outlet /> : <Register />;
 }

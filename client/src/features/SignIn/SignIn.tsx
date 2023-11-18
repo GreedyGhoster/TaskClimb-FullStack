@@ -26,8 +26,8 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
-  const goBack = () => {
-    navigate("/");
+  const goNext = () => {
+    navigate("/projects/home");
   };
 
   const FetchData = async () => {
@@ -90,7 +90,7 @@ export default function SignUp() {
           sx={{ marginBottom: "20px" }}
           onClick={() => {
             FetchData();
-            goBack();
+            goNext();
           }}
         >
           Sign In

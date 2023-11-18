@@ -15,13 +15,14 @@ import axios from "axios";
 
 export const AppSidebar = () => {
   const { projects, addProject, getTokenFromLocalStorage } = useTodo();
+  const token = getTokenFromLocalStorage();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
   const fetchData = async (title: string) => {
     const URL = "http://localhost:4580/projects";
 
-    const authToken = `Bearer ${getTokenFromLocalStorage()}`;
+    const authToken = `Bearer ${token}`;
 
     const data = {
       title: title,

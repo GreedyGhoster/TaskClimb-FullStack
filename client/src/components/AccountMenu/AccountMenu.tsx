@@ -14,15 +14,19 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { useTodo } from "../../hooks";
+import { useNavigate } from "react-router-dom";
 
 const AccountMenu = () => {
-  const {
-    //  setToken,
-    removeTokenFromLocalStorage,
-  } = useTodo();
+  const { removeTokenFromLocalStorage } = useTodo();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
+
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate("/auth/register");
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -41,7 +45,7 @@ const AccountMenu = () => {
   };
 
   const handleAgree = () => {
-    // setToken(undefined);
+    goBack();
     removeTokenFromLocalStorage();
     setOpen(false);
   };

@@ -26,8 +26,8 @@ export default function Register() {
 
   const navigate = useNavigate();
 
-  const goBack = () => {
-    navigate("/");
+  const goNext = () => {
+    navigate("/auth/signin");
   };
 
   const FetchData = async () => {
@@ -89,7 +89,7 @@ export default function Register() {
           sx={{ marginBottom: "20px" }}
           onClick={() => {
             FetchData();
-            goBack();
+            goNext();
           }}
         >
           Register
