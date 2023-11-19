@@ -13,7 +13,7 @@ import { useAuth, useUser } from "../../hooks";
 
 export default function SignUp() {
   const { saveTokenToLocalStorage } = useAuth();
-  const { getUser } = useUser();
+  const { setUser, setProjectsArray } = useUser();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -38,7 +38,8 @@ export default function SignUp() {
       .post(URL, data)
       .then((res) => {
         saveTokenToLocalStorage(res.data);
-        getUser(res.data);
+        setUser(res.data);
+        setProjectsArray(res.data);
       })
       .catch(() => {
         alert("The user does not exist or Password is incorrect");

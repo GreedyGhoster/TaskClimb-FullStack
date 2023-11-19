@@ -1,5 +1,5 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
-import { UseTodoProvider, useAuth, useTodo } from "../../../../hooks";
+import { UseTodoProvider, useAuth, useUser } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoProjectFormValues } from "../../../../types";
 import { useCallback, useState } from "react";
@@ -14,9 +14,10 @@ import useTheme from "@mui/material/styles/useTheme";
 import axios from "axios";
 
 export const AppSidebar = () => {
-  const { projects, addProject } = useTodo();
+  const { getProjects, setProjectsArray } = useUser();
   const { getTokenFromLocalStorage } = useAuth();
   const token = getTokenFromLocalStorage();
+  const projects = getProjects();
 
   const theme = useTheme();
 
@@ -32,10 +33,9 @@ export const AppSidebar = () => {
     };
 
     try {
-      const res = await axios.post(URL, data, {
+      await axios.post(URL, data, {
         headers: { Authorization: authToken },
       });
-      console.log(res);
     } catch {
       alert("Please sign in");
     }
@@ -52,11 +52,11 @@ export const AppSidebar = () => {
     async (values: AddToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
         fetchData(values.title);
-        addProject(values.title);
+        setProjectsArray(token!);
         reset({ title: "" });
       }
     },
-    [addProject, reset, fetchData]
+    [reset, fetchData]
   );
 
   return (
@@ -114,7 +114,7 @@ export const AppSidebar = () => {
             }}
           >
             {projects
-              .filter((val) => {
+              .filter((val: any) => {
                 if (
                   searchTerm === "" ||
                   val.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -122,7 +122,7 @@ export const AppSidebar = () => {
                   return val;
                 }
               })
-              .map((project) => (
+              .map((project: any) => (
                 <AppProjectItem key={project.id} project={project} />
               ))}
           </List>

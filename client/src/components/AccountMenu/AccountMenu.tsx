@@ -19,9 +19,9 @@ import { useAuth, useUser } from "../../hooks";
 
 const AccountMenu = () => {
   const { removeTokenFromLocalStorage } = useAuth();
-  const { getUserFromLocalStorage } = useUser();
+  const { getUser } = useUser();
 
-  const user = getUserFromLocalStorage();
+  const user = getUser();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);

@@ -1,19 +1,9 @@
 import constate from "constate";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import axios from "axios";
 
 function useUserFunc() {
-  const [projects, setProjects] = useState<any>();
-
-  const setUserToLocalStorage = (res: any) => {
-    localStorage.setItem("user", res);
-  };
-
-  const getUserFromLocalStorage = () => {
-    return localStorage.getItem("user");
-  };
-
-  const getUser = async (token: string) => {
+  const setUser = async (token: string) => {
     const URL = "http://localhost:4580/users/me";
 
     const authToken = `Bearer ${token}`;
@@ -23,16 +13,49 @@ function useUserFunc() {
         const res = await axios.get(URL, {
           headers: { Authorization: authToken },
         });
-        return setUserToLocalStorage(res.data.nickName);
+        return localStorage.setItem("user", res.data.nickName);
       } catch {
         alert("Please sign in");
       }
     }
   };
 
+  const setProjectsArray = async (token: string) => {
+    const URL = "http://localhost:4580/projects";
+
+    const authToken = `Bearer ${token}`;
+
+    if (token) {
+      try {
+        const res = await axios.get(URL, {
+          headers: { Authorization: authToken },
+        });
+        console.log(res.data);
+        return localStorage.setItem("projects", JSON.stringify(res.data));
+      } catch {
+        alert("Please sign in");
+      }
+    }
+  };
+
+  const getProjects = () => {
+    const storedData = localStorage.getItem("projects");
+    console.log(JSON.parse(storedData!));
+    return JSON.parse(storedData!);
+  };
+
+  const getUser = () => {
+    return localStorage.getItem("user");
+  };
+
   return useMemo(
-    () => ({ getUserFromLocalStorage, projects, getUser }),
-    [getUserFromLocalStorage, projects, getUser]
+    () => ({
+      getUser,
+      getProjects,
+      setUser,
+      setProjectsArray,
+    }),
+    [getUser, getProjects, setUser, setProjectsArray]
   );
 }
 
