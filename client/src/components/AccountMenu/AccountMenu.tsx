@@ -12,19 +12,24 @@ import {
   DialogActions,
   DialogTitle,
   ListItemButton,
+  Typography,
 } from "@mui/material";
-import { useTodo } from "../../hooks";
 import { useNavigate } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
 
 const AccountMenu = () => {
-  const { removeTokenFromLocalStorage } = useTodo();
+  const { removeTokenFromLocalStorage } = useAuth();
+  const { getUserFromLocalStorage } = useUser();
+
+  const user = getUserFromLocalStorage();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
 
   const navigate = useNavigate();
 
-  const goBack = () => {
+  const goRegister = () => {
     navigate("/auth/register");
   };
 
@@ -45,13 +50,14 @@ const AccountMenu = () => {
   };
 
   const handleAgree = () => {
-    goBack();
+    goRegister();
     removeTokenFromLocalStorage();
     setOpen(false);
   };
 
   return (
     <>
+      <Typography component={"h4"}>{user}</Typography>
       <IconButton onClick={handleClick}>
         <AccountCircleIcon />
       </IconButton>

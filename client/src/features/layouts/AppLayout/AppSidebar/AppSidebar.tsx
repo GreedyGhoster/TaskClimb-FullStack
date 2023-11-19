@@ -1,5 +1,5 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
-import { UseTodoProvider, useTodo } from "../../../../hooks";
+import { UseTodoProvider, useAuth, useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoProjectFormValues } from "../../../../types";
 import { useCallback, useState } from "react";
@@ -14,10 +14,13 @@ import useTheme from "@mui/material/styles/useTheme";
 import axios from "axios";
 
 export const AppSidebar = () => {
-  const { projects, addProject, getTokenFromLocalStorage } = useTodo();
+  const { projects, addProject } = useTodo();
+  const { getTokenFromLocalStorage } = useAuth();
   const token = getTokenFromLocalStorage();
-  const [searchTerm, setSearchTerm] = useState<string>("");
+
   const theme = useTheme();
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const fetchData = async (title: string) => {
     const URL = "http://localhost:4580/projects";

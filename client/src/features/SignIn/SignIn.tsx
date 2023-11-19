@@ -6,13 +6,14 @@ import {
   Container,
   Box,
 } from "@mui/material";
-import { useTodo } from "../../hooks";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
 
 export default function SignUp() {
-  const { saveTokenToLocalStorage } = useTodo();
+  const { saveTokenToLocalStorage } = useAuth();
+  const { getUser } = useUser();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -27,7 +28,7 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const goNext = () => {
-    navigate("/projects/home");
+    navigate("/");
   };
 
   const FetchData = async () => {
@@ -37,6 +38,7 @@ export default function SignUp() {
       .post(URL, data)
       .then((res) => {
         saveTokenToLocalStorage(res.data);
+        getUser(res.data);
       })
       .catch(() => {
         alert("The user does not exist or Password is incorrect");

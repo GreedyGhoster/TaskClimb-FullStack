@@ -8,11 +8,12 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
-import { useTodo } from "../../hooks";
+import { useAuth, useUser } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { saveTokenToLocalStorage } = useTodo();
+  const { saveTokenToLocalStorage } = useAuth();
+  const { getUser } = useUser();
 
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -37,6 +38,7 @@ export default function Register() {
       .post(URL, data)
       .then((res) => {
         saveTokenToLocalStorage(res.data);
+        getUser(res.data);
       })
       .catch(() => {
         alert("The user already exists");
