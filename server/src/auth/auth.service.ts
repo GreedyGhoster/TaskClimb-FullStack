@@ -22,11 +22,11 @@ export class AuthService {
     const secret = await this.config.get('JWT_SECRET');
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '1h',
+      expiresIn: '1d',
       secret: secret,
     });
 
-    return token;
+    return { token: token, expiresIn: '1h' };
   }
   async register(dto: UserDto) {
     try {
@@ -36,6 +36,13 @@ export class AuthService {
         data: {
           nickName: dto.nickName,
           hash: hash,
+        },
+      });
+
+      await this.prisma.project.create({
+        data: {
+          title: 'Home',
+          userId: user.id,
         },
       });
 

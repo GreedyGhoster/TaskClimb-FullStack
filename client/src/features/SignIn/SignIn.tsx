@@ -9,20 +9,21 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth, useUser } from "../../hooks";
+import { useSignIn } from "react-auth-kit";
 
 export default function SignUp() {
-  const { saveTokenToLocalStorage } = useAuth();
-  const { setUser, setProjectsArray } = useUser();
+  const signin = useSignIn();
 
-  const [nickName, setNickName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [signinData, setSigninData] = useState({
+    nickName: "",
+    password: "",
+  });
 
   const URL = "http://localhost:4580/auth/signin";
 
   const data = {
-    nickName: nickName,
-    password: password,
+    nickName: signinData.nickName,
+    password: signinData.password,
   };
 
   const navigate = useNavigate();
@@ -32,18 +33,27 @@ export default function SignUp() {
   };
 
   const FetchData = async () => {
-    setNickName("");
-    setPassword("");
-    return axios
-      .post(URL, data)
-      .then((res) => {
-        saveTokenToLocalStorage(res.data);
-        setUser(res.data);
-        setProjectsArray(res.data);
-      })
-      .catch(() => {
-        alert("The user does not exist or Password is incorrect");
-      });
+    setSigninData({
+      nickName: "",
+      password: "",
+    });
+
+    return axios.post(URL, data).then((res) => {
+      if (res.status === 200) {
+        if (
+          signin({
+            token: res.data.token,
+            expiresIn: 1440,
+            tokenType: "Bearer",
+            authState: signinData,
+          })
+        ) {
+          goNext();
+        } else {
+          alert("The user already exists");
+        }
+      }
+    });
   };
 
   return (
@@ -65,8 +75,10 @@ export default function SignUp() {
 
         <TextField
           label="Nickname"
-          value={nickName}
-          onChange={(e) => setNickName(e.target.value)}
+          value={signinData.nickName}
+          onChange={(e) =>
+            setSigninData({ ...signinData, nickName: e.target.value })
+          }
           fullWidth
           variant="outlined"
           type="email"
@@ -76,8 +88,10 @@ export default function SignUp() {
 
         <TextField
           label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={signinData.password}
+          onChange={(e) =>
+            setSigninData({ ...signinData, password: e.target.value })
+          }
           fullWidth
           variant="outlined"
           type="password"

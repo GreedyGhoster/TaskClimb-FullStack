@@ -8,42 +8,47 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
-import { useAuth, useUser } from "../../hooks";
 import { useNavigate } from "react-router-dom";
+import { useSignIn } from "react-auth-kit";
 
 export default function Register() {
-  const { saveTokenToLocalStorage } = useAuth();
-  const { setUser, setProjectsArray } = useUser();
+  const register = useSignIn();
 
-  const [nickName, setNickName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [registerData, setRegisterData] = useState({
+    nickName: "",
+    password: "",
+  });
 
   const URL = "http://localhost:4580/auth/register";
 
   const data = {
-    nickName: nickName,
-    password: password,
+    nickName: registerData.nickName,
+    password: registerData.password,
   };
 
   const navigate = useNavigate();
 
-  const goNext = () => {
-    navigate("/auth/signin");
-  };
+  const goNext = () => navigate("/");
 
   const FetchData = async () => {
-    setNickName("");
-    setPassword("");
-    return axios
-      .post(URL, data)
-      .then((res) => {
-        saveTokenToLocalStorage(res.data);
-        setUser(res.data);
-        setProjectsArray(res.data);
-      })
-      .catch(() => {
-        alert("The user already exists");
-      });
+    setRegisterData({ nickName: "", password: "" });
+
+    return axios.post(URL, data).then((res) => {
+      if (res.status === 200) {
+        if (
+          register({
+            token: res.data.token,
+            expiresIn: 1440,
+            tokenType: "Bearer",
+            authState: registerData,
+          })
+        ) {
+          goNext();
+        } else {
+          alert("The user already exists");
+        }
+      }
+    });
   };
 
   return (
@@ -65,8 +70,10 @@ export default function Register() {
 
         <TextField
           label="Nickname"
-          value={nickName}
-          onChange={(e) => setNickName(e.target.value)}
+          value={registerData.nickName}
+          onChange={(e) =>
+            setRegisterData({ ...registerData, nickName: e.target.value })
+          }
           fullWidth
           variant="outlined"
           placeholder="Nickname"
@@ -75,8 +82,10 @@ export default function Register() {
 
         <TextField
           label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={registerData.password}
+          onChange={(e) =>
+            setRegisterData({ ...registerData, password: e.target.value })
+          }
           fullWidth
           variant="outlined"
           type="password"
@@ -90,10 +99,7 @@ export default function Register() {
           size="large"
           fullWidth
           sx={{ marginBottom: "20px" }}
-          onClick={() => {
-            FetchData();
-            goNext();
-          }}
+          onClick={() => FetchData()}
         >
           Register
         </Button>

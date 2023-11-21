@@ -1,29 +1,25 @@
 import { NotFound } from "../features/NotFound";
 import { Route, Routes } from "react-router-dom";
-import { AppLayout } from "../features/layouts/AppLayout";
 import { ProjectPage } from "../features/ProjectPage";
 import { TaskPage } from "../features/TaskPage";
 import { Greeting } from "../components/Greeting";
 import { SignIn } from "../features/SignIn";
 import { Register } from "../features/Register";
 import PrivateRoute from "./PrivateRoute";
-import Main from "../features/layouts/Main";
+import { AppLayout } from "../features/layouts/AppLayout";
 
-// TODO: Сделать так, чтобы страница авторизации была начальной страницей
 export default function AppRouter() {
   return (
     <Routes>
-      <Route element={<Main />}>
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={<AppLayout />}>
-            <Route path="" element={<Greeting />} />
-            <Route path="/projects/:projectId" element={<ProjectPage />} />
-            <Route path="/projects/:projectId/:taskId" element={<TaskPage />} />
-          </Route>
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<AppLayout />}>
+          <Route path="" element={<Greeting />} />
+          <Route path="/projects/:projectId" element={<ProjectPage />} />
+          <Route path="/projects/:projectId/:taskId" element={<TaskPage />} />
         </Route>
-        <Route path="auth/register" element={<Register />} />
-        <Route path="auth/signin" element={<SignIn />} />
       </Route>
+      <Route path="auth/register" element={<Register />} />
+      <Route path="auth/signin" element={<SignIn />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -15,13 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuth, useUser } from "../../hooks";
+import { useAuthUser } from "react-auth-kit";
+import { useSignOut } from "react-auth-kit";
 
 const AccountMenu = () => {
-  const { removeTokenFromLocalStorage } = useAuth();
-  const { getUser } = useUser();
-
-  const user = getUser();
+  const signOut = useSignOut();
+  const authUser = useAuthUser();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
@@ -51,13 +50,13 @@ const AccountMenu = () => {
 
   const handleAgree = () => {
     goRegister();
-    removeTokenFromLocalStorage();
+    signOut();
     setOpen(false);
   };
 
   return (
     <>
-      <Typography component={"h4"}>{user}</Typography>
+      <Typography component={"h4"}>{authUser()!.nickName}</Typography>
       <IconButton onClick={handleClick}>
         <AccountCircleIcon />
       </IconButton>
