@@ -7,19 +7,57 @@ import {
   IToDoTask,
   ToDoTaskStatus,
 } from "../types";
+import { useIsAuthenticated, useAuthHeader } from "react-auth-kit";
+
 import { v4 as uuidv4 } from "uuid";
 import _orderBy from "lodash/orderBy";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function useTodoFunc() {
-  const [projects, setProjects] = useState<IToDoProject[]>([
-    { id: "home", title: "Home" },
-  ]);
+  const isAuthenticated = useIsAuthenticated();
+  const authHeader = useAuthHeader();
+
+  const navigate = useNavigate();
+
+  const [projects, setProjects] = useState<IToDoProject[]>([]);
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
 
-  const addProject = useCallback((projectName: string) => {
-    setProjects((prev) => [{ id: uuidv4(), title: projectName }, ...prev]);
-  }, []);
+  const goRegister = () => {
+    navigate("/auth/register");
+  };
+
+  const getProjects = (URL: string) => {
+    try {
+      const result = axios.get(URL, {
+        headers: { Authorization: authHeader() },
+      });
+      result.then((res) => setProjects(res.data));
+    } catch {
+      alert("Please sign in");
+    }
+  };
+
+  const createProject = async (title: string, URL: string) => {
+    if (isAuthenticated()) {
+      const data = {
+        title: title,
+      };
+
+      try {
+        await axios
+          .post(URL, data, {
+            headers: { Authorization: authHeader() },
+          })
+          .then(() => getProjects(URL));
+      } catch {
+        alert("Please sign in");
+      }
+    } else {
+      goRegister();
+    }
+  };
 
   const findProject = useCallback(
     (projectId?: string) => {
@@ -154,7 +192,8 @@ function useTodoFunc() {
   return useMemo(
     () => ({
       projects,
-      addProject,
+      createProject,
+      getProjects,
       findProject,
       addTask,
       deleteTask,
@@ -167,7 +206,8 @@ function useTodoFunc() {
     }),
     [
       projects,
-      addProject,
+      createProject,
+      getProjects,
       findProject,
       addTask,
       deleteTask,

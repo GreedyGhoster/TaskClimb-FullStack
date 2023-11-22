@@ -1,8 +1,8 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
-import { UseTodoProvider } from "../../../../hooks";
+import { UseTodoProvider, useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoProjectFormValues } from "../../../../types";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormTextField } from "../../../../components/form";
 import { AppProjectItem } from "./AppProjectItem";
 import Typography from "@mui/material/Typography";
@@ -11,30 +11,15 @@ import TextField from "@mui/material/TextField";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
-import axios from "axios";
 
 export const AppSidebar = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const { projects, createProject, getProjects } = useTodo();
   const theme = useTheme();
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const URL = "http://localhost:4580/projects";
 
-  // const fetchData = async (title: string) => {
-  //   const URL = "http://localhost:4580/projects";
-
-  //   // const authToken = `Bearer ${token}`;
-
-  //   const data = {
-  //     title: title,
-  //   };
-
-  //   try {
-  //     await axios.post(URL, data, {
-  //       headers: { Authorization: authToken },
-  //     });
-  //   } catch {
-  //     alert("Please sign in");
-  //   }
-  // };
+  useEffect(() => getProjects(URL), []);
 
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {
@@ -46,15 +31,11 @@ export const AppSidebar = () => {
   const handleSubmitForm = useCallback(
     async (values: AddToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
-        // fetchData(values.title);
-        // setProjectsArray(token!);
+        createProject(values.title, URL);
         reset({ title: "" });
       }
     },
-    [
-      reset,
-      //  fetchData
-    ]
+    [reset, createProject]
   );
 
   return (
@@ -111,8 +92,8 @@ export const AppSidebar = () => {
               flexDirection: "column-reverse",
             }}
           >
-            {/* {projects
-              .filter((val: any) => {
+            {projects
+              .filter((val) => {
                 if (
                   searchTerm === "" ||
                   val.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -120,9 +101,9 @@ export const AppSidebar = () => {
                   return val;
                 }
               })
-              .map((project: any) => (
+              .map((project) => (
                 <AppProjectItem key={project.id} project={project} />
-              ))} */}
+              ))}
           </List>
         </Box>
       </Box>

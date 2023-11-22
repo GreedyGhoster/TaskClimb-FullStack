@@ -26,6 +26,10 @@ export default function Register() {
     password: registerData.password,
   };
 
+  const authStateData = {
+    nickName: registerData.nickName,
+  };
+
   const navigate = useNavigate();
 
   const goNext = () => navigate("/");
@@ -40,7 +44,7 @@ export default function Register() {
             token: res.data.token,
             expiresIn: 1440,
             tokenType: "Bearer",
-            authState: registerData,
+            authState: authStateData,
           })
         ) {
           goNext();
