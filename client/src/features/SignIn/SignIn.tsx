@@ -26,6 +26,10 @@ export default function SignUp() {
     password: signinData.password,
   };
 
+  const authStateData = {
+    nickName: signinData.nickName,
+  };
+
   const navigate = useNavigate();
 
   const goNext = () => {
@@ -45,7 +49,7 @@ export default function SignUp() {
             token: res.data.token,
             expiresIn: 1440,
             tokenType: "Bearer",
-            authState: signinData,
+            authState: authStateData,
           })
         ) {
           goNext();

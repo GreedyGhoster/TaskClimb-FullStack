@@ -21,6 +21,8 @@ const AppProjectItem: FC<Props> = ({ project }) => {
   const { deleteProject } = useTodo();
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
+  const URL = "http://localhost:4580/projects";
+
   return (
     <ListItem
       component={"div"}
@@ -62,7 +64,7 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                           color="secondary"
                         />
                       </Button>
-                      <Button onClick={() => deleteProject(project.id)}>
+                      <Button onClick={() => deleteProject(project.id, URL)}>
                         <DeleteForeverIcon color="error" />
                       </Button>
                     </Box>

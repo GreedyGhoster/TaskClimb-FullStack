@@ -24,40 +24,70 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
 
+  console.log(projects);
+
   const goRegister = () => {
     navigate("/auth/register");
   };
 
-  const getProjects = (URL: string) => {
-    try {
-      const result = axios.get(URL, {
-        headers: { Authorization: authHeader() },
-      });
-      result.then((res) => setProjects(res.data));
-    } catch {
-      alert("Please sign in");
-    }
-  };
-
-  const createProject = async (title: string, URL: string) => {
-    if (isAuthenticated()) {
-      const data = {
-        title: title,
-      };
-
-      try {
-        await axios
-          .post(URL, data, {
-            headers: { Authorization: authHeader() },
-          })
-          .then(() => getProjects(URL));
-      } catch {
-        alert("Please sign in");
+  const getProjects = useCallback(
+    (URL: string) => {
+      if (isAuthenticated()) {
+        try {
+          axios
+            .get(URL, {
+              headers: { Authorization: authHeader() },
+            })
+            .then((res) => setProjects(res.data));
+        } catch (error) {
+          alert("Failed to fetch projects");
+        }
+      } else {
+        goRegister();
       }
-    } else {
-      goRegister();
-    }
-  };
+    },
+    [setProjects, isAuthenticated, authHeader, goRegister]
+  );
+
+  const createProject = useCallback(
+    async (title: string, URL: string) => {
+      if (isAuthenticated()) {
+        const data = { title };
+
+        try {
+          await axios
+            .post(URL, data, {
+              headers: { Authorization: authHeader() },
+            })
+            .then(() => getProjects(URL));
+        } catch (error) {
+          alert("Failed to create project");
+        }
+      } else {
+        goRegister();
+      }
+    },
+    [isAuthenticated, authHeader, getProjects, goRegister]
+  );
+
+  const deleteProject = useCallback(
+    async (projectId: string, URL: string) => {
+      if (isAuthenticated()) {
+        try {
+          await axios
+            .delete(`http://localhost:4580/projects/${projectId}`, {
+              headers: { Authorization: authHeader() },
+            })
+            .then(() => getProjects(URL));
+        } catch (error) {
+          alert("Failed to delete project");
+        }
+      } else {
+        goRegister();
+      }
+    },
+    [projects]
+  );
 
   const findProject = useCallback(
     (projectId?: string) => {
@@ -154,12 +184,6 @@ function useTodoFunc() {
   const deleteTask = useCallback((taskId: string) => {
     setTasks((prev) => {
       return prev.filter((task) => task.id !== taskId);
-    });
-  }, []);
-
-  const deleteProject = useCallback((projectId: string) => {
-    setProjects((prev) => {
-      return prev.filter((project) => project.id !== projectId);
     });
   }, []);
 
