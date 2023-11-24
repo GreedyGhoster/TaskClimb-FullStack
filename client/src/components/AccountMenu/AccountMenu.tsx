@@ -1,10 +1,8 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LoginIcon from "@mui/icons-material/Login";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
 import {
   Button,
@@ -69,18 +67,6 @@ const AccountMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <ListItemButton href="auth/signin">
-          <ListItemIcon>
-            <LoginIcon />
-          </ListItemIcon>
-          Sign in
-        </ListItemButton>
-        <ListItemButton href="auth/register">
-          <ListItemIcon>
-            <PersonAddIcon />
-          </ListItemIcon>
-          Register
-        </ListItemButton>
         <ListItemButton>
           <ListItemIcon>
             <AccountCircleIcon />
