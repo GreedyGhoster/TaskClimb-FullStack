@@ -19,7 +19,7 @@ export const AppSidebar = () => {
 
   const URL = "http://localhost:4580/projects";
 
-  useEffect(() => getProjects(URL), []);
+  console.log(projects);
 
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {
@@ -37,6 +37,8 @@ export const AppSidebar = () => {
     },
     [reset, createProject]
   );
+
+  useEffect(() => getProjects(URL), []);
 
   return (
     <UseTodoProvider>
