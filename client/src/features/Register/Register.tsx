@@ -1,59 +1,56 @@
-import {
-  TextField,
-  Button,
-  Link,
-  Typography,
-  Container,
-  Box,
-} from "@mui/material";
+import { TextField, Link, Typography, Container, Box } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useCallback } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 
-export default function Register() {
-  const register = useSignIn();
+export type Data = {
+  nickName: string;
+  password: string;
+};
 
-  const [registerData, setRegisterData] = useState({
-    nickName: "",
-    password: "",
-  });
+export default function Register() {
+  const registration = useSignIn();
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm<Data>({ mode: "onBlur" });
 
   const URL = "http://localhost:4580/auth/register";
-
-  const data = {
-    nickName: registerData.nickName,
-    password: registerData.password,
-  };
-
-  const authStateData = {
-    nickName: registerData.nickName,
-  };
 
   const navigate = useNavigate();
 
   const goNext = () => navigate("/");
 
-  const FetchData = async () => {
-    setRegisterData({ nickName: "", password: "" });
-
-    return axios.post(URL, data).then((res) => {
-      if (res.status === 200) {
-        if (
-          register({
-            token: res.data.token,
-            expiresIn: 1440,
-            tokenType: "Bearer",
-            authState: authStateData,
-          })
-        ) {
-          goNext();
-        } else {
-          alert("The user already exists");
+  const FetchData: SubmitHandler<Data> = useCallback(
+    async (registerData: Data) => {
+      try {
+        const res = await axios.post(URL, {
+          nickName: registerData.nickName,
+          password: registerData.password,
+        });
+        if (res.status === 200) {
+          if (
+            registration({
+              token: res.data.token,
+              expiresIn: 1440,
+              tokenType: "Bearer",
+              authState: { nickName: registerData.nickName },
+            })
+          ) {
+            goNext();
+            reset();
+          }
         }
+      } catch (error) {
+        alert("The user already exists");
       }
-    });
-  };
+    },
+    [reset, registration, goNext]
+  );
 
   return (
     <Container maxWidth="tablet">
@@ -72,41 +69,55 @@ export default function Register() {
           Register
         </Typography>
 
-        <TextField
-          label="Nickname"
-          value={registerData.nickName}
-          onChange={(e) =>
-            setRegisterData({ ...registerData, nickName: e.target.value })
-          }
-          fullWidth
-          variant="outlined"
-          placeholder="Nickname"
-          sx={{ marginBottom: "20px" }}
-        />
+        <Box component={"form"} onSubmit={handleSubmit(FetchData)}>
+          <TextField
+            label="Nickname"
+            {...register("nickName", {
+              required: "The field must be filled in",
+              minLength: {
+                value: 5,
+                message: "Minimum of 5 characters",
+              },
+            })}
+            fullWidth
+            variant="outlined"
+            placeholder="Nickname"
+            type="text"
+            error={!!errors.nickName}
+          />
+          <div style={{ color: "#f44336", height: "32px" }}>
+            {errors.nickName && <span>{errors.nickName.message}</span>}
+          </div>
 
-        <TextField
-          label="Password"
-          value={registerData.password}
-          onChange={(e) =>
-            setRegisterData({ ...registerData, password: e.target.value })
-          }
-          fullWidth
-          variant="outlined"
-          type="password"
-          placeholder="Enter password"
-          sx={{ marginBottom: "20px" }}
-        />
+          <TextField
+            label="Password"
+            {...register("password", {
+              required: "The field must be filled in",
+              minLength: {
+                value: 8,
+                message: "Minimum of 8 characters",
+              },
+            })}
+            fullWidth
+            variant="outlined"
+            type="password"
+            placeholder="Enter password"
+            error={!!errors.password}
+          />
+          <div style={{ color: "#f44336", height: "20px" }}>
+            {errors.password && <span>{errors.password.message}</span>}
+          </div>
 
-        <Button
-          variant="contained"
-          type="submit"
-          size="large"
-          fullWidth
-          sx={{ marginBottom: "20px" }}
-          onClick={() => FetchData()}
-        >
-          Register
-        </Button>
+          <TextField
+            variant="outlined"
+            disabled={!isValid}
+            type="submit"
+            fullWidth
+            sx={{ marginBottom: "20px", marginTop: "15px" }}
+          >
+            Register
+          </TextField>
+        </Box>
 
         <Typography
           variant="body2"
