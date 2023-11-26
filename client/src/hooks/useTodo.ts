@@ -21,6 +21,7 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
+  console.log(projects);
 
   if (!isAuthenticated()) {
     navigate("/auth/register");
@@ -32,29 +33,31 @@ function useTodoFunc() {
   });
 
   const getProjects = useCallback((URL: string) => {
-    try {
-      fetcher.get(URL).then((res) => setProjects(res.data));
-    } catch (error) {
-      alert("Failed to fetch projects");
-    }
+    fetcher.get(URL).then((res) => setProjects(res.data));
   }, []);
 
   const createProject = useCallback(async (title: string, URL: string) => {
     const data = { title: title };
 
-    try {
-      await fetcher.post(URL, data).then(() => getProjects(URL));
-    } catch (error) {
-      alert("Failed to create project");
-    }
+    await fetcher.post(URL, data).then(() => getProjects(URL));
   }, []);
 
   const deleteProject = useCallback(async (projectId: string, URL: string) => {
-    try {
-      await fetcher.delete(`${URL}/${projectId}`).then(() => getProjects(URL));
-    } catch (error) {
-      alert("Failed to delete project");
-    }
+    await fetcher.delete(`${URL}/${projectId}`).then(() => getProjects(URL));
+  }, []);
+
+  const editProject = useCallback((projectId: string, newTitle: string) => {
+    setProjects((prev) => {
+      const next = [...prev];
+      const project = next.find((val) => val.id === projectId);
+      if (!project) {
+        console.log(`Проект ${projectId} не найден`);
+        return prev;
+      } else {
+        project.title = newTitle;
+        return next;
+      }
+    });
   }, []);
 
   const findProject = useCallback(
@@ -134,20 +137,6 @@ function useTodoFunc() {
     },
     []
   );
-
-  const editProject = useCallback((projectId: string, newTitle: string) => {
-    setProjects((prev) => {
-      const next = [...prev];
-      const project = next.find((val) => val.id === projectId);
-      if (!project) {
-        console.log(`Проект ${projectId} не найден`);
-        return prev;
-      } else {
-        project.title = newTitle;
-        return next;
-      }
-    });
-  }, []);
 
   const deleteTask = useCallback((taskId: string) => {
     setTasks((prev) => {

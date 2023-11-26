@@ -19,8 +19,6 @@ export const AppSidebar = () => {
 
   const URL = "http://localhost:4580/projects";
 
-  console.log(projects);
-
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {
       title: "",
