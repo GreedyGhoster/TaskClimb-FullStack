@@ -17,26 +17,13 @@ export class ProjectService {
     });
   }
 
-  async getProjectAndTasksById(userId: string, projectId: string) {
+  async getTasksById(projectId: string) {
     try {
-      const tasks = await this.prisma.task.findMany({
+      return this.prisma.task.findMany({
         where: {
           projectId: projectId,
         },
       });
-
-      const project = await this.prisma.project.findUnique({
-        where: {
-          id: projectId,
-          userId: userId,
-        },
-      });
-      delete project.id;
-      delete project.userId;
-      delete project.createdAt;
-      delete project.updatedAt;
-
-      return { project: project, tasks: tasks };
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         throw err;

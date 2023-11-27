@@ -21,7 +21,7 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
-  console.log(projects);
+  console.log(tasks);
 
   if (!isAuthenticated()) {
     navigate("/auth/register");
@@ -30,6 +30,7 @@ function useTodoFunc() {
   const fetcher = axios.create({
     headers: { Authorization: authHeader() },
     timeout: 1440,
+    baseURL: "http://localhost:4580",
   });
 
   const getProjects = useCallback((URL: string) => {
@@ -69,6 +70,29 @@ function useTodoFunc() {
     [projects]
   );
 
+  const getTasks = useCallback(
+    (URL: string) => {
+      fetcher.get(URL).then((res) => setTasks(res.data));
+    },
+    [tasks]
+  );
+
+  const addTask = useCallback(
+    (projectId: string, newTask: AddToDoTaskFormValues) => {
+      setTasks((prev) => {
+        return [
+          {
+            id: uuidv4(),
+            projectId: projectId,
+            ...newTask,
+          },
+          ...prev,
+        ];
+      });
+    },
+    []
+  );
+
   const getTasksByProject = useCallback(
     (projectId?: string, searchTerm?: string) => {
       let filteredTasks = tasks;
@@ -97,27 +121,6 @@ function useTodoFunc() {
       );
     },
     [tasks]
-  );
-
-  const addTask = useCallback(
-    (projectId: string, newTask: AddToDoTaskFormValues) => {
-      setTasks((prev) => {
-        const date: Date = new Date();
-        const fullDate: string = `${date.getDate()}.${
-          date.getMonth() + 1
-        }.${date.getFullYear()}/${date.getHours()}:${date.getMinutes()}`;
-        return [
-          {
-            id: uuidv4(),
-            projectId: projectId,
-            createdAt: fullDate,
-            ...newTask,
-          },
-          ...prev,
-        ];
-      });
-    },
-    []
   );
 
   const editTask = useCallback(
@@ -173,8 +176,10 @@ function useTodoFunc() {
   return useMemo(
     () => ({
       projects,
+      tasks,
       createProject,
       getProjects,
+      getTasks,
       findProject,
       addTask,
       deleteTask,
@@ -187,8 +192,10 @@ function useTodoFunc() {
     }),
     [
       projects,
+      tasks,
       createProject,
       getProjects,
+      getTasks,
       findProject,
       addTask,
       deleteTask,

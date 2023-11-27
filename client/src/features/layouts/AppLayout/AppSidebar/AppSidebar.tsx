@@ -17,7 +17,7 @@ export const AppSidebar = () => {
   const { projects, createProject, getProjects } = useTodo();
   const theme = useTheme();
 
-  const URL = "http://localhost:4580/projects";
+  const URL = "/projects";
 
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {

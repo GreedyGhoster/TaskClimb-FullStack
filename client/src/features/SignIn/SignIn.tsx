@@ -43,8 +43,14 @@ export default function SignUp() {
             reset();
           }
         }
-      } catch (error) {
-        alert("The user already exists");
+      } catch (error: any) {
+        if (error.response.status === 403) {
+          alert(
+            "Conflict: The user doesn't exist or incorrect login or password"
+          );
+        } else {
+          alert("Forbidden: Access to the resource is denied");
+        }
       }
     },
     [reset, signin, goNext]

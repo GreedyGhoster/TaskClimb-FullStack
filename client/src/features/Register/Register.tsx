@@ -45,8 +45,12 @@ export default function Register() {
             reset();
           }
         }
-      } catch (error) {
-        alert("The user already exists");
+      } catch (error: any) {
+        if (error.response.status === 403) {
+          alert("Conflict: The user already exists");
+        } else {
+          alert("Forbidden: Access to the resource is denied");
+        }
       }
     },
     [reset, registration, goNext]
