@@ -6,10 +6,6 @@ export class TaskDto {
   @IsString()
   title: string;
 
-  @IsNotEmpty()
-  @IsString()
-  status: Status;
-
   @IsOptional()
   @IsString()
   description?: string;

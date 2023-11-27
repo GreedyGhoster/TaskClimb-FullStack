@@ -1,10 +1,8 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LoginIcon from "@mui/icons-material/Login";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
 import {
   Button,
@@ -15,13 +13,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuth, useUser } from "../../hooks";
+import { useAuthUser } from "react-auth-kit";
+import { useSignOut } from "react-auth-kit";
 
 const AccountMenu = () => {
-  const { removeTokenFromLocalStorage } = useAuth();
-  const { getUser } = useUser();
-
-  const user = getUser();
+  const signOut = useSignOut();
+  const authUser = useAuthUser();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
@@ -51,13 +48,13 @@ const AccountMenu = () => {
 
   const handleAgree = () => {
     goRegister();
-    removeTokenFromLocalStorage();
+    signOut();
     setOpen(false);
   };
 
   return (
     <>
-      <Typography component={"h4"}>{user}</Typography>
+      <Typography component={"h4"}>{authUser()!.nickName}</Typography>
       <IconButton onClick={handleClick}>
         <AccountCircleIcon />
       </IconButton>
@@ -70,18 +67,6 @@ const AccountMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <ListItemButton href="auth/signin">
-          <ListItemIcon>
-            <LoginIcon />
-          </ListItemIcon>
-          Sign in
-        </ListItemButton>
-        <ListItemButton href="auth/register">
-          <ListItemIcon>
-            <PersonAddIcon />
-          </ListItemIcon>
-          Register
-        </ListItemButton>
         <ListItemButton>
           <ListItemIcon>
             <AccountCircleIcon />

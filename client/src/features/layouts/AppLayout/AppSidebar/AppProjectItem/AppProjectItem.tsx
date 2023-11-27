@@ -18,8 +18,11 @@ interface Props {
 }
 
 const AppProjectItem: FC<Props> = ({ project }) => {
-  const { deleteProject } = useTodo();
+  const { deleteProject, getTasks } = useTodo();
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
+
+  const Projects_URL = "/projects";
+  const Tasks_URL = `${Projects_URL}/${project.id}`;
 
   return (
     <ListItem
@@ -62,7 +65,9 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                           color="secondary"
                         />
                       </Button>
-                      <Button onClick={() => deleteProject(project.id)}>
+                      <Button
+                        onClick={() => deleteProject(project.id, Projects_URL)}
+                      >
                         <DeleteForeverIcon color="error" />
                       </Button>
                     </Box>
@@ -73,6 +78,7 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                 <ListItemButton
                   selected={project.id === currentProjectId}
                   href={`/projects/${project.id}`}
+                  onClick={() => getTasks(Tasks_URL)}
                 >
                   <ListItemText
                     sx={{

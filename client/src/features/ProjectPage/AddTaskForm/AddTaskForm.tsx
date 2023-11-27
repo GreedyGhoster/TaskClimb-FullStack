@@ -29,7 +29,6 @@ const AddTaskForm: FC<Props> = ({ projectId }) => {
           ...values,
           title: "",
         });
-        // fetchData(values.title);
       }
     },
     [addTask, reset, projectId]

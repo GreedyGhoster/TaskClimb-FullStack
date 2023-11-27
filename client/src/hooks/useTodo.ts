@@ -7,18 +7,58 @@ import {
   IToDoTask,
   ToDoTaskStatus,
 } from "../types";
+import { useIsAuthenticated, useAuthHeader } from "react-auth-kit";
+
 import { v4 as uuidv4 } from "uuid";
 import _orderBy from "lodash/orderBy";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function useTodoFunc() {
-  const [projects, setProjects] = useState<IToDoProject[]>([
-    { id: "home", title: "Home" },
-  ]);
+  const isAuthenticated = useIsAuthenticated();
+  const authHeader = useAuthHeader();
+  const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
+  const [projects, setProjects] = useState<IToDoProject[]>([]);
+  console.log(tasks);
 
-  const addProject = useCallback((projectName: string) => {
-    setProjects((prev) => [{ id: uuidv4(), title: projectName }, ...prev]);
+  if (!isAuthenticated()) {
+    navigate("/auth/register");
+  }
+
+  const fetcher = axios.create({
+    headers: { Authorization: authHeader() },
+    timeout: 1440,
+    baseURL: "http://localhost:4580",
+  });
+
+  const getProjects = useCallback((URL: string) => {
+    fetcher.get(URL).then((res) => setProjects(res.data));
+  }, []);
+
+  const createProject = useCallback(async (title: string, URL: string) => {
+    const data = { title: title };
+
+    await fetcher.post(URL, data).then(() => getProjects(URL));
+  }, []);
+
+  const deleteProject = useCallback(async (projectId: string, URL: string) => {
+    await fetcher.delete(`${URL}/${projectId}`).then(() => getProjects(URL));
+  }, []);
+
+  const editProject = useCallback((projectId: string, newTitle: string) => {
+    setProjects((prev) => {
+      const next = [...prev];
+      const project = next.find((val) => val.id === projectId);
+      if (!project) {
+        console.log(`Проект ${projectId} не найден`);
+        return prev;
+      } else {
+        project.title = newTitle;
+        return next;
+      }
+    });
   }, []);
 
   const findProject = useCallback(
@@ -28,6 +68,29 @@ function useTodoFunc() {
         : undefined;
     },
     [projects]
+  );
+
+  const getTasks = useCallback(
+    (URL: string) => {
+      fetcher.get(URL).then((res) => setTasks(res.data));
+    },
+    [tasks]
+  );
+
+  const addTask = useCallback(
+    (projectId: string, newTask: AddToDoTaskFormValues) => {
+      setTasks((prev) => {
+        return [
+          {
+            id: uuidv4(),
+            projectId: projectId,
+            ...newTask,
+          },
+          ...prev,
+        ];
+      });
+    },
+    []
   );
 
   const getTasksByProject = useCallback(
@@ -60,27 +123,6 @@ function useTodoFunc() {
     [tasks]
   );
 
-  const addTask = useCallback(
-    (projectId: string, newTask: AddToDoTaskFormValues) => {
-      setTasks((prev) => {
-        const date: Date = new Date();
-        const fullDate: string = `${date.getDate()}.${
-          date.getMonth() + 1
-        }.${date.getFullYear()}/${date.getHours()}:${date.getMinutes()}`;
-        return [
-          {
-            id: uuidv4(),
-            projectId: projectId,
-            createdAt: fullDate,
-            ...newTask,
-          },
-          ...prev,
-        ];
-      });
-    },
-    []
-  );
-
   const editTask = useCallback(
     (taskId: string, editingTask: EditToDoTaskFormValues) => {
       setTasks((prev) => {
@@ -99,29 +141,9 @@ function useTodoFunc() {
     []
   );
 
-  const editProject = useCallback((projectId: string, newTitle: string) => {
-    setProjects((prev) => {
-      const next = [...prev];
-      const project = next.find((val) => val.id === projectId);
-      if (!project) {
-        console.log(`Проект ${projectId} не найден`);
-        return prev;
-      } else {
-        project.title = newTitle;
-        return next;
-      }
-    });
-  }, []);
-
   const deleteTask = useCallback((taskId: string) => {
     setTasks((prev) => {
       return prev.filter((task) => task.id !== taskId);
-    });
-  }, []);
-
-  const deleteProject = useCallback((projectId: string) => {
-    setProjects((prev) => {
-      return prev.filter((project) => project.id !== projectId);
     });
   }, []);
 
@@ -154,7 +176,10 @@ function useTodoFunc() {
   return useMemo(
     () => ({
       projects,
-      addProject,
+      tasks,
+      createProject,
+      getProjects,
+      getTasks,
       findProject,
       addTask,
       deleteTask,
@@ -167,7 +192,10 @@ function useTodoFunc() {
     }),
     [
       projects,
-      addProject,
+      tasks,
+      createProject,
+      getProjects,
+      getTasks,
       findProject,
       addTask,
       deleteTask,
