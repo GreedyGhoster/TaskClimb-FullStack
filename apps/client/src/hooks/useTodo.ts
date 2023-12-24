@@ -33,33 +33,18 @@ function useTodoFunc() {
     baseURL: "http://localhost:4580",
   });
 
-  const getProjects = useCallback(async (URL: string) => {
-    try {
-      const res = await fetcher.get(URL);
-      return setProjects((prev) => (prev = res.data));
-    } catch (error) {
-      console.error("Failed to fetch projects:", error);
-    }
+  const getProjects = useCallback((URL: string) => {
+    fetcher.get(URL).then((res) => setProjects(res.data));
   }, []);
 
   const createProject = useCallback(async (title: string, URL: string) => {
     const data = { title: title };
 
-    try {
-      await fetcher.post(URL, data).finally(() => getProjects(URL));
-    } catch (error) {
-      console.error("Failed to create project:", error);
-    }
+    await fetcher.post(URL, data).then(() => getProjects(URL));
   }, []);
 
   const deleteProject = useCallback(async (projectId: string, URL: string) => {
-    try {
-      await fetcher
-        .delete(`${URL}/${projectId}`)
-        .finally(() => getProjects(URL));
-    } catch (error) {
-      console.error("Failed to delete project:", error);
-    }
+    await fetcher.delete(`${URL}/${projectId}`).then(() => getProjects(URL));
   }, []);
 
   const editProject = useCallback((projectId: string, newTitle: string) => {
