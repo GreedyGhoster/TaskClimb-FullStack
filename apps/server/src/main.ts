@@ -13,6 +13,7 @@ async function bootstrap() {
     origin: 'http://localhost:5173',
     allowedHeaders: 'Content-Type, Authorization',
   });
+  app.setGlobalPrefix('/api');
   await app.listen(4580);
 }
 bootstrap();

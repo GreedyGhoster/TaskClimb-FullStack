@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "turbo": "^1.11.2"
+  },
+  "scripts": {
+    "dev": "turbo dev"
+  },
+  "workspaces": [
+    "apps/*"
+  ]
+}

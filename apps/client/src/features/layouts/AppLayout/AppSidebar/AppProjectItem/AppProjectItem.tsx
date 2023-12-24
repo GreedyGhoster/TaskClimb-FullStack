@@ -21,7 +21,7 @@ const AppProjectItem: FC<Props> = ({ project }) => {
   const { deleteProject, getTasks } = useTodo();
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
-  const Projects_URL = "/projects";
+  const Projects_URL = "/api/projects";
   const Tasks_URL = `${Projects_URL}/${project.id}`;
 
   return (

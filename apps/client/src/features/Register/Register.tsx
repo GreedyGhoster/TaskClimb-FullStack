@@ -1,13 +1,17 @@
 import { TextField, Link, Typography, Container, Box } from "@mui/material";
 import axios from "axios";
 import { useCallback } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Data } from "../Register/Register";
 
-export default function SignUp() {
-  const signin = useSignIn();
+export type Data = {
+  nickName: string;
+  password: string;
+};
+
+export default function Register() {
+  const registration = useSignIn();
   const {
     register,
     formState: { errors, isValid },
@@ -15,28 +19,26 @@ export default function SignUp() {
     reset,
   } = useForm<Data>({ mode: "onBlur" });
 
-  const URL = "http://localhost:4580/auth/signin";
+  const URL = "/api/auth/register";
 
   const navigate = useNavigate();
 
-  const goNext = () => {
-    navigate("/");
-  };
+  const goNext = () => navigate("/");
 
   const FetchData: SubmitHandler<Data> = useCallback(
-    async (signinData: Data) => {
+    async (registerData: Data) => {
       try {
         const res = await axios.post(URL, {
-          nickName: signinData.nickName,
-          password: signinData.password,
+          nickName: registerData.nickName,
+          password: registerData.password,
         });
         if (res.status === 200) {
           if (
-            signin({
+            registration({
               token: res.data.token,
               expiresIn: 1440,
               tokenType: "Bearer",
-              authState: { nickName: signinData.nickName },
+              authState: { nickName: registerData.nickName },
             })
           ) {
             goNext();
@@ -45,15 +47,13 @@ export default function SignUp() {
         }
       } catch (error: any) {
         if (error.response.status === 403) {
-          alert(
-            "Conflict: The user doesn't exist or incorrect login or password"
-          );
+          alert("Conflict: The user already exists");
         } else {
           alert("Forbidden: Access to the resource is denied");
         }
       }
     },
-    [reset, signin, goNext]
+    [reset, registration, goNext]
   );
 
   return (
@@ -70,7 +70,7 @@ export default function SignUp() {
         }}
       >
         <Typography variant="h3" align="center" sx={{ paddingBottom: "20px" }}>
-          Sign In
+          Register
         </Typography>
 
         <Box component={"form"} onSubmit={handleSubmit(FetchData)}>
@@ -119,7 +119,7 @@ export default function SignUp() {
             fullWidth
             sx={{ marginBottom: "20px", marginTop: "15px" }}
           >
-            Sign In
+            Register
           </TextField>
         </Box>
 
@@ -133,7 +133,7 @@ export default function SignUp() {
             margin: "0",
           }}
         >
-          Have not registered yet <Link href="/auth/register">register?</Link>
+          Already registered <Link href="/auth/signin">sign in?</Link>
         </Typography>
       </Box>
     </Container>
