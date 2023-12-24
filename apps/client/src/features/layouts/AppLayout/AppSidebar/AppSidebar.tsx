@@ -16,8 +16,9 @@ export const AppSidebar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const { projects, createProject, getProjects } = useTodo();
   const theme = useTheme();
+  console.log(projects);
 
-  const URL = "/projects";
+  const URL = "/api/projects";
 
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {
@@ -31,12 +32,15 @@ export const AppSidebar = () => {
       if (values.title.trim() !== "") {
         createProject(values.title, URL);
         reset({ title: "" });
+        await getProjects(URL);
       }
     },
-    [reset, createProject]
+    [reset, createProject, getProjects]
   );
 
-  useEffect(() => getProjects(URL), []);
+  useEffect(() => {
+    getProjects(URL);
+  }, []);
 
   return (
     <UseTodoProvider>

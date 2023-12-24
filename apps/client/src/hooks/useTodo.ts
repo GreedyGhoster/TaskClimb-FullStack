@@ -21,7 +21,7 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
-  console.log(tasks);
+  console.log(projects);
 
   if (!isAuthenticated()) {
     navigate("/auth/register");
@@ -33,18 +33,33 @@ function useTodoFunc() {
     baseURL: "http://localhost:4580",
   });
 
-  const getProjects = useCallback((URL: string) => {
-    fetcher.get(URL).then((res) => setProjects(res.data));
+  const getProjects = useCallback(async (URL: string) => {
+    try {
+      const res = await fetcher.get(URL);
+      return setProjects((prev) => (prev = res.data));
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+    }
   }, []);
 
   const createProject = useCallback(async (title: string, URL: string) => {
     const data = { title: title };
 
-    await fetcher.post(URL, data).then(() => getProjects(URL));
+    try {
+      await fetcher.post(URL, data).finally(() => getProjects(URL));
+    } catch (error) {
+      console.error("Failed to create project:", error);
+    }
   }, []);
 
   const deleteProject = useCallback(async (projectId: string, URL: string) => {
-    await fetcher.delete(`${URL}/${projectId}`).then(() => getProjects(URL));
+    try {
+      await fetcher
+        .delete(`${URL}/${projectId}`)
+        .finally(() => getProjects(URL));
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
   }, []);
 
   const editProject = useCallback((projectId: string, newTitle: string) => {
