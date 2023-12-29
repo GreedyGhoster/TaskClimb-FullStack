@@ -5,7 +5,8 @@
 git clone https://github.com/IuanPR/TaskClimb-FullStack.git
 ```
 
-### *Open each folder in apps/ and install dependencies*
+### *Open each folder in apps/ and install dependencies as well for the root folder*
+
 Then in the root folder enter
 ```shell
 yarn dev
