@@ -5,6 +5,12 @@
 git clone https://github.com/IuanPR/TaskClimb-FullStack.git
 ```
 
+### *Open each folder in apps/ and install dependencies*
+Then in the root folder enter
+```shell
+yarn dev
+```
+
 ### Server
 Server side was built using Nest and "yarn" package manager
 
@@ -15,24 +21,9 @@ Server side was built using Nest and "yarn" package manager
 * DataBase: [PostgreSQL](https://www.postgresql.org/)
 * [Docker](https://www.docker.com/)
 
-```shell
-cd server
-yarn
-yarn db:dev:restart
-yarn start:dev
-```
-> To see all commands in /server need to go to server/packege.json
-
 ### Client
 Client side was built using React(Vite) and "yarn" package manager
 * Client: [React](https://ru.legacy.reactjs.org/)
-
-```shell
-cd client
-yarn
-yarn dev
-```
-> Or refer to the [Vite](https://vitejs.dev/guide/) website
 
 ### For errors
 Uncaught Error: Cannot find module 'react'
