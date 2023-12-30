@@ -8,21 +8,25 @@ export class ProjectService {
   constructor(private prisma: PrismaService) {}
 
   async createProject(userId: string, dto: ProjectDto) {
-    return this.prisma.project.create({
+    const project = await this.prisma.project.create({
       data: {
         userId: userId,
         title: dto.title,
       },
     });
+
+    return project;
   }
 
   async getTasksById(projectId: string) {
     try {
-      return this.prisma.task.findMany({
+      const tasks = await this.prisma.task.findMany({
         where: {
           projectId: projectId,
         },
       });
+
+      return tasks;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         throw err;
@@ -31,11 +35,13 @@ export class ProjectService {
   }
 
   async getProjects(userId: string) {
-    return this.prisma.project.findMany({
+    const projects = await this.prisma.project.findMany({
       where: {
         userId: userId,
       },
     });
+
+    return projects;
   }
 
   async updateProjectById(
@@ -55,7 +61,7 @@ export class ProjectService {
   }
 
   async deleteProjectById(userId: string, projectId: string) {
-    return this.prisma.project.delete({
+    await this.prisma.project.delete({
       where: {
         id: projectId,
         userId: userId,

@@ -32,7 +32,7 @@ export const AppSidebar = () => {
       if (values.title.trim() !== "") {
         createProject(values.title, URL);
         reset({ title: "" });
-        await getProjects(URL);
+        getProjects(URL);
       }
     },
     [reset, createProject, getProjects]

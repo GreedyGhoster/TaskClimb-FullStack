@@ -33,18 +33,20 @@ function useTodoFunc() {
     baseURL: "http://localhost:4580",
   });
 
-  const getProjects = useCallback((URL: string) => {
-    fetcher.get(URL).then((res) => setProjects(res.data));
+  const getProjects = useCallback(async (URL: string) => {
+    const res = await fetcher.get(URL);
+    return setProjects(res.data);
   }, []);
 
   const createProject = useCallback(async (title: string, URL: string) => {
     const data = { title: title };
-
-    await fetcher.post(URL, data).then(() => getProjects(URL));
+    await fetcher.post(URL, data);
+    return getProjects(URL);
   }, []);
 
   const deleteProject = useCallback(async (projectId: string, URL: string) => {
-    await fetcher.delete(`${URL}/${projectId}`).then(() => getProjects(URL));
+    await fetcher.delete(`${URL}/${projectId}`);
+    return getProjects(URL);
   }, []);
 
   const editProject = useCallback((projectId: string, newTitle: string) => {

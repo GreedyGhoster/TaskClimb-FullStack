@@ -18,11 +18,10 @@ interface Props {
 }
 
 const AppProjectItem: FC<Props> = ({ project }) => {
-  const { deleteProject, getTasks } = useTodo();
+  const { deleteProject } = useTodo();
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
   const Projects_URL = "/api/projects";
-  const Tasks_URL = `${Projects_URL}/${project.id}`;
 
   return (
     <ListItem
@@ -78,7 +77,6 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                 <ListItemButton
                   selected={project.id === currentProjectId}
                   href={`/projects/${project.id}`}
-                  onClick={() => getTasks(Tasks_URL)}
                 >
                   <ListItemText
                     sx={{
