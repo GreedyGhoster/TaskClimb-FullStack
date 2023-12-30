@@ -9,11 +9,11 @@ git clone https://github.com/IuanPR/TaskClimb-FullStack.git
 
 Then in the root folder enter
 ```shell
-yarn dev
+npm run dev
 ```
 
 ### Server
-Server side was built using Nest and "yarn" package manager
+Server side was built using Nest and "npm" package manager
 
 > For using TaskClimb-FullStack must to install ***Docker*** 
 
@@ -30,6 +30,11 @@ Client side was built using React(Vite) and "yarn" package manager
 Uncaught Error: Cannot find module 'react'
 ```shell
 $ npm install --save react react-dom @types/react @types/react-dom
+```
+
+If he writes that he doesn’t know “turbo”, then write this
+```shell
+$ npm i turbo
 ```
 
 ## License
