@@ -49,7 +49,6 @@ export function ProjectPage() {
   const { projectId } = useParams<{ projectId: string }>();
   const project = findProject(projectId);
   const tasks = getTasksByProject(projectId, searchTerm);
-  console.log(tasks);
 
   const handleSearch = useCallback((newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);

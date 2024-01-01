@@ -5,9 +5,6 @@ export interface AddToDoProjectFormValues {
 export type EditToDoProjectFormValues = AddToDoProjectFormValues;
 
 export interface IToDoProject {
-  createdAt: Date;
   id: string;
   title: string;
-  updatedAt: Date;
-  userId: string;
 }

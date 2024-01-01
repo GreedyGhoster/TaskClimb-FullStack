@@ -21,7 +21,6 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
-  console.log(projects);
 
   if (!isAuthenticated()) {
     navigate("/auth/register");
@@ -34,19 +33,24 @@ function useTodoFunc() {
   });
 
   const getProjects = useCallback(async (URL: string) => {
-    const res = await fetcher.get(URL);
-    return setProjects(res.data);
+    const res = await fetcher.get<IToDoProject[]>(URL);
+    setProjects(res.data);
   }, []);
 
   const createProject = useCallback(async (title: string, URL: string) => {
     const data = { title: title };
-    await fetcher.post(URL, data);
-    return getProjects(URL);
+    const res = await fetcher.post(URL, data);
+    const projectId = res.data.id;
+    const projectTitle = res.data.title;
+
+    setProjects((prev) => [{ id: projectId, title: projectTitle }, ...prev]);
   }, []);
 
   const deleteProject = useCallback(async (projectId: string, URL: string) => {
     await fetcher.delete(`${URL}/${projectId}`);
-    return getProjects(URL);
+    setProjects((prev) => {
+      return prev.filter((project) => project.id !== projectId);
+    });
   }, []);
 
   const editProject = useCallback((projectId: string, newTitle: string) => {
@@ -79,22 +83,6 @@ function useTodoFunc() {
     [tasks]
   );
 
-  const addTask = useCallback(
-    (projectId: string, newTask: AddToDoTaskFormValues) => {
-      setTasks((prev) => {
-        return [
-          {
-            id: uuidv4(),
-            projectId: projectId,
-            ...newTask,
-          },
-          ...prev,
-        ];
-      });
-    },
-    []
-  );
-
   const getTasksByProject = useCallback(
     (projectId?: string, searchTerm?: string) => {
       let filteredTasks = tasks;
@@ -114,6 +102,22 @@ function useTodoFunc() {
       );
     },
     [tasks]
+  );
+
+  const addTask = useCallback(
+    (projectId: string, newTask: AddToDoTaskFormValues) => {
+      setTasks((prev) => {
+        return [
+          {
+            id: uuidv4(),
+            projectId: projectId,
+            ...newTask,
+          },
+          ...prev,
+        ];
+      });
+    },
+    []
   );
 
   const findTask = useCallback(
