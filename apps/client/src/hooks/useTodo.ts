@@ -8,8 +8,6 @@ import {
   ToDoTaskStatus,
 } from "../types";
 import { useIsAuthenticated, useAuthHeader } from "react-auth-kit";
-
-import { v4 as uuidv4 } from "uuid";
 import _orderBy from "lodash/orderBy";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -81,12 +79,10 @@ function useTodoFunc() {
     [projects]
   );
 
-  const getTasks = useCallback(
-    (URL: string) => {
-      fetcher.get(URL).then((res) => setTasks(res.data));
-    },
-    [tasks]
-  );
+  const getTasks = useCallback(async (URL: string) => {
+    const res = await fetcher.get<IToDoTask[]>(URL);
+    setTasks(res.data);
+  }, []);
 
   const getTasksByProject = useCallback(
     (projectId?: string, searchTerm?: string) => {
@@ -110,11 +106,18 @@ function useTodoFunc() {
   );
 
   const addTask = useCallback(
-    (projectId: string, newTask: AddToDoTaskFormValues) => {
+    async (projectId: string, newTask: AddToDoTaskFormValues, URL: string) => {
+      const data = {
+        title: newTask.title,
+        status: newTask.status,
+        description: newTask.description,
+      };
+      const res = await fetcher.post(`${URL}/${projectId}`, data);
+      const taskId = await res.data.id;
       setTasks((prev) => {
         return [
           {
-            id: uuidv4(),
+            id: taskId,
             projectId: projectId,
             ...newTask,
           },
@@ -135,54 +138,78 @@ function useTodoFunc() {
   );
 
   const editTask = useCallback(
-    (taskId: string, editingTask: EditToDoTaskFormValues) => {
+    async (
+      taskId: string,
+      projectId: string,
+      editingTask: EditToDoTaskFormValues,
+      URL: string
+    ) => {
+      const data = {
+        title: editingTask.title,
+        description: editingTask.description,
+      };
       setTasks((prev) => {
         const next = [...prev];
         const task = next.find((val) => val.id === taskId);
-        if (!task) {
-          console.log(`Задача ${taskId} не найдена`);
-          return prev;
-        } else {
+        if (task) {
+          fetcher.patch(`${URL}/${projectId}/${taskId}`, data);
           task.title = editingTask.title;
           task.description = editingTask.description;
           return next;
+        } else {
+          console.log(`Задача ${taskId} не найдена`);
+          return prev;
         }
       });
     },
     []
   );
 
-  const deleteTask = useCallback((taskId: string) => {
-    setTasks((prev) => {
-      return prev.filter((task) => task.id !== taskId);
-    });
-  }, []);
+  const deleteTask = useCallback(
+    async (taskId: string, projectId: string, URL: string) => {
+      await fetcher.delete(`${URL}/${projectId}/${taskId}`);
+      setTasks((prev) => {
+        return prev.filter((task) => task.id !== taskId);
+      });
+    },
+    []
+  );
 
-  const statusSwitcher = useCallback((taskId: string, statusName: string) => {
-    setTasks((prev) => {
-      const next = [...prev];
-      const task = next.find((val) => val.id === taskId);
-      if (!task) {
-        console.log(`Задача ${taskId} не найдена`);
-        return prev;
-      } else {
-        switch (statusName) {
-          case "New":
-            task.status = ToDoTaskStatus.new;
-            return next;
-          case "Doing":
-            task.status = ToDoTaskStatus.doing;
-            return next;
-          case "Done":
-            task.status = ToDoTaskStatus.done;
-            return next;
-          default:
-            task.status = ToDoTaskStatus.new;
-            return next;
+  const statusSwitcher = useCallback(
+    async (
+      taskId: string,
+      projectId: string,
+      statusName: string,
+      URL: string
+    ) => {
+      setTasks((prev) => {
+        const next = [...prev];
+        const task = next.find((val) => val.id === taskId);
+        const data = { status: statusName };
+        if (task) {
+          fetcher.patch(`${URL}/${projectId}/${taskId}`, data);
+          switch (statusName) {
+            case "New":
+              task.status = ToDoTaskStatus.new;
+              return next;
+            case "Doing":
+              task.status = ToDoTaskStatus.doing;
+              return next;
+            case "Done":
+              task.status = ToDoTaskStatus.done;
+              return next;
+            default:
+              task.status = ToDoTaskStatus.new;
+              return next;
+          }
+        } else {
+          console.log(`Задача ${taskId} не найдена`);
+          return prev;
         }
-      }
-    });
-  }, []);
+      });
+    },
+    []
+  );
 
   return useMemo(
     () => ({

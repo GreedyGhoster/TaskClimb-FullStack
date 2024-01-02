@@ -19,12 +19,14 @@ const AddTaskForm: FC<Props> = ({ projectId }) => {
     },
   });
 
+  const Task_Id = "/api/projects";
+
   const { handleSubmit, reset } = formMethods;
 
   const handleSubmitForm = useCallback(
     async (values: AddToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        addTask(projectId, values);
+        addTask(projectId, values, Task_Id);
         reset({
           ...values,
           title: "",

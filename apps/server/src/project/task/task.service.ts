@@ -15,7 +15,6 @@ export class TaskService {
     });
     delete task.createdAt;
     delete task.updatedAt;
-    delete task.id;
     delete task.projectId;
 
     return task;
@@ -29,7 +28,6 @@ export class TaskService {
           projectId: projectId,
         },
       });
-      delete task.id;
       delete task.projectId;
       delete task.createdAt;
       delete task.updatedAt;
@@ -52,7 +50,6 @@ export class TaskService {
         ...dto,
       },
     });
-    delete task.id;
     delete task.projectId;
     delete task.createdAt;
     delete task.updatedAt;

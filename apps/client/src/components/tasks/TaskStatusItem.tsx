@@ -4,15 +4,16 @@ import MenuItem from "@mui/material/MenuItem";
 import { FC, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { IToDoTask } from "../../types";
+import { IToDoProject, IToDoTask } from "../../types";
 
 interface Props {
   task: IToDoTask;
+  project: IToDoProject;
 }
 
 const options = ["New", "Doing", "Done"];
 
-const TaskStatusItem: FC<Props> = ({ task }) => {
+const TaskStatusItem: FC<Props> = ({ task, project }) => {
   const { statusSwitcher } = useTodo();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -60,8 +61,10 @@ const TaskStatusItem: FC<Props> = ({ task }) => {
     setAnchorEl(null);
   };
 
+  const URL = "/api/projects";
+
   useEffect(() => {
-    statusSwitcher(task.id, options[selectedIndex]);
+    statusSwitcher(task.id, project.id, options[selectedIndex], URL);
   }, [selectedIndex]);
 
   return (

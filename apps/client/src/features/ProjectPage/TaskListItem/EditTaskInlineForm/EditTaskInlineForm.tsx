@@ -1,5 +1,9 @@
 import { FC, useCallback } from "react";
-import { EditToDoTaskFormValues, IToDoTask } from "../../../../types";
+import {
+  EditToDoTaskFormValues,
+  IToDoProject,
+  IToDoTask,
+} from "../../../../types";
 import { useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormTextField } from "../../../../components/form";
@@ -10,10 +14,11 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface Props {
   task: IToDoTask;
+  project: IToDoProject;
   onCancel: () => void;
 }
 
-const EditTaskInlineForm: FC<Props> = ({ task, onCancel }) => {
+const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
   const { editTask } = useTodo();
 
   const formMethods = useForm<EditToDoTaskFormValues>({
@@ -26,10 +31,12 @@ const EditTaskInlineForm: FC<Props> = ({ task, onCancel }) => {
 
   const { handleSubmit } = formMethods;
 
+  const URL = "/api/projects";
+
   const handleSubmitForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        editTask(task.id, values);
+        editTask(task.id, project.id, values, URL);
         onCancel();
       }
     },

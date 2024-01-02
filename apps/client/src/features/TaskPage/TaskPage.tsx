@@ -59,9 +59,11 @@ export function TaskPage() {
 
   const { handleSubmit } = formMethods;
 
+  const URL = "/api/projects";
+
   const handleClickForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
-      editTask(task.id, values);
+      editTask(task.id, project.id, values, URL);
     },
     [editTask, task.id]
   );
@@ -84,12 +86,6 @@ export function TaskPage() {
           component={"div"}
         >
           <Typography variant="h4">{task.title}</Typography>
-          <Box
-            sx={{
-              paddingTop: "5rem",
-            }}
-            component={"span"}
-          >{` Created at: ${task.createdAt}`}</Box>
         </Box>
         <Tooltip title="Go back" placement="bottom">
           <Button
@@ -111,7 +107,7 @@ export function TaskPage() {
           alignSelf: "center",
         }}
       >
-        <TaskStatusItem task={task} />
+        <TaskStatusItem task={task} project={project} />
         <FormProvider {...formMethods}>
           <FormTextField
             sx={{

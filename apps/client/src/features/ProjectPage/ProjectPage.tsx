@@ -106,7 +106,7 @@ export function ProjectPage() {
         {tasks.length > 0 ? (
           <>
             {tasks.map((task) => (
-              <TaskListItem key={task.id} task={task} />
+              <TaskListItem key={task.id} task={task} project={project} />
             ))}
           </>
         ) : (

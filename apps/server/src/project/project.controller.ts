@@ -17,6 +17,7 @@ import { EditProjectDto, ProjectDto } from './dto';
 import { JwtGuard } from '../auth/guard';
 import { TaskService } from './task/task.service';
 import { EditTaskDto, TaskDto } from './task/dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @UseGuards(JwtGuard)
 @Controller('projects')
@@ -32,9 +33,9 @@ export class ProjectController {
     return this.projectService.createProject(userId, dto);
   }
 
-  @Get(':projectId')
-  getTasksById(@Param('projectId') projectId: string) {
-    return this.projectService.getTasksById(projectId);
+  @Get('tasks')
+  getTasks(@Param('projectId') projectId: string) {
+    return this.projectService.getTasks();
   }
 
   @Get()
@@ -61,6 +62,7 @@ export class ProjectController {
   }
 
   // Everything about tasks
+
   @Post(':projectId')
   createTask(@Param('projectId') projectId: string, @Body() dto: TaskDto) {
     return this.taskService.createTask(projectId, dto);

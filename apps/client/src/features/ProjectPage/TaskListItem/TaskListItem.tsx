@@ -3,7 +3,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FC } from "react";
 import { UseRenderModeProvider, useTodo } from "../../../hooks";
-import { IToDoTask, RenderMode } from "../../../types";
+import { IToDoProject, IToDoTask, RenderMode } from "../../../types";
 import { RenderModeController } from "../../../components/ctrl";
 import { EditTaskInlineForm } from "./EditTaskInlineForm";
 import { TaskRoute } from "../../../routes";
@@ -35,10 +35,13 @@ const Root = styled("div")(({ theme }) => ({
 
 interface Props {
   task: IToDoTask;
+  project: IToDoProject;
 }
 
-const TaskListItem: FC<Props> = ({ task }) => {
+const TaskListItem: FC<Props> = ({ task, project }) => {
   const { deleteTask } = useTodo();
+
+  const URL = "/api/projects";
 
   return (
     <UseRenderModeProvider defaultMode={RenderMode.View}>
@@ -100,7 +103,10 @@ const TaskListItem: FC<Props> = ({ task }) => {
                   </IconButton>
                 </Box>
                 <Box>
-                  <IconButton onClick={() => deleteTask(task.id)} color="error">
+                  <IconButton
+                    onClick={() => deleteTask(task.id, project.id, URL)}
+                    color="error"
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Box>
@@ -110,6 +116,7 @@ const TaskListItem: FC<Props> = ({ task }) => {
           renderEdit={(onChangeRenderMode) => (
             <EditTaskInlineForm
               task={task}
+              project={project}
               onCancel={() => onChangeRenderMode(RenderMode.View)}
             />
           )}
