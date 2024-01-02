@@ -25,12 +25,14 @@ const EditProjectForm: FC<Props> = ({ project, onCancel }) => {
     },
   });
 
+  const Projects_URL = "/api/projects";
+
   const { handleSubmit } = formMethods;
 
   const handleSubmitForm = useCallback(
     async (values: EditToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
-        editProject(project.id, values.title);
+        editProject(project.id, values.title, Projects_URL);
         onCancel();
       }
     },

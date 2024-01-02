@@ -53,19 +53,24 @@ function useTodoFunc() {
     });
   }, []);
 
-  const editProject = useCallback((projectId: string, newTitle: string) => {
-    setProjects((prev) => {
-      const next = [...prev];
-      const project = next.find((val) => val.id === projectId);
-      if (!project) {
-        console.log(`Проект ${projectId} не найден`);
-        return prev;
-      } else {
-        project.title = newTitle;
-        return next;
-      }
-    });
-  }, []);
+  const editProject = useCallback(
+    async (projectId: string, newTitle: string, URL: string) => {
+      const data = { title: newTitle };
+      setProjects((prev) => {
+        const next = [...prev];
+        const project = next.find((val) => val.id === projectId);
+        if (project) {
+          fetcher.patch(`${URL}/${projectId}`, data);
+          project.title = newTitle;
+          return next;
+        } else {
+          console.log(`Проект ${projectId} не найден`);
+          return prev;
+        }
+      });
+    },
+    []
+  );
 
   const findProject = useCallback(
     (projectId?: string) => {

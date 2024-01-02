@@ -18,6 +18,4 @@ export interface IToDoTask {
   status: ToDoTaskStatus;
   description: string;
   projectId: string;
-  // createdAt: Date;
-  // updatedAt: Date;
 }
