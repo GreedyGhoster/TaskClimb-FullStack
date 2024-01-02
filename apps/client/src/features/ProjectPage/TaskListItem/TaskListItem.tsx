@@ -41,8 +41,6 @@ interface Props {
 const TaskListItem: FC<Props> = ({ task, project }) => {
   const { deleteTask } = useTodo();
 
-  const URL = "/api/projects";
-
   return (
     <UseRenderModeProvider defaultMode={RenderMode.View}>
       <Root>
@@ -104,7 +102,7 @@ const TaskListItem: FC<Props> = ({ task, project }) => {
                 </Box>
                 <Box>
                   <IconButton
-                    onClick={() => deleteTask(task.id, project.id, URL)}
+                    onClick={() => deleteTask(task.id, project.id)}
                     color="error"
                   >
                     <DeleteIcon />

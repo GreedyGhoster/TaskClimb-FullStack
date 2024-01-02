@@ -1,19 +1,18 @@
 import { FC, useMemo } from "react";
-import { ToDoTaskStatus } from "../../../types";
 import { Chip } from "@mui/material";
 
 interface Props {
-  status: ToDoTaskStatus;
+  status: string;
 }
 
 const TaskChip: FC<Props> = ({ status }) => {
   const getColor = useMemo(() => {
     switch (status) {
-      case ToDoTaskStatus.new:
+      case "New":
         return "info";
-      case ToDoTaskStatus.doing:
+      case "Doing":
         return "secondary";
-      case ToDoTaskStatus.done:
+      case "Done":
         return "success";
       default:
         return "default";
@@ -22,11 +21,11 @@ const TaskChip: FC<Props> = ({ status }) => {
 
   const getLabel = useMemo(() => {
     switch (status) {
-      case ToDoTaskStatus.new:
+      case "New":
         return "New";
-      case ToDoTaskStatus.doing:
+      case "Doing":
         return "Doing";
-      case ToDoTaskStatus.done:
+      case "Done":
         return "Done";
       default:
         return "-";

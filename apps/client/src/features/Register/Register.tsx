@@ -19,8 +19,6 @@ export default function Register() {
     reset,
   } = useForm<Data>({ mode: "onBlur" });
 
-  const URL = "/api/auth/register";
-
   const navigate = useNavigate();
 
   const goNext = () => navigate("/");
@@ -28,7 +26,7 @@ export default function Register() {
   const FetchData: SubmitHandler<Data> = useCallback(
     async (registerData: Data) => {
       try {
-        const res = await axios.post(URL, {
+        const res = await axios.post("/api/auth/register", {
           nickName: registerData.nickName,
           password: registerData.password,
         });

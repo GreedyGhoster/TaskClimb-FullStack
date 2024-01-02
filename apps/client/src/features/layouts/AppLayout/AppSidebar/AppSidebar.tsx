@@ -17,8 +17,6 @@ export const AppSidebar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
-  const URL = "/api/projects";
-
   const formMethods = useForm<AddToDoProjectFormValues>({
     defaultValues: {
       title: "",
@@ -29,7 +27,7 @@ export const AppSidebar = () => {
   const handleSubmitForm = useCallback(
     async (values: AddToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
-        createProject(values.title, URL);
+        createProject(values.title);
         reset({ title: "" });
       }
     },
@@ -37,8 +35,8 @@ export const AppSidebar = () => {
   );
 
   useEffect(() => {
-    getProjects(URL);
-    getTasks(`${URL}/tasks`);
+    getProjects();
+    getTasks();
   }, []);
 
   return (

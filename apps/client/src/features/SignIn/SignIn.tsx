@@ -15,8 +15,6 @@ export default function SignUp() {
     reset,
   } = useForm<Data>({ mode: "onBlur" });
 
-  const URL = "/api/auth/signin";
-
   const navigate = useNavigate();
 
   const goNext = () => {
@@ -26,7 +24,7 @@ export default function SignUp() {
   const FetchData: SubmitHandler<Data> = useCallback(
     async (signinData: Data) => {
       try {
-        const res = await axios.post(URL, {
+        const res = await axios.post("/api/auth/signin", {
           nickName: signinData.nickName,
           password: signinData.password,
         });

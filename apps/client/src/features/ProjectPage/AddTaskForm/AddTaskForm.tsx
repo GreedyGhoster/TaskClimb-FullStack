@@ -1,7 +1,7 @@
 import { FC, useCallback } from "react";
 import { FormTextField } from "../../../components/form";
 import { FormProvider, useForm } from "react-hook-form";
-import { AddToDoTaskFormValues, ToDoTaskStatus } from "../../../types";
+import { AddToDoTaskFormValues } from "../../../types";
 import { useTodo } from "../../../hooks";
 import Box from "@mui/material/Box";
 
@@ -15,18 +15,16 @@ const AddTaskForm: FC<Props> = ({ projectId }) => {
   const formMethods = useForm<AddToDoTaskFormValues>({
     defaultValues: {
       title: "",
-      status: ToDoTaskStatus.new,
+      status: "New",
     },
   });
-
-  const Task_Id = "/api/projects";
 
   const { handleSubmit, reset } = formMethods;
 
   const handleSubmitForm = useCallback(
     async (values: AddToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        addTask(projectId, values, Task_Id);
+        addTask(projectId, values);
         reset({
           ...values,
           title: "",

@@ -59,11 +59,9 @@ export function TaskPage() {
 
   const { handleSubmit } = formMethods;
 
-  const URL = "/api/projects";
-
   const handleClickForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
-      editTask(task.id, project.id, values, URL);
+      editTask(task.id, project.id, values);
     },
     [editTask, task.id]
   );

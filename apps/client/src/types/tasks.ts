@@ -1,12 +1,6 @@
-export enum ToDoTaskStatus {
-  new = "New",
-  doing = "Doing",
-  done = "Done",
-}
-
 export interface AddToDoTaskFormValues {
   title: string;
-  status: ToDoTaskStatus;
+  status: string;
   description: string;
 }
 
@@ -15,7 +9,7 @@ export type EditToDoTaskFormValues = AddToDoTaskFormValues;
 export interface IToDoTask {
   id: string;
   title: string;
-  status: ToDoTaskStatus;
+  status: string;
   description: string;
   projectId: string;
 }

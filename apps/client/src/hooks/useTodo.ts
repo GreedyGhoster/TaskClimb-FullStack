@@ -5,7 +5,6 @@ import {
   EditToDoTaskFormValues,
   IToDoProject,
   IToDoTask,
-  ToDoTaskStatus,
 } from "../types";
 import { useIsAuthenticated, useAuthHeader } from "react-auth-kit";
 import _orderBy from "lodash/orderBy";
@@ -27,38 +26,38 @@ function useTodoFunc() {
   const fetcher = axios.create({
     headers: { Authorization: authHeader() },
     timeout: 1440,
-    baseURL: "http://localhost:4580",
+    baseURL: "http://localhost:4580/",
   });
 
-  const getProjects = useCallback(async (URL: string) => {
-    const res = await fetcher.get<IToDoProject[]>(URL);
+  const getProjects = useCallback(async () => {
+    const res = await fetcher.get<IToDoProject[]>("api/projects");
     setProjects(res.data);
   }, []);
 
-  const createProject = useCallback(async (title: string, URL: string) => {
+  const createProject = useCallback(async (title: string) => {
     const data = { title: title };
-    const res = await fetcher.post(URL, data);
+    const res = await fetcher.post("api/projects", data);
     const projectId = res.data.id;
     const projectTitle = res.data.title;
 
     setProjects((prev) => [{ id: projectId, title: projectTitle }, ...prev]);
   }, []);
 
-  const deleteProject = useCallback(async (projectId: string, URL: string) => {
-    await fetcher.delete(`${URL}/${projectId}`);
+  const deleteProject = useCallback(async (projectId: string) => {
+    await fetcher.delete(`api/projects/${projectId}`);
     setProjects((prev) => {
       return prev.filter((project) => project.id !== projectId);
     });
   }, []);
 
   const editProject = useCallback(
-    async (projectId: string, newTitle: string, URL: string) => {
+    async (projectId: string, newTitle: string) => {
       const data = { title: newTitle };
       setProjects((prev) => {
         const next = [...prev];
         const project = next.find((val) => val.id === projectId);
         if (project) {
-          fetcher.patch(`${URL}/${projectId}`, data);
+          fetcher.patch(`api/projects/${projectId}`, data);
           project.title = newTitle;
           return next;
         } else {
@@ -79,8 +78,8 @@ function useTodoFunc() {
     [projects]
   );
 
-  const getTasks = useCallback(async (URL: string) => {
-    const res = await fetcher.get<IToDoTask[]>(URL);
+  const getTasks = useCallback(async () => {
+    const res = await fetcher.get<IToDoTask[]>("api/projects/tasks");
     setTasks(res.data);
   }, []);
 
@@ -106,13 +105,13 @@ function useTodoFunc() {
   );
 
   const addTask = useCallback(
-    async (projectId: string, newTask: AddToDoTaskFormValues, URL: string) => {
+    async (projectId: string, newTask: AddToDoTaskFormValues) => {
       const data = {
         title: newTask.title,
         status: newTask.status,
         description: newTask.description,
       };
-      const res = await fetcher.post(`${URL}/${projectId}`, data);
+      const res = await fetcher.post(`api/projects/${projectId}`, data);
       const taskId = await res.data.id;
       setTasks((prev) => {
         return [
@@ -141,8 +140,7 @@ function useTodoFunc() {
     async (
       taskId: string,
       projectId: string,
-      editingTask: EditToDoTaskFormValues,
-      URL: string
+      editingTask: EditToDoTaskFormValues
     ) => {
       const data = {
         title: editingTask.title,
@@ -152,7 +150,7 @@ function useTodoFunc() {
         const next = [...prev];
         const task = next.find((val) => val.id === taskId);
         if (task) {
-          fetcher.patch(`${URL}/${projectId}/${taskId}`, data);
+          fetcher.patch(`api/projects/${projectId}/${taskId}`, data);
           task.title = editingTask.title;
           task.description = editingTask.description;
           return next;
@@ -165,43 +163,23 @@ function useTodoFunc() {
     []
   );
 
-  const deleteTask = useCallback(
-    async (taskId: string, projectId: string, URL: string) => {
-      await fetcher.delete(`${URL}/${projectId}/${taskId}`);
-      setTasks((prev) => {
-        return prev.filter((task) => task.id !== taskId);
-      });
-    },
-    []
-  );
+  const deleteTask = useCallback(async (taskId: string, projectId: string) => {
+    await fetcher.delete(`api/projects/${projectId}/${taskId}`);
+    setTasks((prev) => {
+      return prev.filter((task) => task.id !== taskId);
+    });
+  }, []);
 
   const statusSwitcher = useCallback(
-    async (
-      taskId: string,
-      projectId: string,
-      statusName: string,
-      URL: string
-    ) => {
+    async (taskId: string, projectId: string, statusName: string) => {
       setTasks((prev) => {
         const next = [...prev];
         const task = next.find((val) => val.id === taskId);
         const data = { status: statusName };
         if (task) {
-          fetcher.patch(`${URL}/${projectId}/${taskId}`, data);
-          switch (statusName) {
-            case "New":
-              task.status = ToDoTaskStatus.new;
-              return next;
-            case "Doing":
-              task.status = ToDoTaskStatus.doing;
-              return next;
-            case "Done":
-              task.status = ToDoTaskStatus.done;
-              return next;
-            default:
-              task.status = ToDoTaskStatus.new;
-              return next;
-          }
+          fetcher.patch(`api/projects/${projectId}/${taskId}`, data);
+          task.status = statusName;
+          return next;
         } else {
           console.log(`Задача ${taskId} не найдена`);
           return prev;

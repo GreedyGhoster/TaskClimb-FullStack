@@ -31,12 +31,10 @@ const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
 
   const { handleSubmit } = formMethods;
 
-  const URL = "/api/projects";
-
   const handleSubmitForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        editTask(task.id, project.id, values, URL);
+        editTask(task.id, project.id, values);
         onCancel();
       }
     },

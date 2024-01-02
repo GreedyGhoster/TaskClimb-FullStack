@@ -61,10 +61,8 @@ const TaskStatusItem: FC<Props> = ({ task, project }) => {
     setAnchorEl(null);
   };
 
-  const URL = "/api/projects";
-
   useEffect(() => {
-    statusSwitcher(task.id, project.id, options[selectedIndex], URL);
+    statusSwitcher(task.id, project.id, options[selectedIndex]);
   }, [selectedIndex]);
 
   return (
