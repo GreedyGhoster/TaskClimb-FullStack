@@ -7,5 +7,8 @@
   },
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "dependencies": {
+    "@nestjs/platform-express": "^10.3.0"
+  }
 }
