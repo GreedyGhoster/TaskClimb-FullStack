@@ -1,41 +1,58 @@
 # TaskClimb-FullStack
 
+## Screenshots
+
+Project page:
+![](./screenshots/ProjectPage.webp)
+
+Task page:
+![](./screenshots/TaskPage.webp)
+
 ## Quick Start
-``` shell
+
+```shell
 git clone https://github.com/IuanPR/TaskClimb-FullStack.git
 ```
 
-### *Open each folder in apps/ and install dependencies as well for the root folder*
+### _Open each folder in apps/ and install dependencies as well for the root folder_
 
 Then in the root folder enter
+
 ```shell
 npm run dev
 ```
 
 ### Server
+
 Server side was built using Nest and "npm" package manager
 
-> For using TaskClimb-FullStack must to install ***Docker*** 
+> For using TaskClimb-FullStack must to install **_Docker_**
 
-* Backend: [Nest](https://nestjs.com/)
-* ORM: [Prisma](https://www.prisma.io/)
-* DataBase: [PostgreSQL](https://www.postgresql.org/)
-* [Docker](https://www.docker.com/)
+- Backend: [Nest](https://nestjs.com/)
+- ORM: [Prisma](https://www.prisma.io/)
+- DataBase: [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
 
 ### Client
+
 Client side was built using React(Vite) and "yarn" package manager
-* Client: [React](https://ru.legacy.reactjs.org/)
+
+- Client: [React](https://ru.legacy.reactjs.org/)
 
 ### For errors
+
 Uncaught Error: Cannot find module 'react'
+
 ```shell
 $ npm install --save react react-dom @types/react @types/react-dom
 ```
 
 If he writes that he doesn’t know “turbo”, then write this
+
 ```shell
 $ npm i turbo
 ```
 
 ## License
+
 TaskClimb-FullStack MIT Licensed
