@@ -22,6 +22,14 @@ Then in the root folder enter
 npm run dev
 ```
 
+### Swagger
+
+You can open swagger ui after ```npm run dev```
+
+```
+http://localhost:4580/swagger
+```
+
 ### Server
 
 Server side was built using Nest and "npm" package manager
