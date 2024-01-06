@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -17,8 +16,9 @@ import { EditProjectDto, ProjectDto } from './dto';
 import { JwtGuard } from '../auth/guard';
 import { TaskService } from './task/task.service';
 import { EditTaskDto, TaskDto } from './task/dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseGuards(JwtGuard)
 @Controller('projects')
 export class ProjectController {

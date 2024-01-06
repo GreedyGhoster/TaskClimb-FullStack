@@ -20,6 +20,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('TaskClimb API Documentation')
     .setDescription('Here are all the endpoints in the project')
     .setVersion('1.0')

@@ -14,7 +14,9 @@ import { GetUser } from '../auth/decorator';
 import { EditUserDto } from './dto';
 import { User } from '@prisma/client';
 import { JwtGuard } from '../auth/guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
