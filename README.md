@@ -1,13 +1,5 @@
 # TaskClimb-FullStack
 
-## Screenshots
-
-Project page:
-![](./screenshots/ProjectPage.webp)
-
-Task page:
-![](./screenshots/TaskPage.webp)
-
 ## Quick Start
 
 ```shell
@@ -43,9 +35,17 @@ Server side was built using Nest and "npm" package manager
 
 ### Client
 
-Client side was built using React(Vite) and "yarn" package manager
+Client side was built using React(Vite) and "npm" package manager
 
 - Client: [React](https://ru.legacy.reactjs.org/)
+
+## Screenshots
+
+Project page
+![](./screenshots/ProjectPage.webp)
+
+Task page
+![](./screenshots/TaskPage.webp)
 
 ### For errors
 
