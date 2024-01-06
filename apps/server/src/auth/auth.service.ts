@@ -26,7 +26,7 @@ export class AuthService {
       secret: secret,
     });
 
-    return { token: token, expiresIn: '1h' };
+    return { token: token, expiresIn: '1d' };
   }
   async register(dto: UserDto) {
     try {
