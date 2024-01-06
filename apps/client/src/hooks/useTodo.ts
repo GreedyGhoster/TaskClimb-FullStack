@@ -6,22 +6,15 @@ import {
   IToDoProject,
   IToDoTask,
 } from "../types";
-import { useIsAuthenticated, useAuthHeader } from "react-auth-kit";
+import { useAuthHeader } from "react-auth-kit";
 import _orderBy from "lodash/orderBy";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function useTodoFunc() {
-  const isAuthenticated = useIsAuthenticated();
   const authHeader = useAuthHeader();
-  const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
-
-  if (!isAuthenticated()) {
-    navigate("/auth/register");
-  }
 
   const fetcher = axios.create({
     headers: { Authorization: authHeader() },
