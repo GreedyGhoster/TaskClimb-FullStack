@@ -30,6 +30,22 @@ export class ProjectService {
     }
   }
 
+  async getTasksByProjectId(projectId: string) {
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: {
+          projectId: projectId,
+        },
+      });
+
+      return tasks;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw err;
+      }
+    }
+  }
+
   async getProjects(userId: string) {
     const projects = await this.prisma.project.findMany({
       where: {

@@ -4,11 +4,11 @@ import { ApiProperty } from '@nestjs/swagger';
 export class TaskDto {
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ required: true, default: 'Math' })
   title: string;
 
   @IsOptional()
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ default: 'Learn some theorems' })
   description?: string;
 }

@@ -3,17 +3,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 export class EditTaskDto {
-  @ApiProperty()
+  @ApiProperty({ default: 'Mathematic' })
   @IsOptional()
   @IsString()
   title?: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 'Doing' })
   @IsOptional()
   @IsString()
   status?: Status;
 
-  @ApiProperty()
+  @ApiProperty({ default: 'Learn Pythagorean theorem' })
   @IsOptional()
   @IsString()
   description?: string;
