@@ -18,9 +18,13 @@ export class ProjectService {
     return project;
   }
 
-  async getTasks() {
+  async getTasks(userId: string) {
     try {
-      const tasks = await this.prisma.task.findMany();
+      const tasks = await this.prisma.task.findMany({
+        where: {
+          userId: userId,
+        },
+      });
 
       return tasks;
     } catch (err) {

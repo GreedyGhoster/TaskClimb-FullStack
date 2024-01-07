@@ -35,8 +35,8 @@ export class ProjectController {
   }
 
   @Get('tasks')
-  getTasks() {
-    return this.projectService.getTasks();
+  getTasks(@GetUser('id') userId: string) {
+    return this.projectService.getTasks(userId);
   }
 
   @Get()
@@ -70,8 +70,12 @@ export class ProjectController {
   }
 
   @Post(':projectId')
-  createTask(@Param('projectId') projectId: string, @Body() dto: TaskDto) {
-    return this.taskService.createTask(projectId, dto);
+  createTask(
+    @GetUser('id') userId: string,
+    @Param('projectId') projectId: string,
+    @Body() dto: TaskDto,
+  ) {
+    return this.taskService.createTask(projectId, dto, userId);
   }
 
   @Get(':projectId/:taskId')

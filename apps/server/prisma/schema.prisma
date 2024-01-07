@@ -52,5 +52,6 @@ model Task {
   description String?
 
   Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String?
   projectId String?
 }

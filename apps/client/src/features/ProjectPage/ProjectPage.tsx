@@ -61,7 +61,6 @@ export function ProjectPage() {
   // TODO: make asynchronous calculations
   const countTasksByStatus = useMemo(() => {
     return {
-      New: tasks.filter((task) => task.status === "New").length,
       Done: tasks.filter((task) => task.status === "Done").length,
     };
   }, [tasks]);
@@ -92,7 +91,6 @@ export function ProjectPage() {
         <AddTaskForm projectId={project.id} />
       </Inputs>
       <Root>
-        <span>New: {countTasksByStatus.New}</span>
         <span>Done: {countTasksByStatus.Done}</span>
       </Root>
       <List

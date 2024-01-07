@@ -6,14 +6,16 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 @Injectable()
 export class TaskService {
   constructor(private prisma: PrismaService) {}
-  async createTask(projectId: string, dto: TaskDto) {
+  async createTask(projectId: string, dto: TaskDto, userId: string) {
     const task = await this.prisma.task.create({
       data: {
         projectId: projectId,
+        userId: userId,
         ...dto,
       },
     });
     delete task.createdAt;
+    delete task.userId;
     delete task.updatedAt;
     delete task.projectId;
 
@@ -51,6 +53,7 @@ export class TaskService {
       },
     });
     delete task.projectId;
+    delete task.userId;
     delete task.createdAt;
     delete task.updatedAt;
 

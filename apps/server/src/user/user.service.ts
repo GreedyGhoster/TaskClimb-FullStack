@@ -11,12 +11,16 @@ export class UserService {
     const CountOfProjects = await this.prisma.project.count({
       where: { userId: user.id },
     });
+    const CountOfTasks = await this.prisma.task.count({
+      where: { userId: user.id },
+    });
 
     return {
       nickName: user.nickName,
       createdAt: user.createdAt.toString().split('T')[0],
       updatedAt: user.updatedAt.toString().split('T')[0],
       projects: CountOfProjects,
+      tasks: CountOfTasks,
     };
   }
 
