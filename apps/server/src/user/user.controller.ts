@@ -26,8 +26,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Get('me')
   userInfo(@GetUser() user: User) {
-    delete user.id;
-    return user;
+    return this.userService.userInfo(user);
   }
 
   @Patch('me')
