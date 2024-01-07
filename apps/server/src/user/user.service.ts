@@ -29,9 +29,12 @@ export class UserService {
         nickName: dto.nickName,
       },
     });
-    delete user.hash;
 
-    return user;
+    return {
+      nickName: user.nickName,
+      createdAt: user.createdAt.toString().split('T')[0],
+      updatedAt: user.updatedAt.toString().split('T')[0],
+    };
   }
 
   async userDelete(userId: string) {
