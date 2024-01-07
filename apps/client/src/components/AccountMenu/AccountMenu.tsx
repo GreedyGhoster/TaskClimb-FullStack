@@ -13,8 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuthUser } from "react-auth-kit";
-import { useSignOut } from "react-auth-kit";
+import { useAuthUser, useSignOut } from "react-auth-kit";
 
 const AccountMenu = () => {
   const signOut = useSignOut();

@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { ProjectModule } from './project/project.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +29,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('taskclimb')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 

@@ -16,8 +16,9 @@ import { EditProjectDto, ProjectDto } from './dto';
 import { JwtGuard } from '../auth/guard';
 import { TaskService } from './task/task.service';
 import { EditTaskDto, TaskDto } from './task/dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('ProjectsAndTasks')
 @ApiBearerAuth()
 @UseGuards(JwtGuard)
 @Controller('projects')
