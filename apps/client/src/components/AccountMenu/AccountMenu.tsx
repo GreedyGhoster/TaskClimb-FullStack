@@ -13,14 +13,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuthUser, useSignOut } from "react-auth-kit";
+import { useSignOut } from "react-auth-kit";
+import { useTodo } from "../../hooks";
 
 const AccountMenu = () => {
   const signOut = useSignOut();
-  const authUser = useAuthUser();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
+  const { profileData } = useTodo();
   const openMenu = Boolean(anchorEl);
 
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const AccountMenu = () => {
 
   return (
     <>
-      <Typography component={"h4"}>{authUser()!.nickName}</Typography>
+      <Typography component={"h4"}>{profileData?.nickName}</Typography>
       <IconButton onClick={handleClick}>
         <AccountCircleIcon />
       </IconButton>

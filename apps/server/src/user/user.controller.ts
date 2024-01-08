@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { GetUser } from '../auth/decorator';
-import { EditUserDto } from './dto';
+import { EditUserNickNameDto, EditUserPasswordDto } from './dto';
 import { User } from '@prisma/client';
 import { JwtGuard } from '../auth/guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -29,9 +29,20 @@ export class UserController {
     return this.userService.userInfo(user);
   }
 
-  @Patch('me')
-  userEdit(@GetUser() user: User, @Body() dto: EditUserDto) {
-    return this.userService.userEdit(user, dto);
+  @Patch('me/edit/nickname')
+  userEditNickName(
+    @GetUser('id') userId: string,
+    @Body() dto: EditUserNickNameDto,
+  ) {
+    return this.userService.userEditNickName(userId, dto);
+  }
+
+  @Patch('me/edit/password')
+  userEditPassword(
+    @GetUser('id') userId: string,
+    @Body() dto: EditUserPasswordDto,
+  ) {
+    return this.userService.userEditPassword(userId, dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

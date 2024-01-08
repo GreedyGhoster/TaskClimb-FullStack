@@ -1,17 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
-export class EditUserDto {
+export class EditUserNickNameDto {
   @IsOptional()
   @IsString()
   @ApiProperty({ default: 'Michael Jackson' })
   nickName?: string;
+}
 
-  @IsOptional()
-  @IsString()
-  @ApiProperty({ default: 'qwertyuiop' })
-  oldPassword?: string;
-
+export class EditUserPasswordDto {
   @IsOptional()
   @IsString()
   @ApiProperty({ default: 'poiuytrewq' })

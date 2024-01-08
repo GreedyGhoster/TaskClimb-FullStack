@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EditTaskDto, TaskDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class TaskService {
@@ -66,9 +67,9 @@ export class TaskService {
 
       return task;
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        throw new ForbiddenException('The task does not exist');
-      }
+      throw new ForbiddenException(
+        'The task does not exist or status is invalid',
+      );
     }
   }
 

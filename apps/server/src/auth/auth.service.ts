@@ -13,10 +13,9 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
-  async signToken(userId: string, nickName: string) {
+  async signToken(userId: string) {
     const payload = {
       sub: userId,
-      nickName: nickName,
     };
 
     const secret = await this.config.get('JWT_SECRET');
@@ -46,7 +45,7 @@ export class AuthService {
         },
       });
 
-      return this.signToken(user.id, user.nickName);
+      return this.signToken(user.id);
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
@@ -68,6 +67,6 @@ export class AuthService {
 
     if (!pwMatches) throw new ForbiddenException('Password is incorrect');
 
-    return this.signToken(user.id, user.nickName);
+    return this.signToken(user.id);
   }
 }

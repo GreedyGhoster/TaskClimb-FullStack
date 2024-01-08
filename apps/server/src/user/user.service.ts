@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { EditUserDto } from './dto';
+import { EditUserNickNameDto, EditUserPasswordDto } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon from 'argon2';
 import { User } from '@prisma/client';
@@ -26,42 +26,41 @@ export class UserService {
     };
   }
 
-  async userEdit(user: User, dto: EditUserDto) {
+  async userEditNickName(userId: string, dto: EditUserNickNameDto) {
     try {
-      const CountOfProjects = await this.prisma.project.count({
-        where: { userId: user.id },
-      });
-      const CountOfTasks = await this.prisma.task.count({
-        where: { userId: user.id },
-      });
-
-      const pwMatches = await argon.verify(user.hash, dto.oldPassword);
-
-      if (!pwMatches) throw new ForbiddenException('Password is incorrect');
-
-      const newHashedPassword = await argon.hash(dto.newPassword);
-
       const updatedUser = await this.prisma.user.update({
         where: {
-          id: user.id,
+          id: userId,
         },
         data: {
           nickName: dto.nickName,
-          hash: newHashedPassword,
         },
       });
 
-      return {
-        nickName: updatedUser.nickName,
-        createdAt: updatedUser.createdAt.toString().split('T')[0],
-        updatedAt: updatedUser.updatedAt.toString().split('T')[0],
-        projects: CountOfProjects,
-        tasks: CountOfTasks,
-      };
+      return this.userInfo(updatedUser);
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         throw new ForbiddenException('The user already exists');
       }
+    }
+  }
+
+  async userEditPassword(userId: string, dto: EditUserPasswordDto) {
+    try {
+      const newHashedPassword = await argon.hash(dto.newPassword);
+
+      const updatedUser = await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          hash: newHashedPassword,
+        },
+      });
+
+      return this.userInfo(updatedUser);
+    } catch (err) {
+      throw new ForbiddenException('The user does not exist');
     }
   }
 
