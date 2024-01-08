@@ -13,7 +13,8 @@ import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 
 export const AppSidebar = () => {
-  const { projects, createProject, getProjects, getTasks } = useTodo();
+  const { projects, createProject, getProjects, getTasks, getProfileData } =
+    useTodo();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
@@ -37,6 +38,7 @@ export const AppSidebar = () => {
   useEffect(() => {
     getProjects();
     getTasks();
+    getProfileData();
   }, []);
 
   return (

@@ -5,6 +5,7 @@ import {
   EditToDoTaskFormValues,
   IToDoProject,
   IToDoTask,
+  ProfileData,
 } from "../types";
 import { useAuthHeader } from "react-auth-kit";
 import _orderBy from "lodash/orderBy";
@@ -15,6 +16,7 @@ function useTodoFunc() {
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
+  const [profileData, setProfileData] = useState<ProfileData>();
 
   const fetcher = axios.create({
     headers: { Authorization: authHeader() },
@@ -184,7 +186,12 @@ function useTodoFunc() {
 
   const getProfileData = useCallback(async () => {
     const res = await fetcher.get("api/users/me");
-    return res.data;
+    setProfileData(res.data);
+  }, []);
+
+  const deleteAccount = useCallback(async () => {
+    await fetcher.delete("api/users/me");
+    setProfileData(undefined);
   }, []);
 
   return useMemo(
@@ -204,6 +211,8 @@ function useTodoFunc() {
       getTasksByProject,
       statusSwitcher,
       getProfileData,
+      profileData,
+      deleteAccount,
     }),
     [
       projects,
@@ -221,6 +230,8 @@ function useTodoFunc() {
       getTasksByProject,
       statusSwitcher,
       getProfileData,
+      profileData,
+      deleteAccount,
     ]
   );
 }
