@@ -43,9 +43,7 @@ export class TaskService {
 
       return task;
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        throw new ForbiddenException('The task does not exist');
-      }
+      throw new ForbiddenException('The task does not exist');
     }
   }
 
@@ -75,7 +73,7 @@ export class TaskService {
 
   async deleteTaskById(projectId: string, taskId: string) {
     try {
-      return this.prisma.task.delete({
+      await this.prisma.task.delete({
         where: {
           id: taskId,
           projectId: projectId,

@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from './dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -10,12 +10,18 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('register')
+  @ApiOperation({ description: 'Register a new user' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   signup(@Body() dto: UserDto) {
     return this.authService.register(dto);
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('signin')
+  @ApiOperation({ description: 'Log in to account' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   signin(@Body() dto: UserDto) {
     return this.authService.signin(dto);
   }

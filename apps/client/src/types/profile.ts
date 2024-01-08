@@ -6,8 +6,6 @@ export interface ProfileData {
   tasks: number;
 }
 
-export interface EditProfileData {
+export interface EditProfileNickName {
   nickName: string;
-  oldPassword: string;
-  newPassword: string;
 }

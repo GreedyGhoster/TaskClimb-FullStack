@@ -41,6 +41,10 @@ export const AppSidebar = () => {
     getProfileData();
   }, []);
 
+  useEffect(() => {
+    getProfileData();
+  }, [projects.length]);
+
   return (
     <Box
       sx={{

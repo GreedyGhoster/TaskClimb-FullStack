@@ -72,7 +72,7 @@ export class ProjectService {
     dto: EditProjectDto,
   ) {
     try {
-      return this.prisma.project.update({
+      const updatedProject = await this.prisma.project.update({
         where: {
           id: projectId,
           userId: userId,
@@ -81,10 +81,9 @@ export class ProjectService {
           title: dto.title,
         },
       });
+      return updatedProject;
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        throw new ForbiddenException('The project does not exist');
-      }
+      if (err) throw new ForbiddenException('The project does not exist');
     }
   }
 

@@ -2,7 +2,7 @@ import constate from "constate";
 import { useCallback, useMemo, useState } from "react";
 import {
   AddToDoTaskFormValues,
-  EditProfileData,
+  EditProfileNickName,
   EditToDoTaskFormValues,
   IToDoProject,
   IToDoTask,
@@ -195,16 +195,18 @@ function useTodoFunc() {
     setProfileData(undefined);
   }, []);
 
-  const updateAccount = useCallback(async (newData: EditProfileData) => {
-    const data = {
-      nickName: newData.nickName,
-      oldPassword: newData.oldPassword,
-      newPassword: newData.newPassword,
-    };
+  const updateAccountNickName = useCallback(
+    async (newData: EditProfileNickName) => {
+      const data = {
+        nickName: newData.nickName,
+      };
 
-    const res = await fetcher.patch("api/users/me", data);
-    setProfileData(res.data);
-  }, []);
+      const res = await fetcher.patch("api/users/me/edit/nickname", data);
+      console.log(res.data);
+      // setProfileData((prev) => (prev!.nickName = .nickName));
+    },
+    []
+  );
 
   return useMemo(
     () => ({
@@ -225,7 +227,7 @@ function useTodoFunc() {
       getProfileData,
       profileData,
       deleteAccount,
-      updateAccount,
+      updateAccountNickName,
     }),
     [
       projects,
@@ -245,7 +247,7 @@ function useTodoFunc() {
       getProfileData,
       profileData,
       deleteAccount,
-      updateAccount,
+      updateAccountNickName,
     ]
   );
 }

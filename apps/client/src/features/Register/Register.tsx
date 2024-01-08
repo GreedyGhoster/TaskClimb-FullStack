@@ -36,7 +36,6 @@ export default function Register() {
               token: res.data.token,
               expiresIn: 1440,
               tokenType: "Bearer",
-              authState: { nickName: registerData.nickName },
             })
           ) {
             goNext();
