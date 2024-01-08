@@ -66,7 +66,7 @@ const AccountMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <ListItemButton>
+        <ListItemButton href="/users/me">
           <ListItemIcon>
             <AccountCircleIcon />
           </ListItemIcon>

@@ -7,6 +7,7 @@ import { SignIn } from "../features/SignIn";
 import { Register } from "../features/Register";
 import PrivateRoute from "./PrivateRoute";
 import { AppLayout } from "../features/layouts/AppLayout";
+import { Profile } from "../features/Profile";
 
 export default function AppRouter() {
   return (
@@ -16,6 +17,7 @@ export default function AppRouter() {
           <Route path="" element={<Greeting />} />
           <Route path="/projects/:projectId" element={<ProjectPage />} />
           <Route path="/projects/:projectId/:taskId" element={<TaskPage />} />
+          <Route path="/users/me" element={<Profile />} />
         </Route>
       </Route>
       <Route path="auth/register" element={<Register />} />

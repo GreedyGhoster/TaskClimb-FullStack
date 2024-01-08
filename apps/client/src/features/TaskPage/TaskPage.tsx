@@ -12,7 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import TaskStatusItem from "../../components/tasks/TaskStatusItem";
 import styled from "@mui/material/styles/styled";
 
-const Root = styled("div")(({ theme }) => ({
+const PageResponse = styled("div")(({ theme }) => ({
   backgroundColor: `${theme.palette.mode === "dark" ? "#262626" : "#f5f5f5"}`,
   display: "flex",
   flexDirection: "column",
@@ -22,10 +22,10 @@ const Root = styled("div")(({ theme }) => ({
   padding: "0",
   marginTop: "3%",
   [theme.breakpoints.down("laptop")]: {
-    width: "87%",
+    width: "85%",
   },
   [theme.breakpoints.up("laptop")]: {
-    width: "55%",
+    width: "50%",
   },
 }));
 
@@ -67,7 +67,7 @@ export function TaskPage() {
   );
 
   return (
-    <Root>
+    <PageResponse>
       <Box
         sx={{
           display: "inline-flex",
@@ -134,6 +134,6 @@ export function TaskPage() {
           </Button>
         </Tooltip>
       </Box>
-    </Root>
+    </PageResponse>
   );
 }

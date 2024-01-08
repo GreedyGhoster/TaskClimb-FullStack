@@ -182,6 +182,11 @@ function useTodoFunc() {
     []
   );
 
+  const getProfileData = useCallback(async () => {
+    const res = await fetcher.get("api/users/me");
+    return res.data;
+  }, []);
+
   return useMemo(
     () => ({
       projects,
@@ -198,6 +203,7 @@ function useTodoFunc() {
       editProject,
       getTasksByProject,
       statusSwitcher,
+      getProfileData,
     }),
     [
       projects,
@@ -214,6 +220,7 @@ function useTodoFunc() {
       editProject,
       getTasksByProject,
       statusSwitcher,
+      getProfileData,
     ]
   );
 }

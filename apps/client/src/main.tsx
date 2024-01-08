@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "react-auth-kit";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <AuthProvider authType={"cookie"} authName={"_auth"} cookieSecure={true}>
+  <AuthProvider authType={"localstorage"} authName={"_auth"}>
     <BrowserRouter>
       <React.StrictMode>
         <App />
