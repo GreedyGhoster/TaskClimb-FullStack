@@ -9,6 +9,11 @@ export class EditUserDto {
 
   @IsOptional()
   @IsString()
+  @ApiProperty({ default: 'qwertyuiop' })
+  oldPassword?: string;
+
+  @IsOptional()
+  @IsString()
   @ApiProperty({ default: 'poiuytrewq' })
-  password?: string;
+  newPassword?: string;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EditTaskDto, TaskDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -23,7 +23,7 @@ export class TaskService {
       return task;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
-        throw err;
+        throw new ForbiddenException('The project does not exist');
       }
     }
   }
@@ -43,7 +43,7 @@ export class TaskService {
       return task;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
-        throw err;
+        throw new ForbiddenException('The task does not exist');
       }
     }
   }
@@ -67,17 +67,23 @@ export class TaskService {
       return task;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
-        throw err;
+        throw new ForbiddenException('The task does not exist');
       }
     }
   }
 
   async deleteTaskById(projectId: string, taskId: string) {
-    return this.prisma.task.delete({
-      where: {
-        id: taskId,
-        projectId: projectId,
-      },
-    });
+    try {
+      return this.prisma.task.delete({
+        where: {
+          id: taskId,
+          projectId: projectId,
+        },
+      });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException('The task does not exist');
+      }
+    }
   }
 }

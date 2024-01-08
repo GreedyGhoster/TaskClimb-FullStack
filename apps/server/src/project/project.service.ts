@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditProjectDto, ProjectDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -29,7 +29,7 @@ export class ProjectService {
       return tasks;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
-        throw err;
+        throw new ForbiddenException('The user does not exist');
       }
     }
   }
@@ -45,19 +45,25 @@ export class ProjectService {
       return tasks;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
-        throw err;
+        throw new ForbiddenException('The project does not exist');
       }
     }
   }
 
   async getProjects(userId: string) {
-    const projects = await this.prisma.project.findMany({
-      where: {
-        userId: userId,
-      },
-    });
+    try {
+      const projects = await this.prisma.project.findMany({
+        where: {
+          userId: userId,
+        },
+      });
 
-    return projects;
+      return projects;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException('The user does not exist');
+      }
+    }
   }
 
   async updateProjectById(
@@ -65,23 +71,35 @@ export class ProjectService {
     projectId: string,
     dto: EditProjectDto,
   ) {
-    return this.prisma.project.update({
-      where: {
-        id: projectId,
-        userId: userId,
-      },
-      data: {
-        title: dto.title,
-      },
-    });
+    try {
+      return this.prisma.project.update({
+        where: {
+          id: projectId,
+          userId: userId,
+        },
+        data: {
+          title: dto.title,
+        },
+      });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException('The project does not exist');
+      }
+    }
   }
 
   async deleteProjectById(userId: string, projectId: string) {
-    await this.prisma.project.delete({
-      where: {
-        id: projectId,
-        userId: userId,
-      },
-    });
+    try {
+      await this.prisma.project.delete({
+        where: {
+          id: projectId,
+          userId: userId,
+        },
+      });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException('The project does not exist');
+      }
+    }
   }
 }

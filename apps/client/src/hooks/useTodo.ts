@@ -194,6 +194,19 @@ function useTodoFunc() {
     setProfileData(undefined);
   }, []);
 
+  const updateAccount = useCallback(
+    async (nickName: string, password: string) => {
+      const data = {
+        nickName: nickName,
+        password: password,
+      };
+
+      const res = await fetcher.patch("api/users/me", data);
+      setProfileData(res.data);
+    },
+    []
+  );
+
   return useMemo(
     () => ({
       projects,

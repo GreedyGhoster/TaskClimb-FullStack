@@ -30,8 +30,8 @@ export class UserController {
   }
 
   @Patch('me')
-  userEdit(@GetUser('id') userId: string, @Body() dto: EditUserDto) {
-    return this.userService.userEdit(userId, dto);
+  userEdit(@GetUser() user: User, @Body() dto: EditUserDto) {
+    return this.userService.userEdit(user, dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
