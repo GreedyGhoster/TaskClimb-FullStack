@@ -7,19 +7,25 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class TaskService {
   constructor(private prisma: PrismaService) {}
   async createTask(projectId: string, dto: TaskDto, userId: string) {
-    const task = await this.prisma.task.create({
-      data: {
-        projectId: projectId,
-        userId: userId,
-        ...dto,
-      },
-    });
-    delete task.createdAt;
-    delete task.userId;
-    delete task.updatedAt;
-    delete task.projectId;
+    try {
+      const task = await this.prisma.task.create({
+        data: {
+          projectId: projectId,
+          userId: userId,
+          ...dto,
+        },
+      });
+      delete task.createdAt;
+      delete task.userId;
+      delete task.updatedAt;
+      delete task.projectId;
 
-    return task;
+      return task;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw err;
+      }
+    }
   }
 
   async getTaskById(projectId: string, taskId: string) {
@@ -43,21 +49,27 @@ export class TaskService {
   }
 
   async updateTaskById(projectId: string, taskId: string, dto: EditTaskDto) {
-    const task = await this.prisma.task.update({
-      where: {
-        id: taskId,
-        projectId: projectId,
-      },
-      data: {
-        ...dto,
-      },
-    });
-    delete task.projectId;
-    delete task.userId;
-    delete task.createdAt;
-    delete task.updatedAt;
+    try {
+      const task = await this.prisma.task.update({
+        where: {
+          id: taskId,
+          projectId: projectId,
+        },
+        data: {
+          ...dto,
+        },
+      });
+      delete task.projectId;
+      delete task.userId;
+      delete task.createdAt;
+      delete task.updatedAt;
 
-    return task;
+      return task;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw err;
+      }
+    }
   }
 
   async deleteTaskById(projectId: string, taskId: string) {

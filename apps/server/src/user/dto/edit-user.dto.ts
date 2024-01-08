@@ -6,4 +6,9 @@ export class EditUserDto {
   @IsString()
   @ApiProperty({ default: 'Michael Jackson' })
   nickName?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({ default: 'poiuytrewq' })
+  password?: string;
 }

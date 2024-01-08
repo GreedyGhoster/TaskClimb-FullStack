@@ -51,10 +51,10 @@ export default function Profile() {
   };
 
   const handleAgree = () => {
+    deleteAccount();
     goRegister();
     signOut();
     setOpen(false);
-    deleteAccount();
   };
 
   return (
