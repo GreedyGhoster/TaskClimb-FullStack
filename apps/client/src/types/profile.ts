@@ -5,3 +5,9 @@ export interface ProfileData {
   projects: number;
   tasks: number;
 }
+
+export interface EditProfileData {
+  nickName: string;
+  oldPassword: string;
+  newPassword: string;
+}
