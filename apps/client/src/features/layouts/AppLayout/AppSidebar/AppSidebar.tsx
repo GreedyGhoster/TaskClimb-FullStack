@@ -2,9 +2,8 @@ import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
 import { useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoProjectFormValues } from "../../../../types";
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { FormTextField } from "../../../../components/form";
-import { AppProjectItem } from "./AppProjectItem";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -12,9 +11,17 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 
+const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
+
 export const AppSidebar = () => {
-  const { projects, createProject, getProjects, getTasks, getProfileData } =
-    useTodo();
+  const {
+    projects,
+    tasks,
+    createProject,
+    getProjects,
+    getTasks,
+    getProfileData,
+  } = useTodo();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
@@ -43,7 +50,7 @@ export const AppSidebar = () => {
 
   useEffect(() => {
     getProfileData();
-  }, [projects.length]);
+  }, [projects.length, tasks.length]);
 
   return (
     <Box
@@ -92,25 +99,27 @@ export const AppSidebar = () => {
             placeholder="Find project"
           />
         </Stack>
-        <List
-          sx={{
-            display: "flex",
-            flexDirection: "column-reverse",
-          }}
-        >
-          {projects
-            .filter((val) => {
-              if (
-                searchTerm === "" ||
-                val.title.toLowerCase().includes(searchTerm.toLowerCase())
-              ) {
-                return val;
-              }
-            })
-            .map((project) => (
-              <AppProjectItem key={project.id} project={project} />
-            ))}
-        </List>
+        <Suspense fallback={<h2>Loading...</h2>}>
+          <List
+            sx={{
+              display: "flex",
+              flexDirection: "column-reverse",
+            }}
+          >
+            {projects
+              .filter((val) => {
+                if (
+                  searchTerm === "" ||
+                  val.title.toLowerCase().includes(searchTerm.toLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .map((project) => (
+                <AppProjectItem key={project.id} project={project} />
+              ))}
+          </List>
+        </Suspense>
       </Box>
     </Box>
   );

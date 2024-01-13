@@ -1,14 +1,22 @@
 import { useParams } from "react-router-dom";
 import { useTodo } from "../../hooks";
-import { NotFound } from "../NotFound";
-import { TaskListItem } from "./TaskListItem";
 import { AddTaskForm } from "./AddTaskForm";
 import { SearchTaskForm } from "./SearchTaskForm";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import styled from "@mui/material/styles/styled";
+import { NotFound } from "../NotFound";
+
+const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
 
 const Root = styled("div")(({ theme }) => ({
   height: "1.6rem",
@@ -93,26 +101,28 @@ export function ProjectPage() {
       <Root>
         <span>Done: {countTasksByStatus.Done}</span>
       </Root>
-      <List
-        sx={{
-          width: "100%",
-          paddingTop: "0px",
-          display: "flex",
-          flexDirection: "column-reverse",
-        }}
-      >
-        {tasks.length > 0 ? (
-          <>
-            {tasks.map((task) => (
-              <TaskListItem key={task.id} task={task} project={project} />
-            ))}
-          </>
-        ) : (
-          <Box sx={{ textAlign: "center" }} component={"h2"}>
-            No tasks
-          </Box>
-        )}
-      </List>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <List
+          sx={{
+            width: "100%",
+            paddingTop: "0px",
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
+        >
+          {tasks.length > 0 ? (
+            <>
+              {tasks.map((task) => (
+                <TaskListItem key={task.id} task={task} project={project} />
+              ))}
+            </>
+          ) : (
+            <Box sx={{ textAlign: "center" }} component={"h2"}>
+              No tasks
+            </Box>
+          )}
+        </List>
+      </Suspense>
     </Box>
   );
 }
