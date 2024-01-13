@@ -55,7 +55,6 @@ const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
           sx={{
             height: "3rem",
             width: "100%",
-            textAlign: "center",
           }}
           name={"title"}
           variant="filled"

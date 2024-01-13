@@ -47,12 +47,9 @@ const EditProjectForm: FC<Props> = ({ project, onCancel }) => {
       >
         <FormTextField
           inputProps={{ maxLength: 46 }}
-          sx={{
-            width: "12.5rem",
-          }}
           name={"title"}
           placeholder="Edit project"
-          variant="standard"
+          variant="filled"
           color="warning"
         />
         <IconButton onClick={handleSubmit(handleSubmitForm)}>

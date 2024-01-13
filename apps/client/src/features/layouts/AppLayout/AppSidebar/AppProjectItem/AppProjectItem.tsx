@@ -25,7 +25,9 @@ const AppProjectItem: FC<Props> = ({ project }) => {
     <ListItem
       component={"div"}
       sx={{
-        paddingRight: 0,
+        padding: 0,
+        height: "3.4rem",
+        backgroundColor: project.id === currentProjectId ? "#4f2929" : "",
       }}
       key={project.id}
     >
@@ -50,9 +52,6 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                       }}
                     >
                       <Button
-                        sx={{
-                          width: "5px",
-                        }}
                         onClick={() => onChangeRenderMode(RenderMode.Edit)}
                       >
                         <CreateIcon
@@ -71,7 +70,9 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                 placement="right"
               >
                 <ListItemButton
-                  selected={project.id === currentProjectId}
+                  sx={{
+                    height: "100%",
+                  }}
                   href={`/projects/${project.id}`}
                 >
                   <ListItemText
