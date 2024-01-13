@@ -63,7 +63,7 @@ export function TaskPage() {
     async (values: EditToDoTaskFormValues) => {
       editTask(task.id, project.id, values);
     },
-    [editTask, task.id]
+    [editTask, task.id, project.id]
   );
 
   return (

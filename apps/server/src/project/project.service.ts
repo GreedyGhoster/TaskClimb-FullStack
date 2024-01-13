@@ -24,6 +24,9 @@ export class ProjectService {
         where: {
           userId: userId,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
 
       return tasks;
@@ -40,6 +43,9 @@ export class ProjectService {
         where: {
           projectId: projectId,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
 
       return tasks;
@@ -55,6 +61,9 @@ export class ProjectService {
       const projects = await this.prisma.project.findMany({
         where: {
           userId: userId,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       });
 
