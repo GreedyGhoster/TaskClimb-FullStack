@@ -3,7 +3,7 @@
 ## Quick Start
 
 ```shell
-git clone https://github.com/IuanPR/TaskClimb-FullStack.git
+git clone https://github.com/GreedyGhoster/TaskClimb-FullStack.git
 ```
 
 ### _Open each folder in apps/ and install dependencies as well for the root folder_
