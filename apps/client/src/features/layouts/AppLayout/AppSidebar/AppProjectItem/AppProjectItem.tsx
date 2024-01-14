@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { RenderModeController } from "../../../../../components/ctrl";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material";
 
 interface Props {
   project: IToDoProject;
@@ -19,6 +20,8 @@ interface Props {
 
 const AppProjectItem: FC<Props> = ({ project }) => {
   const { deleteProject } = useTodo();
+  const theme = useTheme();
+  console.log(theme.palette.mode);
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
   return (
@@ -27,7 +30,12 @@ const AppProjectItem: FC<Props> = ({ project }) => {
       sx={{
         padding: 0,
         height: "3.4rem",
-        backgroundColor: project.id === currentProjectId ? "#4f2929" : "",
+        backgroundColor:
+          project.id === currentProjectId
+            ? theme.palette.mode === "dark"
+              ? "#4f2929"
+              : "#fee6e3"
+            : "",
       }}
       key={project.id}
     >
