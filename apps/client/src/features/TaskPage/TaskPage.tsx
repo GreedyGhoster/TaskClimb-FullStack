@@ -13,7 +13,7 @@ import TaskStatusItem from "../../components/tasks/TaskStatusItem";
 import styled from "@mui/material/styles/styled";
 
 const PageResponse = styled("div")(({ theme }) => ({
-  backgroundColor: `${theme.palette.mode === "dark" ? "#262626" : "#f5f5f5"}`,
+  backgroundColor: `${theme.palette.mode === "dark" ? "#262626" : "#e0e0e0"}`,
   display: "flex",
   flexDirection: "column",
   borderRadius: "10px",

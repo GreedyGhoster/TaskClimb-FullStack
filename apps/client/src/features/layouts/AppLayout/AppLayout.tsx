@@ -61,7 +61,7 @@ export function AppLayout() {
               {theme.palette.mode === "dark" ? (
                 <Brightness7Icon />
               ) : (
-                <Brightness4Icon />
+                <Brightness4Icon htmlColor="white" />
               )}
             </IconButton>
           </Toolbar>

@@ -56,7 +56,7 @@ const AccountMenu = () => {
     <>
       <Typography component={"h4"}>{profileData?.nickName}</Typography>
       <IconButton onClick={handleClick}>
-        <AccountCircleIcon />
+        <AccountCircleIcon htmlColor="white" />
       </IconButton>
       <Menu
         id="basic-menu"

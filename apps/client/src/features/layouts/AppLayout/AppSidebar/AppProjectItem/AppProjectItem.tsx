@@ -21,7 +21,6 @@ interface Props {
 const AppProjectItem: FC<Props> = ({ project }) => {
   const { deleteProject } = useTodo();
   const theme = useTheme();
-  console.log(theme.palette.mode);
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 
   return (
