@@ -6,7 +6,7 @@
 git clone https://github.com/GreedyGhoster/TaskClimb-FullStack.git
 ```
 
-### _Open each folder in apps/ and install dependencies as well for the root folder_
+### _Open the root folder and enter ```npm i``` and turbo will install all dependencies (but sometimes it happens with bugs)_
 
 Then in the root folder enter
 
