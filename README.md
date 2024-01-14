@@ -16,7 +16,7 @@ npm run dev
 
 ### Swagger
 
-You can open swagger ui after ```npm run dev```
+You can open swagger ui after `npm run dev`
 
 ```
 http://localhost:4580/swagger
@@ -42,10 +42,10 @@ Client side was built using React(Vite) and "npm" package manager
 ## Screenshots
 
 Project page
-![](./screenshots/ProjectPage.webp)
+![](./screenshots/ProjectPage.png)
 
 Task page
-![](./screenshots/TaskPage.webp)
+![](./screenshots/TaskPage.png)
 
 ### For errors
 
