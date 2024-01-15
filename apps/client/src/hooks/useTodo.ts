@@ -13,26 +13,26 @@ import _orderBy from "lodash/orderBy";
 import axios from "axios";
 
 function useTodoFunc() {
-  const authHeader = useAuthHeader();
+  const authHeader = useAuthHeader()();
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
 
   const fetcher = axios.create({
-    headers: { Authorization: authHeader() },
+    headers: { Authorization: authHeader },
     timeout: 1440,
-    baseURL: "http://localhost:4580/",
+    baseURL: "http://localhost:4580/api",
   });
 
   const getProjects = useCallback(async () => {
-    const res = await fetcher.get<IToDoProject[]>("api/projects");
+    const res = await fetcher.get<IToDoProject[]>("/projects");
     setProjects(res.data);
   }, []);
 
   const createProject = useCallback(async (title: string) => {
     const data = { title: title };
-    const res = await fetcher.post("api/projects", data);
+    const res = await fetcher.post("/projects", data);
     const projectId = res.data.id;
     const projectTitle = res.data.title;
 
@@ -40,7 +40,7 @@ function useTodoFunc() {
   }, []);
 
   const deleteProject = useCallback(async (projectId: string) => {
-    await fetcher.delete(`api/projects/${projectId}`);
+    await fetcher.delete(`/projects/${projectId}`);
     setProjects((prev) => {
       return prev.filter((project) => project.id !== projectId);
     });
@@ -53,7 +53,7 @@ function useTodoFunc() {
         const next = [...prev];
         const project = next.find((val) => val.id === projectId);
         if (project) {
-          fetcher.patch(`api/projects/${projectId}`, data);
+          fetcher.patch(`/projects/${projectId}`, data);
           project.title = newTitle;
           return next;
         } else {
@@ -75,7 +75,7 @@ function useTodoFunc() {
   );
 
   const getTasks = useCallback(async () => {
-    const res = await fetcher.get<IToDoTask[]>("api/projects/tasks");
+    const res = await fetcher.get<IToDoTask[]>("/projects/tasks");
     setTasks(res.data);
   }, []);
 
@@ -107,7 +107,7 @@ function useTodoFunc() {
         status: newTask.status,
         description: newTask.description,
       };
-      const res = await fetcher.post(`api/projects/${projectId}`, data);
+      const res = await fetcher.post(`/projects/${projectId}`, data);
       const taskId = await res.data.id;
       setTasks((prev) => {
         return [
@@ -146,7 +146,7 @@ function useTodoFunc() {
         const next = [...prev];
         const task = next.find((val) => val.id === taskId);
         if (task) {
-          fetcher.patch(`api/projects/${projectId}/${taskId}`, data);
+          fetcher.patch(`/projects/${projectId}/${taskId}`, data);
           task.title = editingTask.title;
           task.description = editingTask.description;
           return next;
@@ -160,7 +160,7 @@ function useTodoFunc() {
   );
 
   const deleteTask = useCallback(async (taskId: string, projectId: string) => {
-    await fetcher.delete(`api/projects/${projectId}/${taskId}`);
+    await fetcher.delete(`/projects/${projectId}/${taskId}`);
     setTasks((prev) => {
       return prev.filter((task) => task.id !== taskId);
     });
@@ -173,7 +173,7 @@ function useTodoFunc() {
         const task = next.find((val) => val.id === taskId);
         const data = { status: statusName };
         if (task) {
-          fetcher.patch(`api/projects/${projectId}/${taskId}`, data);
+          fetcher.patch(`/projects/${projectId}/${taskId}`, data);
           task.status = statusName;
           return next;
         } else {
@@ -186,12 +186,12 @@ function useTodoFunc() {
   );
 
   const getProfileData = useCallback(async () => {
-    const res = await fetcher.get("api/users/me");
+    const res = await fetcher.get("/users/me");
     setProfileData(res.data);
   }, []);
 
   const deleteAccount = useCallback(async () => {
-    await fetcher.delete("api/users/me");
+    await fetcher.delete("/users/me");
     setProfileData(undefined);
   }, []);
 
@@ -201,7 +201,7 @@ function useTodoFunc() {
         nickName: newData.nickName,
       };
 
-      const res = await fetcher.patch("api/users/me/edit/nickname", data);
+      const res = await fetcher.patch("/users/me/edit/nickname", data);
       console.log(res.data);
       // setProfileData((prev) => (prev!.nickName = .nickName));
     },

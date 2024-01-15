@@ -34,6 +34,7 @@ export default function SignUp() {
               token: res.data.token,
               expiresIn: 1440,
               tokenType: "Bearer",
+              authState: { nickName: signinData.nickName },
             })
           ) {
             goNext();

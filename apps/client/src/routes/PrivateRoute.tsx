@@ -3,9 +3,9 @@ import { Outlet } from "react-router-dom";
 import { Register } from "../features/Register";
 
 function PrivateRoute() {
-  const isAuthenticated = useIsAuthenticated();
+  const isAuthenticated = useIsAuthenticated()();
 
-  return isAuthenticated() ? <Outlet /> : <Register />;
+  return isAuthenticated ? <Outlet /> : <Register />;
 }
 
 export default PrivateRoute;
