@@ -33,7 +33,7 @@ function useTodoFunc() {
         setProjects(res.data);
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -51,7 +51,7 @@ function useTodoFunc() {
         ]);
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -65,7 +65,7 @@ function useTodoFunc() {
         });
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -89,7 +89,7 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please reload the page");
+        alert("Error: Please log in again or reload the page");
       }
     },
     []
@@ -112,7 +112,7 @@ function useTodoFunc() {
         setTasks(res.data);
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -161,7 +161,7 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please reload the page");
+        alert("Error: Please log in again or reload the page");
       }
     },
     []
@@ -208,7 +208,7 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please reload the page");
+        alert("Error: Please log in again or reload the page");
       }
     },
     []
@@ -224,7 +224,7 @@ function useTodoFunc() {
         });
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -252,7 +252,7 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please reload the page");
+        alert("Error: Please log in again or reload the page");
       }
     },
     []
@@ -266,7 +266,7 @@ function useTodoFunc() {
         setProfileData(res.data);
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -278,7 +278,7 @@ function useTodoFunc() {
         setProfileData(undefined);
       }
     } catch (err) {
-      alert("Error: Please reload the page");
+      alert("Error: Please log in again or reload the page");
     }
   }, []);
 
@@ -296,7 +296,7 @@ function useTodoFunc() {
           console.log(res.data);
         }
       } catch (err) {
-        alert("Error: Please reload the page");
+        alert("Error: Please log in again or reload the page");
       }
     },
     []
