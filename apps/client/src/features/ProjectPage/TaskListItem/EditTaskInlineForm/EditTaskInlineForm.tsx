@@ -10,7 +10,7 @@ import { FormTextField } from "../../../../components/form";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CheckIcon from "@mui/icons-material/Check";
 
 interface Props {
   task: IToDoTask;
@@ -63,7 +63,7 @@ const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
           placeholder="Edit task"
         />
         <IconButton onClick={handleSubmit(handleSubmitForm)}>
-          <AddCircleIcon color="success" />
+          <CheckIcon color="success" />
         </IconButton>
         <IconButton onClick={onCancel}>
           <CancelIcon />

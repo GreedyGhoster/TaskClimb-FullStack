@@ -6,7 +6,7 @@ import {
 } from "../../../../../../types";
 import { FormTextField } from "../../../../../../components/form";
 import CancelIcon from "@mui/icons-material/Cancel";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CheckIcon from "@mui/icons-material/Check";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { FC, useCallback } from "react";
@@ -53,7 +53,7 @@ const EditProjectForm: FC<Props> = ({ project, onCancel }) => {
           color="warning"
         />
         <IconButton onClick={handleSubmit(handleSubmitForm)}>
-          <AddCircleIcon color="success" />
+          <CheckIcon color="success" />
         </IconButton>
         <IconButton onClick={onCancel}>
           <CancelIcon />
