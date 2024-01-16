@@ -10,15 +10,5 @@ services:
       POSTGRES_DB: nester
     networks:
       - testnest
-  test-db:
-    image: postgres:13
-    ports:
-      - 5444:5432
-    environment:
-      POSTGRES_USER: postgres2
-      POSTGRES_PASSWORD: 125
-      POSTGRES_DB: nester
-    networks:
-      - testnest
 networks:
   testnest:
