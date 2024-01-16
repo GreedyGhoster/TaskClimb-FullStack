@@ -4,13 +4,9 @@ import { NotFound } from "../NotFound";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { EditToDoTaskFormValues } from "../../types";
-import { FormProvider, useForm } from "react-hook-form";
-import { useCallback } from "react";
-import { FormTextField } from "../../components/form";
 import Tooltip from "@mui/material/Tooltip";
-import TaskStatusItem from "../../components/tasks/TaskStatusItem";
 import styled from "@mui/material/styles/styled";
+import { TaskEditForm } from "./EditForm";
 
 const PageResponse = styled("div")(({ theme }) => ({
   backgroundColor: `${theme.palette.mode === "dark" ? "#262626" : "#e0e0e0"}`,
@@ -34,12 +30,12 @@ export function TaskPage() {
     projectId: string;
     taskId: string;
   }>();
-  const { findProject, findTask, editTask } = useTodo();
+  const { findProject, findTask } = useTodo();
+
+  const navigate = useNavigate();
 
   const project = findProject(projectId);
   const task = findTask(projectId, taskId);
-
-  const navigate = useNavigate();
 
   const goBack = () => {
     navigate(`/projects/${projectId}`);
@@ -48,23 +44,6 @@ export function TaskPage() {
   if (!project || !task) {
     return <NotFound />;
   }
-
-  const formMethods = useForm<EditToDoTaskFormValues>({
-    defaultValues: {
-      description: task.description,
-      title: task.title,
-      status: task.status,
-    },
-  });
-
-  const { handleSubmit } = formMethods;
-
-  const handleClickForm = useCallback(
-    async (values: EditToDoTaskFormValues) => {
-      editTask(task.id, project.id, values);
-    },
-    [editTask, task.id, project.id]
-  );
 
   return (
     <PageResponse>
@@ -105,34 +84,7 @@ export function TaskPage() {
           alignSelf: "center",
         }}
       >
-        <TaskStatusItem task={task} project={project} />
-        <FormProvider {...formMethods}>
-          <FormTextField
-            sx={{
-              width: "100%",
-            }}
-            name={"description"}
-            spellCheck="false"
-            variant="standard"
-            placeholder="Description in several rows"
-            multiline
-          />
-        </FormProvider>
-        <Tooltip title="Save changes">
-          <Button
-            sx={{
-              float: "right",
-              marginBottom: "2%",
-              marginTop: "2%",
-              marginRight: "1%",
-            }}
-            color="success"
-            variant="outlined"
-            onClick={handleSubmit(handleClickForm)}
-          >
-            Save
-          </Button>
-        </Tooltip>
+        <TaskEditForm task={task} project={project} />
       </Box>
     </PageResponse>
   );
