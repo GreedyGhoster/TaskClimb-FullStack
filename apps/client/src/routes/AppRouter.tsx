@@ -1,4 +1,4 @@
-import { NotFound } from "../features/NotFound";
+import { NotFound } from "../components/NotFound";
 import { Route, Routes } from "react-router-dom";
 import { ProjectPage } from "../features/ProjectPage";
 import { TaskPage } from "../features/TaskPage";

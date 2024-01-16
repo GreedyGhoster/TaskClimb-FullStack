@@ -8,31 +8,15 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import styled from "@mui/material/styles/styled";
 import { useTodo } from "../../hooks";
 import { useEffect, useState } from "react";
 import { useSignOut } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
-
-const PageResponse = styled("div")(({ theme }) => ({
-  backgroundColor: `${theme.palette.mode === "dark" ? "#262626" : "#f5f5f5"}`,
-  display: "flex",
-  flexDirection: "column",
-  borderRadius: "10px",
-  height: "auto",
-  margin: "auto",
-  padding: "0",
-  marginTop: "3%",
-  [theme.breakpoints.down("laptop")]: {
-    width: "85%",
-  },
-  [theme.breakpoints.up("laptop")]: {
-    width: "50%",
-  },
-}));
+import { ProfileTemplate } from "../../components/styled/Profile";
 
 export default function Profile() {
-  const { profileData, deleteAccount, projects, getProfileData } = useTodo();
+  const { profileData, deleteAccount, projects, tasks, getProfileData } =
+    useTodo();
   const [open, setOpen] = useState(false);
   const signOut = useSignOut();
 
@@ -58,15 +42,11 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    try {
-      getProfileData();
-    } catch (err) {
-      alert("Error: Please log in again or reload the page");
-    }
-  }, [projects.length]);
+    getProfileData();
+  }, [projects.length, tasks.length]);
 
   return (
-    <PageResponse>
+    <ProfileTemplate>
       <Box
         sx={{
           display: "inline-flex",
@@ -104,6 +84,6 @@ export default function Profile() {
           </Button>
         </DialogActions>
       </Dialog>
-    </PageResponse>
+    </ProfileTemplate>
   );
 }

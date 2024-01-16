@@ -6,7 +6,7 @@ export default function NotFound() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 1700);
+    }, 1650);
 
     return () => clearTimeout(timeout);
   }, []);

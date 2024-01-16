@@ -1,12 +1,12 @@
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { APP_SIDEBAR_WIDTH } from "../../features/layouts/AppLayout/AppSidebar";
+import { APP_SIDEBAR_WIDTH } from "../../../features/layouts/AppLayout/AppSidebar";
 import { styled } from "@mui/material/styles";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const AppBar = styled(MuiAppBar, {
+export const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   display: "inline-flex",
@@ -24,5 +24,3 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
-
-export default AppBar;

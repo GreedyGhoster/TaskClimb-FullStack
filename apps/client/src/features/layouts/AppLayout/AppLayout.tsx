@@ -12,10 +12,12 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import { ColorModeContext } from "../../../App";
-import { AccountMenu } from "../../../components/AccountMenu";
-import { AppBar } from "../../../components/AppBar";
-import { DrawerHeader } from "../../../components/DrawerHeader";
-import { DrawerAnimation } from "../../../components/styled/Drawer";
+import { AccountMenu } from "../../AccountMenu";
+import {
+  AppBar,
+  DrawerHeader,
+  DrawerAnimation,
+} from "../../../components/styled/AppLayout";
 
 export function AppLayout() {
   const theme = useTheme();

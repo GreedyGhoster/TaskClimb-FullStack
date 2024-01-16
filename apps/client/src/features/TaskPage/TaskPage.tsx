@@ -1,29 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useTodo } from "../../hooks";
-import { NotFound } from "../NotFound";
+import { NotFound } from "../../components/NotFound";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
-import styled from "@mui/material/styles/styled";
 import { TaskEditForm } from "./EditForm";
-
-const PageResponse = styled("div")(({ theme }) => ({
-  backgroundColor: `${theme.palette.mode === "dark" ? "#262626" : "#e0e0e0"}`,
-  display: "flex",
-  flexDirection: "column",
-  borderRadius: "10px",
-  height: "auto",
-  margin: "auto",
-  padding: "0",
-  marginTop: "3%",
-  [theme.breakpoints.down("laptop")]: {
-    width: "85%",
-  },
-  [theme.breakpoints.up("laptop")]: {
-    width: "50%",
-  },
-}));
+import { TaskPageTemplate } from "../../components/styled/TaskPage";
 
 export function TaskPage() {
   const { projectId, taskId } = useParams<{
@@ -46,7 +29,7 @@ export function TaskPage() {
   }
 
   return (
-    <PageResponse>
+    <TaskPageTemplate>
       <Box
         sx={{
           display: "inline-flex",
@@ -86,6 +69,6 @@ export function TaskPage() {
       >
         <TaskEditForm task={task} project={project} />
       </Box>
-    </PageResponse>
+    </TaskPageTemplate>
   );
 }

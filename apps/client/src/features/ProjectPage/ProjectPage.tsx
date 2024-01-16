@@ -13,7 +13,7 @@ import {
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
-import { NotFound } from "../NotFound";
+import { NotFound } from "../../components/NotFound";
 import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
 
 const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));

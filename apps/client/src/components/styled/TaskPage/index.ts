@@ -1,0 +1,1 @@
+export { TaskPageTemplate } from "./TaskPageTemplate";
