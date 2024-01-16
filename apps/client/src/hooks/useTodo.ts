@@ -8,12 +8,13 @@ import {
   IToDoTask,
   ProfileData,
 } from "../types";
-import { useAuthHeader } from "react-auth-kit";
+import { useAuthHeader, useSignOut } from "react-auth-kit";
 import _orderBy from "lodash/orderBy";
 import axios from "axios";
 
 function useTodoFunc() {
   const authHeader = useAuthHeader()();
+  const signOut = useSignOut();
 
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
@@ -33,7 +34,7 @@ function useTodoFunc() {
         setProjects(res.data);
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      null;
     }
   }, []);
 
@@ -51,7 +52,9 @@ function useTodoFunc() {
         ]);
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      alert(
+        "Error: Failed to add the project. Reload the page or log in again"
+      );
     }
   }, []);
 
@@ -65,7 +68,9 @@ function useTodoFunc() {
         });
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      alert(
+        "Error: Failed to delete the project. Reload the page or log in again"
+      );
     }
   }, []);
 
@@ -89,7 +94,9 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please log in again or reload the page");
+        alert(
+          "Error: Failed to change the project. Reload the page or log in again"
+        );
       }
     },
     []
@@ -112,7 +119,7 @@ function useTodoFunc() {
         setTasks(res.data);
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      null;
     }
   }, []);
 
@@ -161,7 +168,7 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please log in again or reload the page");
+        alert("Error: Failed to add the task. Reload the page or log in again");
       }
     },
     []
@@ -208,7 +215,9 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please log in again or reload the page");
+        alert(
+          "Error: Failed to change the task. Reload the page or log in again"
+        );
       }
     },
     []
@@ -224,7 +233,9 @@ function useTodoFunc() {
         });
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      alert(
+        "Error: Failed to delete the task. Reload the page or log in again"
+      );
     }
   }, []);
 
@@ -252,7 +263,9 @@ function useTodoFunc() {
           });
         }
       } catch (err) {
-        alert("Error: Please log in again or reload the page");
+        alert(
+          "Error: Failed to change the task. Reload the page or log in again"
+        );
       }
     },
     []
@@ -266,7 +279,7 @@ function useTodoFunc() {
         setProfileData(res.data);
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      signOut();
     }
   }, []);
 
@@ -278,7 +291,7 @@ function useTodoFunc() {
         setProfileData(undefined);
       }
     } catch (err) {
-      alert("Error: Please log in again or reload the page");
+      signOut();
     }
   }, []);
 
@@ -296,7 +309,8 @@ function useTodoFunc() {
           console.log(res.data);
         }
       } catch (err) {
-        alert("Error: Please log in again or reload the page");
+        signOut();
+        // window.location.replace("/auth/register");
       }
     },
     []

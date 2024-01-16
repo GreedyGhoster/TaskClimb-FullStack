@@ -13,25 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { TaskChip } from "../../../components/tasks";
-import styled from "@mui/material/styles/styled";
-
-const Root = styled("div")(({ theme }) => ({
-  padding: 0,
-  height: "3rem",
-  margin: "auto",
-  borderBottom: "1px groove #343739",
-  fontSize: "1.3rem",
-  textAlign: "center",
-  [theme.breakpoints.down("tablet")]: {
-    width: "100%",
-  },
-  [theme.breakpoints.up("tablet")]: {
-    width: "70%",
-  },
-  [theme.breakpoints.up("desktop")]: {
-    width: "45%",
-  },
-}));
+import { TaskListItemTemplate } from "../../../components/styled/TaskListItem";
 
 interface Props {
   task: IToDoTask;
@@ -43,7 +25,7 @@ const TaskListItem: FC<Props> = ({ task, project }) => {
 
   return (
     <UseRenderModeProvider defaultMode={RenderMode.View}>
-      <Root>
+      <TaskListItemTemplate>
         <RenderModeController
           renderView={(onChangeRenderMode) => (
             <ListItem
@@ -119,7 +101,7 @@ const TaskListItem: FC<Props> = ({ task, project }) => {
             />
           )}
         />
-      </Root>
+      </TaskListItemTemplate>
     </UseRenderModeProvider>
   );
 };

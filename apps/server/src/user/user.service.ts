@@ -19,8 +19,8 @@ export class UserService {
 
     return {
       nickName: user.nickName,
-      createdAt: user.createdAt.toString().split('T')[0],
-      updatedAt: user.updatedAt.toString().split('T')[0],
+      createdAt: user.createdAt.toISOString().split('T')[0],
+      updatedAt: user.updatedAt.toISOString().split('T')[0],
       projects: CountOfProjects,
       tasks: CountOfTasks,
     };

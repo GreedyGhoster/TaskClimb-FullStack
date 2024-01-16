@@ -1,7 +1,9 @@
 import { styled } from "@mui/material/styles";
-import { APP_SIDEBAR_WIDTH } from "../../features/layouts/AppLayout/AppSidebar";
+import { APP_SIDEBAR_WIDTH } from "../../../features/layouts/AppLayout/AppSidebar";
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
+export const DrawerAnimation = styled("main", {
+  shouldForwardProp: (prop) => prop !== "open",
+})<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
@@ -20,4 +22,4 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 }));
 
-export default Main;
+export default DrawerAnimation;

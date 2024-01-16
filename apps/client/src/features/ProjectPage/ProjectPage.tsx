@@ -13,43 +13,10 @@ import {
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
-import styled from "@mui/material/styles/styled";
 import { NotFound } from "../NotFound";
+import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
 
 const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
-
-const Root = styled("div")(({ theme }) => ({
-  height: "1.6rem",
-  margin: "auto",
-  marginTop: "0.5%",
-  display: "inline-flex",
-  borderBottom: "1px groove #b5b3b3",
-  gap: "1rem",
-  fontSize: "1.2rem",
-  textAlign: "center",
-  [theme.breakpoints.down("tablet")]: {
-    width: "100%",
-  },
-  [theme.breakpoints.up("tablet")]: {
-    width: "70%",
-  },
-  [theme.breakpoints.up("desktop")]: {
-    width: "45%",
-  },
-}));
-
-const Inputs = styled("div")(({ theme }) => ({
-  gap: "1rem",
-  textAlign: "center",
-  margin: "auto",
-  marginTop: "2.3%",
-  [theme.breakpoints.down("laptop")]: {
-    display: "table-column",
-  },
-  [theme.breakpoints.up("laptop")]: {
-    display: "inline-flex",
-  },
-}));
 
 export function ProjectPage() {
   const [searchTerm, setSearchTerm] = useState<string>();
@@ -66,7 +33,6 @@ export function ProjectPage() {
     setSearchTerm(undefined);
   }, [projectId]);
 
-  // TODO: make asynchronous calculations
   const countTasksByStatus = useMemo(() => {
     return {
       Done: tasks.filter((task) => task.status === "Done").length,
@@ -94,13 +60,13 @@ export function ProjectPage() {
       >
         {project.title}
       </Typography>
-      <Inputs>
+      <InputsTemplate>
         <SearchTaskForm projectId={project.id} onSearch={handleSearch} />
         <AddTaskForm projectId={project.id} />
-      </Inputs>
-      <Root>
+      </InputsTemplate>
+      <Counter>
         <span>Done: {countTasksByStatus.Done}</span>
-      </Root>
+      </Counter>
       <Suspense fallback={<h2>Loading...</h2>}>
         <List
           sx={{

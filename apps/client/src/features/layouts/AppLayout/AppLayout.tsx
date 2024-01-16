@@ -12,10 +12,10 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import { ColorModeContext } from "../../../App";
-import Main from "../../../components/Main/Main";
 import { AccountMenu } from "../../../components/AccountMenu";
 import { AppBar } from "../../../components/AppBar";
 import { DrawerHeader } from "../../../components/DrawerHeader";
+import { DrawerAnimation } from "../../../components/styled/Drawer";
 
 export function AppLayout() {
   const theme = useTheme();
@@ -90,10 +90,10 @@ export function AppLayout() {
         >
           <AppSidebar />
         </Drawer>
-        <Main open={open}>
+        <DrawerAnimation open={open}>
           <DrawerHeader />
           <Outlet />
-        </Main>
+        </DrawerAnimation>
       </UseTodoProvider>
     </Box>
   );

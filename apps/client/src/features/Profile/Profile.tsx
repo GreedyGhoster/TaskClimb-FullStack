@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import styled from "@mui/material/styles/styled";
 import { useTodo } from "../../hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSignOut } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const PageResponse = styled("div")(({ theme }) => ({
 }));
 
 export default function Profile() {
-  const { profileData, deleteAccount } = useTodo();
+  const { profileData, deleteAccount, projects, getProfileData } = useTodo();
   const [open, setOpen] = useState(false);
   const signOut = useSignOut();
 
@@ -56,6 +56,14 @@ export default function Profile() {
     signOut();
     setOpen(false);
   };
+
+  useEffect(() => {
+    try {
+      getProfileData();
+    } catch (err) {
+      alert("Error: Please log in again or reload the page");
+    }
+  }, [projects.length]);
 
   return (
     <PageResponse>

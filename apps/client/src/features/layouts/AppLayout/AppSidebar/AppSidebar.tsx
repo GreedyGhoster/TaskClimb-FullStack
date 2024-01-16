@@ -14,14 +14,8 @@ import useTheme from "@mui/material/styles/useTheme";
 const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 
 export const AppSidebar = () => {
-  const {
-    projects,
-    tasks,
-    createProject,
-    getProjects,
-    getTasks,
-    getProfileData,
-  } = useTodo();
+  const { projects, createProject, getProjects, getTasks, getProfileData } =
+    useTodo();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 
@@ -47,10 +41,6 @@ export const AppSidebar = () => {
     getTasks();
     getProfileData();
   }, []);
-
-  useEffect(() => {
-    getProfileData();
-  }, [projects.length, tasks.length]);
 
   return (
     <Box
