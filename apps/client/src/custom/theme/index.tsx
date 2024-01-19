@@ -4,7 +4,7 @@ import {
   LinkProps as RouterLinkProps,
 } from "react-router-dom";
 
-export const LinkBehaviour = forwardRef<
+const LinkBehaviour = forwardRef<
   HTMLAnchorElement,
   Omit<RouterLinkProps, "to"> & { href: RouterLinkProps["to"] }
 >((props, ref) => {

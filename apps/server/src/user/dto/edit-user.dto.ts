@@ -17,6 +17,16 @@ export class EditUserPasswordDto {
   @IsOptional()
   @IsString()
   @ApiProperty({
+    default: 'qwertyuiop',
+    minLength: 8,
+    nullable: false,
+    description: 'Old password',
+  })
+  oldPassword?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
     default: 'poiuytrewq',
     minLength: 8,
     nullable: false,

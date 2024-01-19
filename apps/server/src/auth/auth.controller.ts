@@ -12,7 +12,10 @@ export class AuthController {
   @Post('register')
   @ApiOperation({ description: 'Register a new user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'The user already exists',
+  })
   signup(@Body() dto: UserDto) {
     return this.authService.register(dto);
   }
@@ -21,7 +24,10 @@ export class AuthController {
   @Post('signin')
   @ApiOperation({ description: 'Log in to account' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'The user does not exist',
+  })
   signin(@Body() dto: UserDto) {
     return this.authService.signin(dto);
   }

@@ -47,6 +47,10 @@ export class UserController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'You should log in to your account',
   })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'The nickname is occupied by another user',
+  })
   userEditNickName(
     @GetUser('id') userId: string,
     @Body() dto: EditUserNickNameDto,
@@ -60,6 +64,10 @@ export class UserController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: 'You should log in to your account',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'The old possword is incorrect',
   })
   userEditPassword(
     @GetUser('id') userId: string,
