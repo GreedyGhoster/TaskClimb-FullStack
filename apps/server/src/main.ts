@@ -26,7 +26,6 @@ async function bootstrap() {
       'Here are all the project endpoints. Register for your account and enter the token in the "Authorize" field. ',
     )
     .setVersion('1.0')
-    .addTag('taskclimb')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
