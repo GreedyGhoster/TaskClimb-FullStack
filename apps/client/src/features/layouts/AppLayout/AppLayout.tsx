@@ -24,12 +24,14 @@ export function AppLayout() {
   const [open, setOpen] = useState(true);
   const colorMode = useContext(ColorModeContext);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  const handlers = {
+    handleDrawerOpen: () => {
+      setOpen(true);
+    },
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+    handleDrawerClose: () => {
+      setOpen(false);
+    },
   };
 
   return (
@@ -51,7 +53,9 @@ export function AppLayout() {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={open ? handleDrawerClose : handleDrawerOpen}
+              onClick={
+                open ? handlers.handleDrawerClose : handlers.handleDrawerOpen
+              }
               edge="start"
               sx={{
                 marginLeft: "2px",

@@ -18,7 +18,6 @@ export default function Register() {
     handleSubmit,
     reset,
   } = useForm<Data>({ mode: "onBlur" });
-
   const navigate = useNavigate();
 
   const goNext = () => navigate("/");

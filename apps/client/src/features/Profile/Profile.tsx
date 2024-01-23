@@ -1,11 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  ListItem,
-  Typography,
-} from "@mui/material";
+import { Button, ListItem, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import { useTodo } from "../../hooks";
@@ -13,32 +6,55 @@ import { useEffect, useState } from "react";
 import { useSignOut } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
 import { ProfileTemplate } from "../../components/styled/Profile";
+import {
+  DialogDelete,
+  DialogEditNick,
+  DialogEditPass,
+} from "../../components/DialogsTempates";
 
 export default function Profile() {
   const { profileData, deleteAccount, projects, tasks, getProfileData } =
     useTodo();
-  const [open, setOpen] = useState(false);
+  const [openDialogDelete, setOpenDialogDelete] = useState(false);
+  const [openDialogEditNick, setOpenDialogEditNick] = useState(false);
+  const [openDialogEditPass, setOpenDialogEditPass] = useState(false);
   const signOut = useSignOut();
-
   const navigate = useNavigate();
 
   const goRegister = () => {
     navigate("/auth/register");
   };
 
-  const handleOpenReq = () => {
-    setOpen(true);
-  };
+  const handlers = {
+    handleOpenEditNick: () => {
+      setOpenDialogEditNick(true);
+    },
 
-  const handleCloseReq = () => {
-    setOpen(false);
-  };
+    handleCloseEditNick: () => {
+      setOpenDialogEditNick(false);
+    },
 
-  const handleAgree = () => {
-    deleteAccount();
-    goRegister();
-    signOut();
-    setOpen(false);
+    handleOpenEditPass: () => {
+      setOpenDialogEditPass(true);
+    },
+
+    handleCloseEditPass: () => {
+      setOpenDialogEditPass(false);
+    },
+
+    handleOpenDeleteReq: () => {
+      setOpenDialogDelete(true);
+    },
+
+    handleCloseDeleteReq: () => {
+      setOpenDialogDelete(false);
+    },
+    handleAgreeDelete: () => {
+      deleteAccount();
+      goRegister();
+      signOut();
+      setOpenDialogDelete(false);
+    },
   };
 
   useEffect(() => {
@@ -58,6 +74,7 @@ export default function Profile() {
       >
         <Typography variant="h5">Profile</Typography>
       </Box>
+
       <List>
         <ListItem>NickName: {profileData?.nickName}</ListItem>
         <ListItem>CreatedAt: {profileData?.createdAt}</ListItem>
@@ -65,25 +82,34 @@ export default function Profile() {
         <ListItem>Projects: {profileData?.projects}</ListItem>
         <ListItem>Tasks: {profileData?.tasks}</ListItem>
       </List>
-      <Button color="error" onClick={handleOpenReq}>
-        Delete account
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleCloseReq}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete your account?"}
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleCloseReq}>Close</Button>
-          <Button onClick={handleAgree} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      <Stack alignSelf="center" direction="column" spacing={2}>
+        <Button color="warning" onClick={handlers.handleOpenEditNick}>
+          Change nickname
+        </Button>
+        <Button color="warning" onClick={handlers.handleOpenEditPass}>
+          Change password
+        </Button>
+        <Button color="error" onClick={handlers.handleOpenDeleteReq}>
+          Delete account
+        </Button>
+      </Stack>
+
+      <DialogEditPass
+        handleCloseEditPass={handlers.handleCloseEditPass}
+        openDialogEditPass={openDialogEditPass}
+      />
+
+      <DialogEditNick
+        handleCloseEditNick={handlers.handleCloseEditNick}
+        openDialogEditNick={openDialogEditNick}
+      />
+
+      <DialogDelete
+        openDialogDelete={openDialogDelete}
+        handleAgree={handlers.handleAgreeDelete}
+        handleCloseDeleteReq={handlers.handleCloseDeleteReq}
+      />
     </ProfileTemplate>
   );
 }

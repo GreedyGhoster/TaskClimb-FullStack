@@ -4,16 +4,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import { useState } from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { ListItemButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSignOut, useAuthUser } from "react-auth-kit";
+import { DialogLogout } from "../../components/DialogsTempates";
 
 const AccountMenu = () => {
   const signOut = useSignOut();
@@ -22,46 +16,47 @@ const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
-
   const navigate = useNavigate();
 
   const goRegister = () => {
     navigate("/auth/register");
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handlers = {
+    handleClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    },
 
-  const handleCloseBar = () => {
-    setAnchorEl(null);
-  };
+    handleCloseBar: () => {
+      setAnchorEl(null);
+    },
 
-  const handleOpenReq = () => {
-    setOpen(true);
-  };
+    handleOpenReq: () => {
+      setOpen(true);
+    },
 
-  const handleCloseReq = () => {
-    setOpen(false);
-  };
+    handleCloseReq: () => {
+      setOpen(false);
+    },
 
-  const handleAgree = () => {
-    goRegister();
-    signOut();
-    setOpen(false);
+    handleAgree: () => {
+      goRegister();
+      signOut();
+      setOpen(false);
+    },
   };
 
   return (
     <>
       <Typography component={"h4"}>{authUser!.nickName}</Typography>
-      <IconButton onClick={handleClick}>
+      <IconButton onClick={handlers.handleClick}>
         <AccountCircleIcon htmlColor="white" />
       </IconButton>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
         open={openMenu}
-        onClose={handleCloseBar}
+        onClose={handlers.handleCloseBar}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
@@ -72,28 +67,17 @@ const AccountMenu = () => {
           </ListItemIcon>
           Profile
         </ListItemButton>
-        <ListItemButton onClick={handleOpenReq}>
+        <ListItemButton onClick={handlers.handleOpenReq}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
           Logout
         </ListItemButton>
-        <Dialog
-          open={open}
-          onClose={handleCloseReq}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Are you sure you want to log out of your account?"}
-          </DialogTitle>
-          <DialogActions>
-            <Button onClick={handleCloseReq}>Close</Button>
-            <Button onClick={handleAgree} autoFocus>
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DialogLogout
+          openDialogLogout={open}
+          handleAgree={handlers.handleAgree}
+          handleCloseReq={handlers.handleCloseReq}
+        />
       </Menu>
     </>
   );
