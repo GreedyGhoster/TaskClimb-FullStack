@@ -1,1 +1,1 @@
-export {default as EditTaskInlineForm} from './EditTaskInlineForm'
+export { default as EditTaskInlineForm } from "./EditTaskInlineForm";

@@ -14,6 +14,10 @@ export class TaskDto {
 
   @IsOptional()
   @IsString()
-  @ApiProperty({ default: 'Learn some theorems', nullable: false, description: 'Task description' })
+  @ApiProperty({
+    default: 'Learn some theorems',
+    nullable: false,
+    description: 'Task description',
+  })
   description?: string;
 }

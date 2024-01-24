@@ -1,1 +1,1 @@
-export * from './TaskChip'
+export * from "./TaskChip";

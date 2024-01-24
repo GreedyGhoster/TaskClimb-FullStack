@@ -1,1 +1,1 @@
-export {default as EditProjectForm} from './EditProjectForm'
+export { default as EditProjectForm } from "./EditProjectForm";

@@ -8,7 +8,7 @@ import _xorWith from "lodash/xorWith";
 
 function arrayToObj<TDataItem extends any>(
   array: TDataItem[],
-  key: string = "id"
+  key: string = "id",
 ) {
   return _keyBy(array, key);
 }

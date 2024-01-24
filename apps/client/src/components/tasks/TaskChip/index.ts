@@ -1,1 +1,1 @@
-export {default as TaskChip} from './TaskChip'
+export { default as TaskChip } from "./TaskChip";

@@ -1,5 +1,5 @@
 export enum RenderMode {
-  Create = 'Create',
-  Edit = 'Edit',
-  View = 'View',
+  Create = "Create",
+  Edit = "Edit",
+  View = "View",
 }
