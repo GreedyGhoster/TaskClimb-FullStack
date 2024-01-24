@@ -1,61 +1,13 @@
-import { Button, ListItem, Stack, Typography } from "@mui/material";
+import { ListItem, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import { useTodo } from "../../hooks";
-import { useEffect, useState } from "react";
-import { useSignOut } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { ProfileTemplate } from "../../components/styled/Profile";
-import {
-  DialogDelete,
-  DialogEditNick,
-  DialogEditPass,
-} from "../../components/DialogsTempates";
+import { ChangeNickname, DeleteAccount, ChangePassword } from "./features";
 
 export default function Profile() {
-  const { profileData, deleteAccount, projects, tasks, getProfileData } =
-    useTodo();
-  const [openDialogDelete, setOpenDialogDelete] = useState(false);
-  const [openDialogEditNick, setOpenDialogEditNick] = useState(false);
-  const [openDialogEditPass, setOpenDialogEditPass] = useState(false);
-  const signOut = useSignOut();
-  const navigate = useNavigate();
-
-  const goRegister = () => {
-    navigate("/auth/register");
-  };
-
-  const handlers = {
-    handleOpenEditNick: () => {
-      setOpenDialogEditNick(true);
-    },
-
-    handleCloseEditNick: () => {
-      setOpenDialogEditNick(false);
-    },
-
-    handleOpenEditPass: () => {
-      setOpenDialogEditPass(true);
-    },
-
-    handleCloseEditPass: () => {
-      setOpenDialogEditPass(false);
-    },
-
-    handleOpenDeleteReq: () => {
-      setOpenDialogDelete(true);
-    },
-
-    handleCloseDeleteReq: () => {
-      setOpenDialogDelete(false);
-    },
-    handleAgreeDelete: () => {
-      deleteAccount();
-      goRegister();
-      signOut();
-      setOpenDialogDelete(false);
-    },
-  };
+  const { profileData, projects, tasks, getProfileData } = useTodo();
 
   useEffect(() => {
     getProfileData();
@@ -84,32 +36,10 @@ export default function Profile() {
       </List>
 
       <Stack alignSelf="center" direction="column" spacing={2}>
-        <Button color="warning" onClick={handlers.handleOpenEditNick}>
-          Change nickname
-        </Button>
-        <Button color="warning" onClick={handlers.handleOpenEditPass}>
-          Change password
-        </Button>
-        <Button color="error" onClick={handlers.handleOpenDeleteReq}>
-          Delete account
-        </Button>
+        <ChangeNickname />
+        <ChangePassword />
+        <DeleteAccount />
       </Stack>
-
-      <DialogEditPass
-        handleCloseEditPass={handlers.handleCloseEditPass}
-        openDialogEditPass={openDialogEditPass}
-      />
-
-      <DialogEditNick
-        handleCloseEditNick={handlers.handleCloseEditNick}
-        openDialogEditNick={openDialogEditNick}
-      />
-
-      <DialogDelete
-        openDialogDelete={openDialogDelete}
-        handleAgree={handlers.handleAgreeDelete}
-        handleCloseDeleteReq={handlers.handleCloseDeleteReq}
-      />
     </ProfileTemplate>
   );
 }
