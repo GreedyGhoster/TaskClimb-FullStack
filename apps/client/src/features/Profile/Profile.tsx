@@ -4,7 +4,11 @@ import List from "@mui/material/List";
 import { useTodo } from "../../hooks";
 import { useEffect } from "react";
 import { ProfileTemplate } from "../../components/styled/Profile";
-import { ChangeNickname, DeleteAccount, ChangePassword } from "./features";
+import {
+  ChangeNickname,
+  DeleteAccount,
+  ChangePassword,
+} from "./ProfileFeatures";
 
 export default function Profile() {
   const { profileData, projects, tasks, getProfileData } = useTodo();
