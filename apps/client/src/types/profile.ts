@@ -6,6 +6,6 @@ export interface ProfileData {
   tasks: number;
 }
 
-export interface EditProfileNickName {
+export type EditProfileNickName = {
   nickName: string;
-}
+};

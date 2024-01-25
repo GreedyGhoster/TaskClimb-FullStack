@@ -3,3 +3,8 @@ export enum RenderMode {
   Edit = "Edit",
   View = "View",
 }
+
+export type Credentials = {
+  nickName: string;
+  password: string;
+};

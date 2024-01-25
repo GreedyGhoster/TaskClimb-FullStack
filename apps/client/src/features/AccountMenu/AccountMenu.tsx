@@ -7,7 +7,7 @@ import { useState } from "react";
 import { ListItemButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSignOut, useAuthUser } from "react-auth-kit";
-import { DialogLogout } from "../../components/DialogsTempates";
+import { DialogLogout } from "../Profile/DialogsTempates";
 
 const AccountMenu = () => {
   const signOut = useSignOut();

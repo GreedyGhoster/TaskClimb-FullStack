@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { DialogEditPass } from "../../../components/DialogsTempates";
+import { DialogEditPass } from "../DialogsTempates";
 import { useState } from "react";
 
 export const ChangePassword = () => {

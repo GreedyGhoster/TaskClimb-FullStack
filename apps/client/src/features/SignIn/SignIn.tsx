@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Data } from "../Register/Register";
+import { Credentials } from "../../types";
 
 export default function SignUp() {
   const signin = useSignIn();
@@ -13,15 +13,15 @@ export default function SignUp() {
     formState: { errors, isValid },
     handleSubmit,
     reset,
-  } = useForm<Data>({ mode: "onBlur" });
+  } = useForm<Credentials>({ mode: "onBlur" });
   const navigate = useNavigate();
 
   const goNext = () => {
     navigate("/");
   };
 
-  const FetchData: SubmitHandler<Data> = useCallback(
-    async (signinData: Data) => {
+  const FetchData: SubmitHandler<Credentials> = useCallback(
+    async (signinData: Credentials) => {
       try {
         const res = await axios.post("/api/auth/signin", {
           nickName: signinData.nickName,

@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { DialogEditNick } from "../../../components/DialogsTempates";
+import { DialogEditNick } from "../DialogsTempates";
 import { useState } from "react";
 
 export const ChangeNickname = () => {

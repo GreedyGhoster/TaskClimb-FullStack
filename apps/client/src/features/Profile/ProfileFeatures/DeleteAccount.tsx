@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { DialogDelete } from "../../../components/DialogsTempates";
+import { DialogDelete } from "../DialogsTempates";
 import { useState } from "react";
 import { useTodo } from "../../../hooks";
 import { useSignOut } from "react-auth-kit";
