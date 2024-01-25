@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import {
   AddToDoTaskFormValues,
   EditProfileNickName,
+  EditProfilePassword,
   EditToDoTaskFormValues,
   IToDoProject,
   IToDoTask,
@@ -318,6 +319,30 @@ function useTodoFunc() {
     []
   );
 
+  const updateAccountPassword = useCallback(
+    async (newData: EditProfilePassword) => {
+      try {
+        const data = {
+          oldPassword: newData.oldPassword,
+          newPassword: newData.newPassword,
+        };
+
+        const res = await fetcher.patch("/users/me/edit/password", data);
+
+        if (res.status === 200) {
+          signOut();
+        }
+      } catch (err: any) {
+        if (err.response.status === 403) {
+          alert("Error: The old possword is incorrect");
+        } else {
+          alert("Forbidden: Access to the resource is denied");
+        }
+      }
+    },
+    []
+  );
+
   return useMemo(
     () => ({
       projects,
@@ -338,6 +363,7 @@ function useTodoFunc() {
       profileData,
       deleteAccount,
       updateAccountNickName,
+      updateAccountPassword,
     }),
     [
       projects,
@@ -358,6 +384,7 @@ function useTodoFunc() {
       profileData,
       deleteAccount,
       updateAccountNickName,
+      updateAccountPassword,
     ]
   );
 }

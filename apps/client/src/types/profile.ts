@@ -9,3 +9,8 @@ export interface ProfileData {
 export type EditProfileNickName = {
   nickName: string;
 };
+
+export type EditProfilePassword = {
+  oldPassword: string;
+  newPassword: string;
+};

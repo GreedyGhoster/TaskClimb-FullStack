@@ -54,7 +54,7 @@ export const DialogEditNick: FC<Props> = ({
               },
               maxLength: {
                 value: 15,
-                message: "Maximum of 15 characters",
+                message: "Maximum of 17 characters",
               },
             })}
             margin="dense"
@@ -65,7 +65,7 @@ export const DialogEditNick: FC<Props> = ({
             variant="standard"
             error={!!errors.nickName}
           />
-          <div style={{ color: "#f44336", height: "32px" }}>
+          <div style={{ color: "#f44336", height: "15px" }}>
             {errors.nickName && <span>{errors.nickName.message}</span>}
           </div>
           <DialogActions>

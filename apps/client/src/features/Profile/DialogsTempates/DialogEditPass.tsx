@@ -5,7 +5,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { FC } from "react";
+import { FC, useCallback } from "react";
+import { useTodo } from "../../../hooks";
+import { EditProfilePassword } from "../../../types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import Box from "@mui/material/Box";
 
 interface Props {
   openDialogEditPass: any;
@@ -16,6 +20,22 @@ export const DialogEditPass: FC<Props> = ({
   openDialogEditPass,
   handleCloseEditPass,
 }) => {
+  const { updateAccountPassword } = useTodo();
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm<EditProfilePassword>({ mode: "onBlur" });
+
+  const FetchData: SubmitHandler<EditProfilePassword> = useCallback(
+    async (passwords: EditProfilePassword) => {
+      updateAccountPassword(passwords);
+      reset();
+    },
+    [updateAccountPassword, reset]
+  );
+
   return (
     <Dialog open={openDialogEditPass} onClose={handleCloseEditPass}>
       <DialogTitle>Change password</DialogTitle>
@@ -24,33 +44,64 @@ export const DialogEditPass: FC<Props> = ({
           If you change your password, you will have to log in to your account
           again
         </DialogContentText>
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="oldPassword"
-          name="oldPassword"
-          label="Old password"
-          type="password"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="newPassword"
-          name="newPassword"
-          label="New password"
-          type="password"
-          fullWidth
-          variant="standard"
-        />
+        <Box component={"form"} onSubmit={handleSubmit(FetchData)}>
+          <TextField
+            {...register("oldPassword", {
+              required: "The field must be filled in",
+              minLength: {
+                value: 8,
+                message: "Minimum of 8 characters",
+              },
+              maxLength: {
+                value: 20,
+                message: "Maximum of 20 characters",
+              },
+            })}
+            margin="dense"
+            id="oldPassword"
+            name="oldPassword"
+            label="Old password"
+            type="password"
+            fullWidth
+            variant="standard"
+            error={!!errors.oldPassword}
+          />
+          <div style={{ color: "#f44336", height: "15px" }}>
+            {errors.oldPassword && <span>{errors.oldPassword.message}</span>}
+          </div>
+
+          <TextField
+            {...register("newPassword", {
+              required: "The field must be filled in",
+              minLength: {
+                value: 8,
+                message: "Minimum of 8 characters",
+              },
+              maxLength: {
+                value: 20,
+                message: "Maximum of 20 characters",
+              },
+            })}
+            margin="dense"
+            id="newPassword"
+            name="newPassword"
+            label="New password"
+            type="password"
+            fullWidth
+            variant="standard"
+            error={!!errors.newPassword}
+          />
+          <div style={{ color: "#f44336", height: "15px" }}>
+            {errors.newPassword && <span>{errors.newPassword.message}</span>}
+          </div>
+          <DialogActions>
+            <Button onClick={handleCloseEditPass}>Cancel</Button>
+            <Button type="submit" disabled={!isValid}>
+              Subscribe
+            </Button>
+          </DialogActions>
+        </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCloseEditPass}>Cancel</Button>
-        <Button type="submit">Subscribe</Button>
-      </DialogActions>
     </Dialog>
   );
 };
