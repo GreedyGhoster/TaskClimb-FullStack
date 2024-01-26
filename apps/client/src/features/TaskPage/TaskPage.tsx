@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useTodo } from "../../hooks";
+import { useProjects, useTasks } from "../../hooks";
 import { NotFound } from "../../components/NotFound";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -13,7 +13,8 @@ export function TaskPage() {
     projectId: string;
     taskId: string;
   }>();
-  const { findProject, findTask } = useTodo();
+  const { findProject } = useProjects();
+  const { findTask } = useTasks();
 
   const navigate = useNavigate();
 

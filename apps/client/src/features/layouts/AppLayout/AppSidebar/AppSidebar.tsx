@@ -1,5 +1,5 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
-import { useTodo } from "../../../../hooks";
+import { useProfile, useProjects, useTasks, useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoProjectFormValues } from "../../../../types";
 import { Suspense, lazy, useCallback, useEffect, useState } from "react";
@@ -14,8 +14,10 @@ import useTheme from "@mui/material/styles/useTheme";
 const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 
 export const AppSidebar = () => {
-  const { projects, createProject, getProjects, getTasks, getProfileData } =
-    useTodo();
+  const { projects } = useTodo();
+  const { getProfileData } = useProfile();
+  const { getTasks } = useTasks();
+  const { createProject, getProjects } = useProjects();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
 

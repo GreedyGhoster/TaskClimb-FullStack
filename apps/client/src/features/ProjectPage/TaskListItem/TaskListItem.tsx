@@ -2,7 +2,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FC } from "react";
-import { UseRenderModeProvider, useTodo } from "../../../hooks";
+import { UseRenderModeProvider, useTasks } from "../../../hooks";
 import { IToDoProject, IToDoTask, RenderMode } from "../../../types";
 import { RenderModeController } from "../../../components/ctrl";
 import { EditTaskInlineForm } from "./EditTaskInlineForm";
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const TaskListItem: FC<Props> = ({ task, project }) => {
-  const { deleteTask } = useTodo();
+  const { deleteTask } = useTasks();
 
   return (
     <UseRenderModeProvider defaultMode={RenderMode.View}>

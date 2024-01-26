@@ -1,4 +1,4 @@
-import { useTodo } from "../../../../../../hooks";
+import { useProjects } from "../../../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   EditToDoProjectFormValues,
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const EditProjectForm: FC<Props> = ({ project, onCancel }) => {
-  const { editProject } = useTodo();
+  const { editProject } = useProjects();
 
   const formMethods = useForm<EditToDoProjectFormValues>({
     defaultValues: {

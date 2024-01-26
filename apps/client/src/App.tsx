@@ -2,7 +2,7 @@ import { createContext } from "react";
 import "./global.css";
 import { AppRouter } from "./routes";
 import { ThemeProvider } from "@mui/material";
-import useChangeThemeMode from "./hooks/useChangeTheme";
+import useChangeThemeMode from "./hooks/utils/useChangeTheme";
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 

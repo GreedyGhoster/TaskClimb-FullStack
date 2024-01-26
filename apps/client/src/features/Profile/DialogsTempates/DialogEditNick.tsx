@@ -6,7 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { FC, useCallback } from "react";
-import { useTodo } from "../../../hooks";
+import { useProfile } from "../../../hooks";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { EditProfileNickName } from "../../../types";
 import { Box } from "@mui/material";
@@ -20,7 +20,7 @@ export const DialogEditNick: FC<Props> = ({
   openDialogEditNick,
   handleCloseEditNick,
 }) => {
-  const { updateAccountNickName } = useTodo();
+  const { updateAccountNickName } = useProfile();
   const {
     register,
     formState: { errors, isValid },

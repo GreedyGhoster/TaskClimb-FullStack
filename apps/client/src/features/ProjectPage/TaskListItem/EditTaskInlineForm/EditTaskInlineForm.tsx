@@ -4,7 +4,7 @@ import {
   IToDoProject,
   IToDoTask,
 } from "../../../../types";
-import { useTodo } from "../../../../hooks";
+import { useTasks } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormTextField } from "../../../../components/form";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
-  const { editTask } = useTodo();
+  const { editTask } = useTasks();
 
   const formMethods = useForm<EditToDoTaskFormValues>({
     defaultValues: {

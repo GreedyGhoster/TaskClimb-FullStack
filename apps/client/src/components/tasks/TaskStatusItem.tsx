@@ -1,4 +1,4 @@
-import { useTodo } from "../../hooks";
+import { useTasks } from "../../hooks";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { FC, useEffect, useState } from "react";
@@ -14,7 +14,7 @@ interface Props {
 const options = ["New", "Doing", "Done"];
 
 const TaskStatusItem: FC<Props> = ({ task, project }) => {
-  const { statusSwitcher } = useTodo();
+  const { statusSwitcher } = useTasks();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const [selectedIndex, setSelectedIndex] = useState<number>(getIndexByStatus);

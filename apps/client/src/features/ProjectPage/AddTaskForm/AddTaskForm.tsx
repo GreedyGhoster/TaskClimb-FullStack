@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { FormTextField } from "../../../components/form";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoTaskFormValues } from "../../../types";
-import { useTodo } from "../../../hooks";
+import { useTasks } from "../../../hooks";
 import Box from "@mui/material/Box";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AddTaskForm: FC<Props> = ({ projectId }) => {
-  const { addTask } = useTodo();
+  const { addTask } = useTasks();
 
   const formMethods = useForm<AddToDoTaskFormValues>({
     defaultValues: {

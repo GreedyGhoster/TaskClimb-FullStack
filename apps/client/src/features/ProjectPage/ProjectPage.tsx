@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useTodo } from "../../hooks";
+import { useProjects, useTasks } from "../../hooks";
 import { AddTaskForm } from "./AddTaskForm";
 import { SearchTaskForm } from "./SearchTaskForm";
 import {
@@ -20,7 +20,8 @@ const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
 
 export function ProjectPage() {
   const [searchTerm, setSearchTerm] = useState<string>();
-  const { findProject, getTasksByProject } = useTodo();
+  const { findProject } = useProjects();
+  const { getTasksByProject } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
   const project = findProject(projectId);
   const tasks = getTasksByProject(projectId, searchTerm);

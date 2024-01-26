@@ -6,7 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { FC, useCallback } from "react";
-import { useTodo } from "../../../hooks";
+import { useProfile } from "../../../hooks";
 import { EditProfilePassword } from "../../../types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
@@ -20,7 +20,7 @@ export const DialogEditPass: FC<Props> = ({
   openDialogEditPass,
   handleCloseEditPass,
 }) => {
-  const { updateAccountPassword } = useTodo();
+  const { updateAccountPassword } = useProfile();
   const {
     register,
     formState: { errors, isValid },

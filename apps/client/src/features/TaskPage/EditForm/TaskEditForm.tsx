@@ -5,7 +5,7 @@ import {
   IToDoProject,
   IToDoTask,
 } from "../../../types";
-import { useTodo } from "../../../hooks";
+import { useTasks } from "../../../hooks";
 import { FormTextField } from "../../../components/form";
 import { Button, Tooltip } from "@mui/material";
 import TaskStatusItem from "../../../components/tasks/TaskStatusItem";
@@ -19,7 +19,7 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
   project,
   task,
 }) => {
-  const { editTask } = useTodo();
+  const { editTask } = useTasks();
   const formMethods = useForm<EditToDoTaskFormValues>({
     defaultValues: {
       description: task.description,

@@ -5,7 +5,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FC, Fragment } from "react";
-import { UseRenderModeProvider, useTodo } from "../../../../../hooks";
+import { UseRenderModeProvider, useProjects } from "../../../../../hooks";
 import { EditProjectForm } from "./EditProjectForm";
 import { IToDoProject, RenderMode } from "../../../../../types";
 import { useParams } from "react-router-dom";
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const AppProjectItem: FC<Props> = ({ project }) => {
-  const { deleteProject } = useTodo();
+  const { deleteProject } = useProjects();
   const theme = useTheme();
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
 

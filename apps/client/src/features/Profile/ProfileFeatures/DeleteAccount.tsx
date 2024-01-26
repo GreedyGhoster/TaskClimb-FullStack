@@ -1,13 +1,13 @@
 import Button from "@mui/material/Button";
 import { DialogDelete } from "../DialogsTempates";
 import { useState } from "react";
-import { useTodo } from "../../../hooks";
+import { useProfile } from "../../../hooks";
 import { useSignOut } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
 
 export const DeleteAccount = () => {
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
-  const { deleteAccount } = useTodo();
+  const { deleteAccount } = useProfile();
   const signOut = useSignOut();
   const navigate = useNavigate();
 
