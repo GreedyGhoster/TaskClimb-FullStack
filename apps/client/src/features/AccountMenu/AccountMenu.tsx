@@ -6,13 +6,13 @@ import Menu from "@mui/material/Menu";
 import { useState } from "react";
 import { ListItemButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSignOut, useAuthUser } from "react-auth-kit";
+import { useSignOut } from "react-auth-kit";
 import { DialogLogout } from "../Profile/DialogsTempates";
+import { useTodo } from "../../hooks";
 
 const AccountMenu = () => {
   const signOut = useSignOut();
-  const authUser = useAuthUser()();
-
+  const { profileData } = useTodo();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
@@ -48,7 +48,7 @@ const AccountMenu = () => {
 
   return (
     <>
-      <Typography component={"h4"}>{authUser!.nickName}</Typography>
+      <Typography component={"h4"}>{profileData?.nickName}</Typography>
       <IconButton onClick={handlers.handleClick}>
         <AccountCircleIcon htmlColor="white" />
       </IconButton>

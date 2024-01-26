@@ -30,7 +30,7 @@ export const DialogEditNick: FC<Props> = ({
 
   const FetchData: SubmitHandler<EditProfileNickName> = useCallback(
     async (nickName: EditProfileNickName) => {
-      updateAccountNickName(nickName);
+      await updateAccountNickName(nickName);
       reset();
     },
     [updateAccountNickName, reset]
@@ -41,8 +41,7 @@ export const DialogEditNick: FC<Props> = ({
       <DialogTitle>Change nickname</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          If you change your nickname, you will have to log in to your account
-          again
+          Are you sure you want to change your nickname?
         </DialogContentText>
         <Box component={"form"} onSubmit={handleSubmit(FetchData)}>
           <TextField
@@ -70,7 +69,11 @@ export const DialogEditNick: FC<Props> = ({
           </div>
           <DialogActions>
             <Button onClick={handleCloseEditNick}>Cancel</Button>
-            <Button type="submit" disabled={!isValid}>
+            <Button
+              type="submit"
+              disabled={!isValid}
+              onClick={handleCloseEditNick}
+            >
               Change
             </Button>
           </DialogActions>

@@ -306,7 +306,7 @@ function useTodoFunc() {
         const res = await fetcher.patch("/users/me/edit/nickname", data);
 
         if (res.status === 200) {
-          signOut();
+          getProfileData();
         }
       } catch (err: any) {
         if (err.response.status === 403) {
@@ -330,7 +330,7 @@ function useTodoFunc() {
         const res = await fetcher.patch("/users/me/edit/password", data);
 
         if (res.status === 200) {
-          signOut();
+          getProfileData();
         }
       } catch (err: any) {
         if (err.response.status === 403) {

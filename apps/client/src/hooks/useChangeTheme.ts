@@ -1,7 +1,7 @@
 import { LinkProps } from "@mui/material/Link";
-import LinkBehaviour from "..";
 import createTheme from "@mui/material/styles/createTheme";
 import { useMemo, useState } from "react";
+import LinkBehaviour from "../custom/theme";
 
 export default function useChangeThemeMode() {
   const [mode, setMode] = useState<"light" | "dark">("dark");
@@ -12,7 +12,7 @@ export default function useChangeThemeMode() {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    [],
+    []
   );
 
   const theme = useMemo(
@@ -48,7 +48,7 @@ export default function useChangeThemeMode() {
           },
         },
       }),
-    [mode],
+    [mode]
   );
 
   return { theme, colorMode };

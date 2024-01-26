@@ -30,7 +30,7 @@ export const DialogEditPass: FC<Props> = ({
 
   const FetchData: SubmitHandler<EditProfilePassword> = useCallback(
     async (passwords: EditProfilePassword) => {
-      updateAccountPassword(passwords);
+      await updateAccountPassword(passwords);
       reset();
     },
     [updateAccountPassword, reset]
@@ -40,10 +40,8 @@ export const DialogEditPass: FC<Props> = ({
     <Dialog open={openDialogEditPass} onClose={handleCloseEditPass}>
       <DialogTitle>Change password</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          If you change your password, you will have to log in to your account
-          again
-        </DialogContentText>
+        Are you sure you want to change your password?
+        <DialogContentText></DialogContentText>
         <Box component={"form"} onSubmit={handleSubmit(FetchData)}>
           <TextField
             {...register("oldPassword", {
@@ -96,8 +94,12 @@ export const DialogEditPass: FC<Props> = ({
           </div>
           <DialogActions>
             <Button onClick={handleCloseEditPass}>Cancel</Button>
-            <Button type="submit" disabled={!isValid}>
-              Subscribe
+            <Button
+              type="submit"
+              disabled={!isValid}
+              onClick={handleCloseEditPass}
+            >
+              Change
             </Button>
           </DialogActions>
         </Box>
