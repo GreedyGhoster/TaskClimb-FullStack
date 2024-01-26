@@ -53,7 +53,7 @@ export const useProfile = () => {
         }
       }
     },
-    []
+    [],
   );
 
   const updateAccountPassword = useCallback(
@@ -77,7 +77,7 @@ export const useProfile = () => {
         }
       }
     },
-    []
+    [],
   );
 
   return useMemo(
@@ -94,6 +94,6 @@ export const useProfile = () => {
       deleteAccount,
       updateAccountNickName,
       updateAccountPassword,
-    ]
+    ],
   );
 };

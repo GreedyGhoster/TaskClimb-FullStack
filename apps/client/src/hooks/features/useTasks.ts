@@ -30,19 +30,19 @@ export const useTasks = () => {
       // поиск по названию
       if (searchTerm) {
         filteredTasks = tasks.filter((task) =>
-          task.title.toLowerCase().includes(searchTerm)
+          task.title.toLowerCase().includes(searchTerm),
         );
       }
 
       return _orderBy(
         filteredTasks.filter(
-          (filteredTask) => filteredTask.projectId === projectId
+          (filteredTask) => filteredTask.projectId === projectId,
         ),
         ["createdAt"],
-        ["desc"]
+        ["desc"],
       );
     },
-    [tasks]
+    [tasks],
   );
 
   const addTask = useCallback(
@@ -73,23 +73,23 @@ export const useTasks = () => {
         alert("Error: Failed to add the task. Reload the page or log in again");
       }
     },
-    []
+    [],
   );
 
   const findTask = useCallback(
     (projectId?: string, taskId?: string) => {
       return tasks.find(
-        (task) => task.id === taskId && task.projectId === projectId
+        (task) => task.id === taskId && task.projectId === projectId,
       );
     },
-    [tasks]
+    [tasks],
   );
 
   const editTask = useCallback(
     async (
       taskId: string,
       projectId: string,
-      editingTask: EditToDoTaskFormValues
+      editingTask: EditToDoTaskFormValues,
     ) => {
       try {
         const data = {
@@ -98,7 +98,7 @@ export const useTasks = () => {
         };
         const res = await fetcher.patch(
           `/projects/${projectId}/${taskId}`,
-          data
+          data,
         );
 
         if (res.status === 200) {
@@ -118,11 +118,11 @@ export const useTasks = () => {
         }
       } catch (err) {
         alert(
-          "Error: Failed to change the task. Reload the page or log in again"
+          "Error: Failed to change the task. Reload the page or log in again",
         );
       }
     },
-    []
+    [],
   );
 
   const deleteTask = useCallback(async (taskId: string, projectId: string) => {
@@ -136,7 +136,7 @@ export const useTasks = () => {
       }
     } catch (err) {
       alert(
-        "Error: Failed to delete the task. Reload the page or log in again"
+        "Error: Failed to delete the task. Reload the page or log in again",
       );
     }
   }, []);
@@ -147,7 +147,7 @@ export const useTasks = () => {
         const data = { status: statusName };
         const res = await fetcher.patch(
           `/projects/${projectId}/${taskId}`,
-          data
+          data,
         );
 
         if (res.status === 200) {
@@ -166,11 +166,11 @@ export const useTasks = () => {
         }
       } catch (err) {
         alert(
-          "Error: Failed to change the task. Reload the page or log in again"
+          "Error: Failed to change the task. Reload the page or log in again",
         );
       }
     },
-    []
+    [],
   );
 
   return useMemo(
@@ -191,6 +191,6 @@ export const useTasks = () => {
       editTask,
       deleteTask,
       statusSwitcher,
-    ]
+    ],
   );
 };

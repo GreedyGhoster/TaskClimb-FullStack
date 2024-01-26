@@ -8,7 +8,7 @@ interface UseRenderModeProps {
 
 function useRenderModeFunc(props: UseRenderModeProps) {
   const [renderMode, setRenderMode] = useState(
-    props.defaultMode ?? RenderMode.View
+    props.defaultMode ?? RenderMode.View,
   );
 
   const handleChangeRenderMode = useCallback((newRenderMode: RenderMode) => {
@@ -20,7 +20,7 @@ function useRenderModeFunc(props: UseRenderModeProps) {
       handleChangeRenderMode,
       renderMode,
     }),
-    [renderMode, handleChangeRenderMode]
+    [renderMode, handleChangeRenderMode],
   );
 }
 

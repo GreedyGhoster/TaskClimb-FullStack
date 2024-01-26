@@ -12,7 +12,7 @@ export default function useChangeThemeMode() {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    []
+    [],
   );
 
   const theme = useMemo(
@@ -48,7 +48,7 @@ export default function useChangeThemeMode() {
           },
         },
       }),
-    [mode]
+    [mode],
   );
 
   return { theme, colorMode };
