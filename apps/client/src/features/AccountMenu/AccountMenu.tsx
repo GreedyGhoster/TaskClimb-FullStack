@@ -3,12 +3,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import { useState } from "react";
-import { ListItemButton, Typography } from "@mui/material";
+import { Suspense, lazy, useState } from "react";
+import { ListItemButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 import { DialogLogout } from "../Profile/DialogsTempates";
 import { useTodo } from "../../hooks";
+
+const Typography = lazy(() => import("@mui/material/Typography"));
 
 const AccountMenu = () => {
   const signOut = useSignOut();
@@ -48,7 +50,9 @@ const AccountMenu = () => {
 
   return (
     <>
-      <Typography component={"h4"}>{profileData?.nickName}</Typography>
+      <Suspense fallback={<h4>Loading...</h4>}>
+        <Typography>{profileData?.nickName}</Typography>
+      </Suspense>
       <IconButton onClick={handlers.handleClick}>
         <AccountCircleIcon htmlColor="white" />
       </IconButton>

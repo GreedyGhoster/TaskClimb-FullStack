@@ -67,7 +67,7 @@ export function ProjectPage() {
       <Counter>
         <span>Done: {countTasksByStatus.Done}</span>
       </Counter>
-      <Suspense fallback={<h2>Loading...</h2>}>
+      <Suspense fallback={<h3>Loading...</h3>}>
         <List
           sx={{
             width: "100%",

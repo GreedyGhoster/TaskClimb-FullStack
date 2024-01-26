@@ -89,7 +89,7 @@ export const AppSidebar = () => {
             placeholder="Find project"
           />
         </Stack>
-        <Suspense fallback={<h2>Loading...</h2>}>
+        <Suspense fallback={<h3>Loading...</h3>}>
           <List
             sx={{
               display: "flex",
