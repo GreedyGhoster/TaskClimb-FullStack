@@ -17,7 +17,7 @@ function useTodoFunc() {
       profileData,
       setProfileData,
     }),
-    [tasks, projects, setTasks, setProjects, profileData, setProfileData],
+    [tasks, projects, setTasks, setProjects, profileData, setProfileData]
   );
 }
 
