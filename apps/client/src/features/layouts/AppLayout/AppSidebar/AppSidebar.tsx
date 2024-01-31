@@ -1,5 +1,5 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
-import { useProfile, useProjects, useTasks, useTodo } from "../../../../hooks";
+import { useProfile, useProjects, useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddToDoProjectFormValues } from "../../../../types";
 import { Suspense, lazy, useCallback, useEffect, useState } from "react";
@@ -16,7 +16,6 @@ const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 export const AppSidebar = () => {
   const { projects } = useTodo();
   const { getProfileData } = useProfile();
-  const { getTasks } = useTasks();
   const { createProject, getProjects } = useProjects();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
@@ -40,7 +39,6 @@ export const AppSidebar = () => {
 
   useEffect(() => {
     getProjects();
-    getTasks();
     getProfileData();
   }, []);
 

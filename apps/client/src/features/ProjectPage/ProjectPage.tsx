@@ -21,7 +21,7 @@ const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
 export function ProjectPage() {
   const [searchTerm, setSearchTerm] = useState<string>();
   const { findProject } = useProjects();
-  const { getTasksByProject } = useTasks();
+  const { getTasksByProject, getTasks } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
   const project = findProject(projectId);
   const tasks = getTasksByProject(projectId, searchTerm);
@@ -33,6 +33,10 @@ export function ProjectPage() {
   useEffect(() => {
     setSearchTerm(undefined);
   }, [projectId]);
+
+  useEffect(() => {
+    getTasks();
+  }, []);
 
   const countTasksByStatus = useMemo(() => {
     return {
