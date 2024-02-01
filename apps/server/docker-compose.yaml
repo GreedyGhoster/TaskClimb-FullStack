@@ -5,10 +5,10 @@ services:
     ports:
       - 5443:5432
     environment:
-      POSTGRES_USER: postgres2
-      POSTGRES_PASSWORD: 125
-      POSTGRES_DB: nester
+      POSTGRES_USER: greedyghoster
+      POSTGRES_PASSWORD: qwertytrewq
+      POSTGRES_DB: bestdb
     networks:
-      - testnest
+      - bestnetword
 networks:
-  testnest:
+  bestnetword:
