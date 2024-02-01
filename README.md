@@ -6,7 +6,7 @@
 git clone https://github.com/GreedyGhoster/TaskClimb-FullStack.git
 ```
 
-Next add your data in `.env.example` and `docker-compose.example.yaml`. Then rename them to `.env` and `docker-compose.yaml`
+Next add your data to `.env.example` and `docker-compose.example.yaml`. Then rename them to `.env` and `docker-compose.yaml`
 
 ### _Open the root folder and enter `npm i` and turbo will install all dependencies_
 
