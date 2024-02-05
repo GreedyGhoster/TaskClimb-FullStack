@@ -1,6 +1,6 @@
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { APP_SIDEBAR_WIDTH } from "../../../features/layouts/AppLayout/AppSidebar";
 import { styled } from "@mui/material/styles";
+import { APP_SIDEBAR_WIDTH } from "../../../features/layouts/AppSidebar";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;

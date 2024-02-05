@@ -33,7 +33,6 @@ export default function Profile() {
       </Box>
 
       <List>
-        <ListItem>NickName: {profileData?.nickName}</ListItem>
         <ListItem>CreatedAt: {profileData?.createdAt}</ListItem>
         <ListItem>UpdatedAt: {profileData?.updatedAt}</ListItem>
         <ListItem>Projects: {profileData?.projects}</ListItem>

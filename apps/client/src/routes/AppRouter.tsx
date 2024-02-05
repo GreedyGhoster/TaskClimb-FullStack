@@ -3,11 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import { ProjectPage } from "../features/ProjectPage";
 import { TaskPage } from "../features/TaskPage";
 import { Greeting } from "../components/Greeting";
-import { SignIn } from "../features/SignIn";
-import { Register } from "../features/Register";
 import PrivateRoute from "./PrivateRoute";
 import { AppLayout } from "../features/layouts/AppLayout";
 import { Profile } from "../features/Profile";
+import { Register } from "../features/auth/Register";
+import { SignIn } from "../features/auth/SignIn";
 
 export default function AppRouter() {
   return (

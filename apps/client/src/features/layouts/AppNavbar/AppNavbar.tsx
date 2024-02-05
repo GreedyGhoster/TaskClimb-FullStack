@@ -3,9 +3,9 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { AccountMenu } from "../../features/AccountMenu";
 import { Theme } from "@mui/material";
 import { FC } from "react";
+import { AccountMenu } from "../../AccountMenu";
 
 interface Props {
   open: boolean;
@@ -15,7 +15,7 @@ interface Props {
   handleDrawerOpen: any;
 }
 
-export const LayoutToolbar: FC<Props> = ({
+export const AppNavbar: FC<Props> = ({
   open,
   theme,
   colorMode,

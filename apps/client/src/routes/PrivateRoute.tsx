@@ -1,11 +1,11 @@
 import { useIsAuthenticated } from "react-auth-kit";
 import { Outlet } from "react-router-dom";
-import { Register } from "../features/Register";
+import { SignIn } from "../features/auth/SignIn";
 
 function PrivateRoute() {
   const isAuthenticated = useIsAuthenticated()();
 
-  return isAuthenticated ? <Outlet /> : <Register />;
+  return isAuthenticated ? <Outlet /> : <SignIn />;
 }
 
 export default PrivateRoute;

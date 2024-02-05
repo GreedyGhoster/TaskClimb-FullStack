@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import { APP_SIDEBAR_WIDTH, AppSidebar } from "./AppSidebar";
 import { UseTodoProvider } from "../../../hooks";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
@@ -12,7 +11,8 @@ import {
   DrawerHeader,
   DrawerAnimation,
 } from "../../../components/styled/AppLayout";
-import { LayoutToolbar } from "../../../components/Toolbars";
+import { APP_SIDEBAR_WIDTH, AppSidebar } from "../AppSidebar";
+import { AppNavbar } from "../AppNavbar";
 
 export function AppLayout() {
   const theme = useTheme();
@@ -39,7 +39,7 @@ export function AppLayout() {
       <UseTodoProvider>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
-          <LayoutToolbar
+          <AppNavbar
             open={open}
             colorMode={colorMode}
             handleDrawerClose={handlers.handleDrawerClose}

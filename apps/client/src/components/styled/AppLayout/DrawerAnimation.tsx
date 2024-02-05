@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { APP_SIDEBAR_WIDTH } from "../../../features/layouts/AppLayout/AppSidebar";
+import { APP_SIDEBAR_WIDTH } from "../../../features/layouts/AppSidebar";
 
 export const DrawerAnimation = styled("main", {
   shouldForwardProp: (prop) => prop !== "open",

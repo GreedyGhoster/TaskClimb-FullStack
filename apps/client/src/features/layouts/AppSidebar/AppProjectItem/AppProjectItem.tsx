@@ -5,14 +5,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FC, Fragment } from "react";
-import { UseRenderModeProvider, useProjects } from "../../../../../hooks";
 import { EditProjectForm } from "./EditProjectForm";
-import { IToDoProject, RenderMode } from "../../../../../types";
 import { useParams } from "react-router-dom";
-import { RenderModeController } from "../../../../../components/ctrl";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
+import { RenderModeController } from "../../../../components/ctrl";
+import { UseRenderModeProvider, useProjects } from "../../../../hooks";
+import { IToDoProject, RenderMode } from "../../../../types";
 
 interface Props {
   project: IToDoProject;

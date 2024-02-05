@@ -1,15 +1,12 @@
-import { useProjects } from "../../../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  EditToDoProjectFormValues,
-  IToDoProject,
-} from "../../../../../../types";
-import { FormTextField } from "../../../../../../components/form";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { FC, useCallback } from "react";
+import { EditToDoProjectFormValues, IToDoProject } from "../../../../../types";
+import { useProjects } from "../../../../../hooks";
+import { FormTextField } from "../../../../../components/form";
 
 interface Props {
   project: IToDoProject;

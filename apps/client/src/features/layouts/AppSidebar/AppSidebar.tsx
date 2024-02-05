@@ -1,15 +1,15 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
-import { useProfile, useProjects, useTodo } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
-import { AddToDoProjectFormValues } from "../../../../types";
 import { Suspense, lazy, useCallback, useEffect, useState } from "react";
-import { FormTextField } from "../../../../components/form";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
+import { FormTextField } from "../../../components/form";
+import { AddToDoProjectFormValues } from "../../../types";
+import { useProfile, useProjects, useTodo } from "../../../hooks";
 
 const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 
