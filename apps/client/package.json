@@ -21,7 +21,7 @@
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.7",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.0",
+    "react-hook-form": "^7.51.1",
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
