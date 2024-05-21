@@ -1,7 +1,7 @@
 import { ListItem, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import { useProfile, useTodo } from "../../hooks";
+import { useProfile, useStore } from "../../hooks";
 import { useEffect } from "react";
 import { ProfileTemplate } from "../../components/styled/Profile";
 import {
@@ -11,7 +11,7 @@ import {
 } from "./ProfileFeatures";
 
 export default function Profile() {
-  const { profileData, projects, tasks } = useTodo();
+  const { profileData, projects, tasks } = useStore();
   const { getProfileData } = useProfile();
 
   useEffect(() => {

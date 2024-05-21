@@ -6,11 +6,11 @@ import {
 } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
-import { useTodo } from "..";
+import { useStore } from "..";
 
 export const useTasks = () => {
   const { fetcher } = useFetcher();
-  const { tasks, setTasks } = useTodo();
+  const { tasks, setTasks } = useStore();
 
   const getTasks = useCallback(async () => {
     try {

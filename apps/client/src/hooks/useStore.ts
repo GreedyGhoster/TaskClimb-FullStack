@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { IToDoProject, IToDoTask, ProfileData } from "../types";
 import _orderBy from "lodash/orderBy";
 
-function useTodoFunc() {
+const useStoreFunc = () => {
   const [tasks, setTasks] = useState<IToDoTask[]>([]);
   const [projects, setProjects] = useState<IToDoProject[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
@@ -19,8 +19,8 @@ function useTodoFunc() {
     }),
     [tasks, projects, setTasks, setProjects, profileData, setProfileData]
   );
-}
+};
 
-const constateResult = constate(useTodoFunc);
-export const UseTodoProvider = constateResult[0];
-export const useTodo = constateResult[1];
+const constateResult = constate(useStoreFunc);
+export const UseStoreProvider = constateResult[0];
+export const useStore = constateResult[1];

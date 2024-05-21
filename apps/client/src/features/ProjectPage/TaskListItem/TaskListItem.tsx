@@ -1,7 +1,7 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { UseRenderModeProvider, useTasks } from "../../../hooks";
 import { IToDoProject, IToDoTask, RenderMode } from "../../../types";
 import { RenderModeController } from "../../../components/ctrl";
@@ -14,6 +14,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { TaskChip } from "../../../components/tasks";
 import { TaskListItemTemplate } from "../../../components/styled/TaskListItem";
+import { useSearchParams } from "react-router-dom";
+import { TaskModal } from "../../TaskModal";
 
 interface Props {
   task: IToDoTask;
@@ -22,87 +24,104 @@ interface Props {
 
 const TaskListItem: FC<Props> = ({ task, project }) => {
   const { deleteTask } = useTasks();
+  const [searchParams] = useSearchParams();
+
+  const taskId = searchParams.get("taskId");
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <UseRenderModeProvider defaultMode={RenderMode.View}>
-      <TaskListItemTemplate>
-        <RenderModeController
-          renderView={(onChangeRenderMode) => (
-            <ListItem
-              sx={{
-                padding: "0",
-              }}
-              component={"div"}
-            >
-              <Tooltip title="Click to view the description" placement="left">
-                <ListItemButton
-                  sx={{
-                    textAlign: "center",
-                    height: "3rem",
-                    overflowWrap: "break-word",
-                  }}
-                  href={TaskRoute(task.projectId, task.id)}
-                >
-                  <ListItemText
-                    sx={
-                      task.status === "Done"
-                        ? {
-                            padding: "0",
-                            color: "#919191",
-                            textDecoration: "line-through",
-                          }
-                        : {
-                            padding: "0",
-                          }
-                    }
-                    primary={task.title}
-                  />
-                </ListItemButton>
-              </Tooltip>
-              <Box
+    <>
+      <UseRenderModeProvider defaultMode={RenderMode.View}>
+        <TaskListItemTemplate>
+          <RenderModeController
+            renderView={(onChangeRenderMode) => (
+              <ListItem
                 sx={{
-                  display: "inline-flex",
-                  justifyContent: "space-evenly",
-                  width: "35%",
+                  padding: "0",
                 }}
+                component={"div"}
               >
+                <Tooltip title="Click to view the description" placement="left">
+                  <ListItemButton
+                    sx={{
+                      textAlign: "center",
+                      height: "3rem",
+                      overflowWrap: "break-word",
+                    }}
+                    href={TaskRoute(task.projectId, task.id)}
+                    onClick={handleClickOpen}
+                  >
+                    <ListItemText
+                      sx={
+                        task.status === "Done"
+                          ? {
+                              padding: "0",
+                              color: "#919191",
+                              textDecoration: "line-through",
+                            }
+                          : {
+                              padding: "0",
+                            }
+                      }
+                      primary={task.title}
+                    />
+                  </ListItemButton>
+                </Tooltip>
                 <Box
                   sx={{
-                    marginTop: "2px",
-                    width: "4rem",
+                    display: "inline-flex",
+                    justifyContent: "space-evenly",
+                    width: "35%",
                   }}
                 >
-                  <TaskChip status={task.status} />
-                </Box>
-                <Box>
-                  <IconButton
-                    onClick={() => onChangeRenderMode(RenderMode.Edit)}
-                    color="secondary"
+                  <Box
+                    sx={{
+                      marginTop: "2px",
+                      width: "4rem",
+                    }}
                   >
-                    <EditIcon />
-                  </IconButton>
+                    <TaskChip status={task.status} />
+                  </Box>
+                  <Box>
+                    <IconButton
+                      onClick={() => onChangeRenderMode(RenderMode.Edit)}
+                      color="secondary"
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      onClick={() => deleteTask(task.id, project.id)}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
                 </Box>
-                <Box>
-                  <IconButton
-                    onClick={() => deleteTask(task.id, project.id)}
-                    color="error"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            </ListItem>
-          )}
-          renderEdit={(onChangeRenderMode) => (
-            <EditTaskInlineForm
-              task={task}
-              project={project}
-              onCancel={() => onChangeRenderMode(RenderMode.View)}
-            />
-          )}
-        />
-      </TaskListItemTemplate>
-    </UseRenderModeProvider>
+              </ListItem>
+            )}
+            renderEdit={(onChangeRenderMode) => (
+              <EditTaskInlineForm
+                task={task}
+                project={project}
+                onCancel={() => onChangeRenderMode(RenderMode.View)}
+              />
+            )}
+          />
+        </TaskListItemTemplate>
+      </UseRenderModeProvider>
+      {taskId ? <TaskModal open={open} handleClose={handleClose} /> : null}
+    </>
   );
 };
 
