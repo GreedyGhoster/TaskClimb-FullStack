@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react";
 import { IToDoProject } from "../../types";
-import { useTodo } from "..";
+import { useStore } from "..";
 import { useFetcher } from "../axios/useFetcher";
 
 export const useProjects = () => {
   const { fetcher } = useFetcher();
-  const { projects, setProjects } = useTodo();
+  const { projects, setProjects } = useStore();
 
   const getProjects = useCallback(async () => {
     try {
@@ -34,7 +34,7 @@ export const useProjects = () => {
       }
     } catch (err) {
       alert(
-        "Error: Failed to add the project. Reload the page or log in again",
+        "Error: Failed to add the project. Reload the page or log in again"
       );
     }
   }, []);
@@ -50,7 +50,7 @@ export const useProjects = () => {
       }
     } catch (err) {
       alert(
-        "Error: Failed to delete the project. Reload the page or log in again",
+        "Error: Failed to delete the project. Reload the page or log in again"
       );
     }
   }, []);
@@ -76,11 +76,11 @@ export const useProjects = () => {
         }
       } catch (err) {
         alert(
-          "Error: Failed to change the project. Reload the page or log in again",
+          "Error: Failed to change the project. Reload the page or log in again"
         );
       }
     },
-    [],
+    []
   );
 
   const findProject = useCallback(
@@ -89,7 +89,7 @@ export const useProjects = () => {
         ? projects.find((project) => project.id === projectId)
         : undefined;
     },
-    [projects],
+    [projects]
   );
   return useMemo(
     () => ({
@@ -99,6 +99,6 @@ export const useProjects = () => {
       editProject,
       findProject,
     }),
-    [getProjects, createProject, deleteProject, editProject, findProject],
+    [getProjects, createProject, deleteProject, editProject, findProject]
   );
 };

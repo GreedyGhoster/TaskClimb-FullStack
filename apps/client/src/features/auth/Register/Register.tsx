@@ -50,10 +50,10 @@ export default function Register() {
   );
 
   return (
-    <Container maxWidth="tablet">
+    <Container>
       <Box
         sx={{
-          width: "100%",
+          width: "30%",
           margin: "auto",
           backgroundColor: "#303030",
           boxShadow: "0px 14px 80px rgba(34, 35, 58, 0.2)",

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { UseTodoProvider } from "../../../hooks";
+import { UseStoreProvider } from "../../../hooks";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Drawer from "@mui/material/Drawer";
@@ -36,7 +36,7 @@ export function AppLayout() {
         transition: "0.7s",
       }}
     >
-      <UseTodoProvider>
+      <UseStoreProvider>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <AppNavbar
@@ -66,7 +66,7 @@ export function AppLayout() {
           <DrawerHeader />
           <Outlet />
         </DrawerAnimation>
-      </UseTodoProvider>
+      </UseStoreProvider>
     </Box>
   );
 }

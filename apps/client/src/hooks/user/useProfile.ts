@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from "react";
 import { EditProfileNickName, EditProfilePassword } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
-import { useTodo } from "..";
+import { useStore } from "..";
 import { useSignOut } from "react-auth-kit";
 
 export const useProfile = () => {
   const signOut = useSignOut();
   const { fetcher } = useFetcher();
-  const { profileData, setProfileData } = useTodo();
+  const { profileData, setProfileData } = useStore();
 
   const getProfileData = useCallback(async () => {
     try {
@@ -53,7 +53,7 @@ export const useProfile = () => {
         }
       }
     },
-    [],
+    []
   );
 
   const updateAccountPassword = useCallback(
@@ -77,7 +77,7 @@ export const useProfile = () => {
         }
       }
     },
-    [],
+    []
   );
 
   return useMemo(
@@ -94,6 +94,6 @@ export const useProfile = () => {
       deleteAccount,
       updateAccountNickName,
       updateAccountPassword,
-    ],
+    ]
   );
 };

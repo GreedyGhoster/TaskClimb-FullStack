@@ -9,13 +9,12 @@ import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 import { FormTextField } from "../../../components/form";
 import { AddToDoProjectFormValues } from "../../../types";
-import { useProfile, useProjects, useTodo } from "../../../hooks";
+import { useProjects, useStore } from "../../../hooks";
 
 const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 
 export const AppSidebar = () => {
-  const { projects } = useTodo();
-  const { getProfileData } = useProfile();
+  const { projects } = useStore();
   const { createProject, getProjects } = useProjects();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const theme = useTheme();
@@ -39,7 +38,6 @@ export const AppSidebar = () => {
 
   useEffect(() => {
     getProjects();
-    getProfileData();
   }, []);
 
   return (
