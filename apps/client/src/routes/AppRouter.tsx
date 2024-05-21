@@ -1,7 +1,6 @@
 import { NotFound } from "../components/NotFound";
 import { Route, Routes } from "react-router-dom";
 import { ProjectPage } from "../features/ProjectPage";
-import { TaskPage } from "../features/TaskPage";
 import { Greeting } from "../components/Greeting";
 import PrivateRoute from "./PrivateRoute";
 import { AppLayout } from "../features/layouts/AppLayout";
@@ -16,7 +15,6 @@ export default function AppRouter() {
         <Route path="/" element={<AppLayout />}>
           <Route path="" element={<Greeting />} />
           <Route path="/projects/:projectId" element={<ProjectPage />} />
-          <Route path="/projects/:projectId/:taskId" element={<TaskPage />} />
           <Route path="/users/me" element={<Profile />} />
         </Route>
       </Route>
