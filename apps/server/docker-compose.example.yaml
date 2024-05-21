@@ -9,6 +9,6 @@ services:
       POSTGRES_PASSWORD: #password#
       POSTGRES_DB: #databasename#
     networks:
-      #networkname#-
+     - #networkname#
 networks:
   #networkname#:
