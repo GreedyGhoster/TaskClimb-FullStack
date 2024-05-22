@@ -46,9 +46,6 @@ Client side was built using React(Vite) and "npm" package manager
 Project page
 ![](./screenshots/ProjectPage.png)
 
-Task page
-![](./screenshots/TaskPage.png)
-
 ### For errors
 
 Uncaught Error: Cannot find module 'react'
