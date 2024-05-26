@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const DeleteAccount = () => {
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const { deleteAccount } = useProfile();
+  const { trigger } = deleteAccount();
   const signOut = useSignOut();
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export const DeleteAccount = () => {
     },
 
     handleAgreeDelete: () => {
-      deleteAccount();
+      trigger();
       goRegister();
       signOut();
       setOpenDialogDelete(false);

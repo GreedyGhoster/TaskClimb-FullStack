@@ -1,10 +1,10 @@
-export interface ProfileData {
+export type ProfileData = {
   createdAt: string;
   updatedAt: string;
   nickName: string;
   projects: number;
   tasks: number;
-}
+};
 
 export type EditProfileNickName = {
   nickName: string;

@@ -41,7 +41,7 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
     <Modal
       open={!!taskId || open}
       style={{
-        backgroundColor: "rgba(30, 30, 30, 0.5)",
+        backgroundColor: "rgba(30, 30, 30, 0.4)",
       }}
       onClose={handleClose}
       hideBackdrop

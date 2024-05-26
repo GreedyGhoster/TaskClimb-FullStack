@@ -1,60 +1,59 @@
 import { useCallback, useMemo } from "react";
-import { EditProfileNickName, EditProfilePassword } from "../../types";
+import {
+  EditProfileNickName,
+  EditProfilePassword,
+  ProfileData,
+} from "../../types";
 import { useFetcher } from "../axios/useFetcher";
 import { useStore } from "..";
 import { useSignOut } from "react-auth-kit";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 export const useProfile = () => {
   const signOut = useSignOut();
-  const { fetcher } = useFetcher();
+  const { fetcher, getData, deleteItem, patchItem } = useFetcher();
   const { profileData, setProfileData } = useStore();
 
-  const getProfileData = useCallback(async () => {
-    try {
-      const res = await fetcher.get("/users/me");
+  const getProfileData = useCallback(() => {
+    const { data, error, isLoading } = useSWR<ProfileData>(
+      "/users/me",
+      getData,
+      { suspense: true, refreshInterval: 5000 }
+    );
 
-      if (res.status === 200) {
-        setProfileData(res.data);
-      }
-    } catch (err) {
-      signOut();
-    }
+    if (error) signOut();
+
+    return {
+      profileData: data,
+      isLoading,
+    };
   }, []);
 
-  const deleteAccount = useCallback(async () => {
-    try {
-      const res = await fetcher.delete("/users/me");
+  const deleteAccount = useCallback(() => {
+    const { trigger } = useSWRMutation("/users/me", deleteItem, {
+      onError: () => signOut(),
+    });
 
-      if (res.status === 204) {
-        setProfileData(undefined);
-      }
-    } catch (err) {
-      signOut();
-    }
+    return {
+      trigger,
+    };
   }, []);
 
-  const updateAccountNickName = useCallback(
-    async (newData: EditProfileNickName) => {
-      try {
-        const data = {
-          nickName: newData.nickName,
-        };
+  const updateAccountNickName = useCallback(() => {
+    const { trigger, error, data } = useSWRMutation(
+      "/users/me/edit/nickname",
+      (url, { arg }) => patchItem(url, { arg })
+    );
+    if (error) signOut();
+    if (data) {
+      setProfileData((prev) => (prev = data));
+    }
 
-        const res = await fetcher.patch("/users/me/edit/nickname", data);
-
-        if (res.status === 200) {
-          getProfileData();
-        }
-      } catch (err: any) {
-        if (err.response.status === 403) {
-          alert("Error: The nickname is occupied by another user");
-        } else {
-          alert("Forbidden: Access to the resource is denied");
-        }
-      }
-    },
-    []
-  );
+    return {
+      trigger,
+    };
+  }, []);
 
   const updateAccountPassword = useCallback(
     async (newData: EditProfilePassword) => {

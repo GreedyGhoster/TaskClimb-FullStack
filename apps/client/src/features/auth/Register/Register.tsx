@@ -1,13 +1,15 @@
 import { TextField, Link, Typography, Container, Box } from "@mui/material";
-import axios from "axios";
 import { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import { Credentials } from "../../../types";
+import { useFetcher } from "../../../hooks/axios/useFetcher";
 
 export default function Register() {
   const registration = useSignIn();
+  const { authFetcher } = useFetcher();
+
   const {
     register,
     formState: { errors, isValid },
@@ -21,10 +23,12 @@ export default function Register() {
   const FetchData: SubmitHandler<Credentials> = useCallback(
     async (registerData: Credentials) => {
       try {
-        const res = await axios.post("/api/auth/register", {
+        const data = {
           nickName: registerData.nickName,
           password: registerData.password,
-        });
+        };
+
+        const res = await authFetcher.post("/auth/register", data);
         if (res.status === 200) {
           if (
             registration({

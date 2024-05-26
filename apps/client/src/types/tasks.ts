@@ -1,15 +1,15 @@
-export interface AddToDoTaskFormValues {
+export type AddToDoTaskFormValues = {
   title: string;
   status: string;
   description: string;
-}
+};
 
 export type EditToDoTaskFormValues = AddToDoTaskFormValues;
 
-export interface IToDoTask {
+export type IToDoTask = {
   id: string;
   title: string;
   status: string;
   description: string;
   projectId: string;
-}
+};

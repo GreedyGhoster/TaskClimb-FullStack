@@ -1,13 +1,15 @@
 import { TextField, Link, Typography, Container, Box } from "@mui/material";
-import axios from "axios";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Credentials } from "../../../types";
+import { useFetcher } from "../../../hooks/axios/useFetcher";
 
 export default function SignUp() {
   const signin = useSignIn();
+  const { authFetcher } = useFetcher();
+
   const {
     register,
     formState: { errors, isValid },
@@ -23,10 +25,12 @@ export default function SignUp() {
   const FetchData: SubmitHandler<Credentials> = useCallback(
     async (signinData: Credentials) => {
       try {
-        const res = await axios.post("/api/auth/signin", {
+        const data = {
           nickName: signinData.nickName,
           password: signinData.password,
-        });
+        };
+
+        const res = await authFetcher.post("/auth/signin", data);
         if (res.status === 200) {
           if (
             signin({
