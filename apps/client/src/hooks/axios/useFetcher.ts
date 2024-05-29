@@ -28,13 +28,21 @@ export const useFetcher = () => {
   );
 
   const patchItem = useCallback(
-    async (url: string, { arg }: { arg: any }) =>
-      fetcher.patch(url, arg).then((res) => res.data),
+    async (url: string, { arg }: { arg: any }) => {
+      return fetcher.patch(url, arg).then((res) => res.data);
+    },
+    [fetcher]
+  );
+
+  const postItem = useCallback(
+    async (url: string, { arg }: { arg: any }) => {
+      return fetcher.post(url, arg).then((res) => res.data);
+    },
     [fetcher]
   );
 
   return useMemo(
-    () => ({ fetcher, authFetcher, getData, deleteItem, patchItem }),
-    [fetcher, authFetcher, getData, deleteItem, patchItem]
+    () => ({ fetcher, authFetcher, getData, deleteItem, patchItem, postItem }),
+    [fetcher, authFetcher, getData, deleteItem, patchItem, postItem]
   );
 };

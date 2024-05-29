@@ -1,5 +1,5 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useProjects, useTasks } from "../../hooks";
+import { useProjects } from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -8,26 +8,26 @@ import { TaskEditForm } from "./EditForm";
 import { TaskPageTemplate } from "../../components/styled/TaskPage";
 import { FC } from "react";
 import { Modal } from "@mui/material";
+import { IToDoTask } from "../../types";
 
 type Props = {
   open: boolean;
+  task: IToDoTask;
   handleClose: () => void;
 };
 
-export const TaskModal: FC<Props> = ({ open, handleClose }) => {
+export const TaskModal: FC<Props> = ({ open, handleClose, task }) => {
   const { projectId } = useParams<{
     projectId: string;
   }>();
   const [searchParams] = useSearchParams();
   const { findProject } = useProjects();
-  const { findTask } = useTasks();
 
   const navigate = useNavigate();
 
   const taskId = searchParams.get("taskId");
 
   const project = findProject(projectId);
-  const task = findTask(projectId, taskId!);
 
   const goBack = () => {
     navigate(`/projects/${projectId}`);
@@ -41,7 +41,7 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
     <Modal
       open={!!taskId || open}
       style={{
-        backgroundColor: "rgba(30, 30, 30, 0.4)",
+        backgroundColor: "rgba(30, 30, 30, 0.15)",
       }}
       onClose={handleClose}
       hideBackdrop

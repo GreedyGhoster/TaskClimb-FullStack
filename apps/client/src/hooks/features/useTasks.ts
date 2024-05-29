@@ -1,95 +1,80 @@
+import useSWR from "swr";
 import { useCallback, useMemo } from "react";
-import {
-  AddToDoTaskFormValues,
-  EditToDoTaskFormValues,
-  IToDoTask,
-} from "../../types";
+import { EditToDoTaskFormValues, IToDoTask } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
 import { useStore } from "..";
+import useSWRMutation from "swr/mutation";
 
 export const useTasks = () => {
-  const { fetcher } = useFetcher();
-  const { tasks, setTasks } = useStore();
+  const { fetcher, getData, postItem } = useFetcher();
+  const { setTasks } = useStore();
 
-  const getTasks = useCallback(async () => {
-    try {
-      const res = await fetcher.get<IToDoTask[]>("/projects/tasks");
+  const getTasks = useCallback((projectId: string) => {
+    const { data, isLoading, error } = useSWR<IToDoTask[]>(
+      `/projects/${projectId}`,
+      getData
+    );
 
-      if (res.status === 200) {
-        setTasks(res.data);
-      }
-    } catch (err) {
-      null;
-    }
+    if (error) null;
+
+    return {
+      isLoading,
+      data,
+    };
   }, []);
 
   const getTasksByProject = useCallback(
-    (projectId?: string, searchTerm?: string) => {
+    (projectId?: string, searchTerm?: string, tasks?: IToDoTask[]) => {
       let filteredTasks = tasks;
       // поиск по названию
       if (searchTerm) {
-        filteredTasks = tasks.filter((task) =>
-          task.title.toLowerCase().includes(searchTerm),
+        filteredTasks = tasks?.filter((task) =>
+          task.title.toLowerCase().includes(searchTerm)
         );
       }
 
       return _orderBy(
-        filteredTasks.filter(
-          (filteredTask) => filteredTask.projectId === projectId,
+        filteredTasks?.filter(
+          (filteredTask) => filteredTask.projectId === projectId
         ),
         ["createdAt"],
-        ["desc"],
+        ["desc"]
       );
     },
-    [tasks],
+    []
   );
 
-  const addTask = useCallback(
-    async (projectId: string, newTask: AddToDoTaskFormValues) => {
-      try {
-        const data = {
-          title: newTask.title,
-          status: newTask.status,
-          description: newTask.description,
-        };
+  const addTask = useCallback((projectId: string) => {
+    const { trigger, error } = useSWRMutation(
+      `/projects/${projectId}`,
+      (url, arg) => postItem(url, arg)
+    );
 
-        const res = await fetcher.post(`/projects/${projectId}`, data);
-        const taskId = await res.data.id;
+    if (error)
+      alert("Error: Failed to add the task. Reload the page or log in again");
 
-        if (res.status === 201) {
-          setTasks((prev) => {
-            return [
-              {
-                id: taskId,
-                projectId: projectId,
-                ...newTask,
-              },
-              ...prev,
-            ];
-          });
-        }
-      } catch (err) {
-        alert("Error: Failed to add the task. Reload the page or log in again");
-      }
-    },
-    [],
-  );
+    return {
+      trigger,
+    };
+  }, []);
 
   const findTask = useCallback(
-    (projectId?: string, taskId?: string) => {
-      return tasks.find(
-        (task) => task.id === taskId && task.projectId === projectId,
-      );
+    (projectId?: string, taskId?: string, tasks?: IToDoTask[]) => {
+      return tasks
+        ? tasks.find(
+            (task) => task.id === taskId && task.projectId === projectId
+          )
+        : null;
     },
-    [tasks],
+    []
   );
 
   const editTask = useCallback(
     async (
       taskId: string,
       projectId: string,
-      editingTask: EditToDoTaskFormValues,
+      editingTask: EditToDoTaskFormValues
     ) => {
       try {
         const data = {
@@ -98,7 +83,7 @@ export const useTasks = () => {
         };
         const res = await fetcher.patch(
           `/projects/${projectId}/${taskId}`,
-          data,
+          data
         );
 
         if (res.status === 200) {
@@ -117,11 +102,11 @@ export const useTasks = () => {
         }
       } catch (err) {
         alert(
-          "Error: Failed to change the task. Reload the page or log in again",
+          "Error: Failed to change the task. Reload the page or log in again"
         );
       }
     },
-    [],
+    []
   );
 
   const deleteTask = useCallback(async (taskId: string, projectId: string) => {
@@ -135,7 +120,7 @@ export const useTasks = () => {
       }
     } catch (err) {
       alert(
-        "Error: Failed to delete the task. Reload the page or log in again",
+        "Error: Failed to delete the task. Reload the page or log in again"
       );
     }
   }, []);
@@ -146,7 +131,7 @@ export const useTasks = () => {
         const data = { status: statusName };
         const res = await fetcher.patch(
           `/projects/${projectId}/${taskId}`,
-          data,
+          data
         );
 
         if (res.status === 200) {
@@ -165,11 +150,11 @@ export const useTasks = () => {
         }
       } catch (err) {
         alert(
-          "Error: Failed to change the task. Reload the page or log in again",
+          "Error: Failed to change the task. Reload the page or log in again"
         );
       }
     },
-    [],
+    []
   );
 
   return useMemo(
@@ -190,6 +175,6 @@ export const useTasks = () => {
       editTask,
       deleteTask,
       statusSwitcher,
-    ],
+    ]
   );
 };

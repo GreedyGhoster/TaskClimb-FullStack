@@ -24,7 +24,8 @@ export function ProjectPage() {
   const { getTasksByProject, getTasks } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
   const project = findProject(projectId);
-  const tasks = getTasksByProject(projectId, searchTerm);
+  const { isLoading, data } = getTasks(projectId!);
+  const tasks = getTasksByProject(projectId, searchTerm, data);
 
   const handleSearch = useCallback((newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
@@ -34,13 +35,9 @@ export function ProjectPage() {
     setSearchTerm(undefined);
   }, [projectId]);
 
-  useEffect(() => {
-    getTasks();
-  }, []);
-
   const countTasksByStatus = useMemo(() => {
     return {
-      Done: tasks.filter((task) => task.status === "Done").length,
+      Done: tasks ? tasks.filter((task) => task.status === "Done").length : 0,
     };
   }, [tasks]);
 
@@ -81,15 +78,21 @@ export function ProjectPage() {
             flexDirection: "column-reverse",
           }}
         >
-          {tasks.length > 0 ? (
-            <>
-              {tasks.map((task) => (
-                <TaskListItem key={task.id} task={task} project={project} />
-              ))}
-            </>
+          {!isLoading ? (
+            tasks && tasks.length > 0 ? (
+              <>
+                {tasks.map((task) => (
+                  <TaskListItem key={task.id} task={task} project={project} />
+                ))}
+              </>
+            ) : (
+              <Box sx={{ textAlign: "center" }} component={"h2"}>
+                No tasks
+              </Box>
+            )
           ) : (
             <Box sx={{ textAlign: "center" }} component={"h2"}>
-              No tasks
+              Loading...
             </Box>
           )}
         </List>

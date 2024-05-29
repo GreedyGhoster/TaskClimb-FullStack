@@ -120,7 +120,9 @@ const TaskListItem: FC<Props> = ({ task, project }) => {
           />
         </TaskListItemTemplate>
       </UseRenderModeProvider>
-      {taskId ? <TaskModal open={open} handleClose={handleClose} /> : null}
+      {taskId ? (
+        <TaskModal task={task} open={open} handleClose={handleClose} />
+      ) : null}
     </>
   );
 };
