@@ -3,13 +3,11 @@ import { useCallback, useMemo } from "react";
 import { IToDoTask } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
-import { useStore } from "..";
 import useSWRMutation from "swr/mutation";
 import { useParams, useSearchParams } from "react-router-dom";
 
 export const useTasks = () => {
-  const { fetcher, getData, postItem, deleteItem, patchItem } = useFetcher();
-  const { setTasks } = useStore();
+  const { getData, postItem, deleteItem, patchItem } = useFetcher();
 
   const { mutate } = useSWRConfig();
 
@@ -20,6 +18,8 @@ export const useTasks = () => {
     );
 
     if (error) null;
+
+    console.log(data);
 
     return {
       isLoading,
@@ -109,38 +109,6 @@ export const useTasks = () => {
     };
   }, []);
 
-  const statusSwitcher = useCallback(
-    async (taskId: string, projectId: string, statusName: string) => {
-      try {
-        const data = { status: statusName };
-        const res = await fetcher.patch(
-          `/projects/${projectId}/${taskId}`,
-          data
-        );
-
-        if (res.status === 200) {
-          setTasks((prev) => {
-            const next = [...prev];
-            const task = next.find((val) => val.id === taskId);
-
-            if (task) {
-              task.status = statusName;
-              return next;
-            } else {
-              console.log(`Задача ${taskId} не найдена`);
-              return prev;
-            }
-          });
-        }
-      } catch (err) {
-        alert(
-          "Error: Failed to change the task. Reload the page or log in again"
-        );
-      }
-    },
-    []
-  );
-
   return useMemo(
     () => ({
       getTasks,
@@ -149,16 +117,7 @@ export const useTasks = () => {
       findTask,
       editTask,
       deleteTask,
-      statusSwitcher,
     }),
-    [
-      getTasks,
-      filterTasks,
-      addTask,
-      findTask,
-      editTask,
-      deleteTask,
-      statusSwitcher,
-    ]
+    [getTasks, filterTasks, addTask, findTask, editTask, deleteTask]
   );
 };

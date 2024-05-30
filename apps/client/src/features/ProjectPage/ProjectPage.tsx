@@ -12,11 +12,14 @@ import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
 const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
 
 export function ProjectPage() {
-  const { findProject } = useProjects();
+  const { findProject, getProjects } = useProjects();
   const { filterTasks, getTasks } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
-  const project = findProject(projectId);
+
   const { isLoading, data } = getTasks(projectId!);
+  const { data: projects } = getProjects();
+
+  const project = findProject(projectId, projects);
   const tasks = filterTasks(data);
 
   const countTasksByStatus = useMemo(() => {
@@ -26,6 +29,7 @@ export function ProjectPage() {
   }, [tasks]);
 
   if (!project) {
+    console.log(project);
     return <NotFound />;
   }
 

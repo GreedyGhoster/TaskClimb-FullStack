@@ -2,22 +2,27 @@ import { useCallback, useMemo } from "react";
 import { IToDoProject } from "../../types";
 import { useStore } from "..";
 import { useFetcher } from "../axios/useFetcher";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import useSWR from "swr";
+import _orderBy from "lodash/orderBy";
 
 export const useProjects = () => {
-  const { fetcher } = useFetcher();
+  const { fetcher, getData, postItem, deleteItem, patchItem } = useFetcher();
+
   const { projects, setProjects } = useStore();
 
-  const getProjects = useCallback(async () => {
-    try {
-      const res = await fetcher.get<IToDoProject[]>("/projects");
+  const getProjects = useCallback(() => {
+    const { data, isLoading, error } = useSWR<IToDoProject[]>(
+      `/projects`,
+      getData
+    );
 
-      if (res.status === 200) {
-        setProjects(res.data);
-      }
-    } catch (err) {
-      null;
-    }
+    if (error) null;
+
+    return {
+      isLoading,
+      data,
+    };
   }, []);
 
   const createProject = useCallback(async (title: string) => {
@@ -84,42 +89,36 @@ export const useProjects = () => {
     []
   );
 
-  // const filterProjects = useCallback((tasks?: IToDoTask[]) => {
-  //   const { projectId } = useParams<{ projectId: string }>();
-  //   const [searchParams] = useSearchParams();
+  const filterProjects = useCallback((projects?: IToDoProject[]) => {
+    const [searchParams] = useSearchParams();
 
-  //   const searchProjects = searchParams.get("searchProjects") || "";
+    const searchProjects = searchParams.get("searchProjects") || "";
 
-  //   let filteredprojects = projects;
-  //   // поиск по названию
-  //   if (searchProjects) {
-  //      = tasks?.filter((task) =>
-  //       task.title.toLowerCase().includes(searchProjects)
-  //     );
-  //   }
+    let filteredProjects = projects;
+    // поиск по названию
+    if (searchProjects) {
+      filteredProjects = projects?.filter((task) =>
+        task.title.toLowerCase().includes(searchProjects)
+      );
+    }
 
-  //   return _orderBy(
-  //     filteredTasks?.filter(
-  //       (filteredTask) => filteredTask.projectId === projectId
-  //     ),
-  //     ["createdAt"],
-  //     ["desc"]
-  //   );
-  // }, []);
+    return _orderBy(filteredProjects, ["createdAt"], ["desc"]);
+  }, []);
 
   const findProject = useCallback(
-    (projectId?: string) => {
-      return projectId
+    (projectId?: string, projects?: IToDoProject[]) => {
+      return projects
         ? projects.find((project) => project.id === projectId)
-        : undefined;
+        : null;
     },
-    [projects]
+    []
   );
+
   return useMemo(
     () => ({
       getProjects,
       createProject,
-      // filterProjects,
+      filterProjects,
       deleteProject,
       editProject,
       findProject,
@@ -127,7 +126,7 @@ export const useProjects = () => {
     [
       getProjects,
       createProject,
-      // filterProjects,
+      filterProjects,
       deleteProject,
       editProject,
       findProject,

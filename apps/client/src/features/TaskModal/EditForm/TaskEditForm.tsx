@@ -30,7 +30,6 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 
   const handleClickForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
-      console.log(values);
       trigger(values as any);
     },
     [trigger, task.id, projectId]
