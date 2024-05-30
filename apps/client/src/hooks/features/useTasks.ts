@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { useCallback, useMemo } from "react";
 import { EditToDoTaskFormValues, IToDoTask } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
@@ -10,6 +10,8 @@ import { useParams, useSearchParams } from "react-router-dom";
 export const useTasks = () => {
   const { fetcher, getData, postItem, deleteItem } = useFetcher();
   const { setTasks } = useStore();
+
+  const { mutate } = useSWRConfig();
 
   const getTasks = useCallback((projectId?: string) => {
     const { data, isLoading, error } = useSWR<IToDoTask[]>(
@@ -113,9 +115,10 @@ export const useTasks = () => {
   );
 
   const deleteTask = useCallback((taskId: string, projectId: string) => {
-    const { data, trigger, error } = useSWRMutation<any>(
+    const { trigger, error } = useSWRMutation<any>(
       `/projects/${projectId}/${taskId}`,
-      deleteItem
+      deleteItem,
+      { onSuccess: () => mutate(`/projects/${projectId}`) }
     );
 
     if (error)
@@ -125,7 +128,6 @@ export const useTasks = () => {
 
     return {
       trigger,
-      data,
     };
   }, []);
 
