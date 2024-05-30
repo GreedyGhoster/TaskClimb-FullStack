@@ -39,10 +39,11 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
   return (
     <>
       <FormProvider {...formMethods}>
-        <TaskStatusItem taskStatus={task.status} />
+        <TaskStatusItem />
         <FormTextField
           sx={{
             width: "100%",
+            marginTop: "1rem",
           }}
           name={"description"}
           spellCheck="false"
