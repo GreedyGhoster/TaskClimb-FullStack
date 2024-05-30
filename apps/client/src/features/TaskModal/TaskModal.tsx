@@ -93,7 +93,7 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
             alignSelf: "center",
           }}
         >
-          <TaskEditForm task={task} project={project} />
+          <TaskEditForm task={task} projectId={project.id} />
         </Box>
       </TaskPageTemplate>
     </Modal>

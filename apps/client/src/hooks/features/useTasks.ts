@@ -1,6 +1,6 @@
 import useSWR, { useSWRConfig } from "swr";
 import { useCallback, useMemo } from "react";
-import { EditToDoTaskFormValues, IToDoTask } from "../../types";
+import { IToDoTask } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
 import { useStore } from "..";
@@ -8,7 +8,7 @@ import useSWRMutation from "swr/mutation";
 import { useParams, useSearchParams } from "react-router-dom";
 
 export const useTasks = () => {
-  const { fetcher, getData, postItem, deleteItem } = useFetcher();
+  const { fetcher, getData, postItem, deleteItem, patchItem } = useFetcher();
   const { setTasks } = useStore();
 
   const { mutate } = useSWRConfig();
@@ -75,44 +75,22 @@ export const useTasks = () => {
     []
   );
 
-  const editTask = useCallback(
-    async (
-      taskId: string,
-      projectId: string,
-      editingTask: EditToDoTaskFormValues
-    ) => {
-      try {
-        const data = {
-          title: editingTask.title,
-          description: editingTask.description,
-        };
-        const res = await fetcher.patch(
-          `/projects/${projectId}/${taskId}`,
-          data
-        );
+  const editTask = useCallback((taskId: string, projectId: string) => {
+    const { trigger, error } = useSWRMutation(
+      `/projects/${projectId}/${taskId}`,
+      (url, arg) => patchItem(url, arg),
+      { onSuccess: () => mutate(`/projects/${projectId}`) }
+    );
 
-        if (res.status === 200) {
-          setTasks((prev) => {
-            const next = [...prev];
-            const task = next.find((val) => val.id === taskId);
-            if (task) {
-              task.title = editingTask.title;
-              task.description = editingTask.description;
-              return next;
-            } else {
-              console.log(`Задача ${taskId} не найдена`);
-              return prev;
-            }
-          });
-        }
-      } catch (err) {
-        alert(
-          "Error: Failed to change the task. Reload the page or log in again"
-        );
-      }
-    },
-    []
-  );
+    if (error)
+      alert(
+        "Error: Failed to change the task. Reload the page or log in again"
+      );
+
+    return {
+      trigger,
+    };
+  }, []);
 
   const deleteTask = useCallback((taskId: string, projectId: string) => {
     const { trigger, error } = useSWRMutation<any>(

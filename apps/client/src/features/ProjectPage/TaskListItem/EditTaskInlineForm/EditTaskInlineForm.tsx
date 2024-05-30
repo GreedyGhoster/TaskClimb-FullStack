@@ -16,6 +16,7 @@ interface Props {
 
 const EditTaskInlineForm: FC<Props> = ({ task, projectId, onCancel }) => {
   const { editTask } = useTasks();
+  const { trigger } = editTask(task.id, projectId);
 
   const formMethods = useForm<EditToDoTaskFormValues>({
     defaultValues: {
@@ -30,11 +31,11 @@ const EditTaskInlineForm: FC<Props> = ({ task, projectId, onCancel }) => {
   const handleSubmitForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        editTask(task.id, projectId, values);
+        trigger(values as any);
         onCancel();
       }
     },
-    [editTask, onCancel, task.id]
+    [trigger, onCancel, task.id]
   );
 
   return (

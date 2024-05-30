@@ -1,25 +1,23 @@
 import React, { useCallback } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  EditToDoTaskFormValues,
-  IToDoProject,
-  IToDoTask,
-} from "../../../types";
+import { EditToDoTaskFormValues, IToDoTask } from "../../../types";
 import { useTasks } from "../../../hooks";
 import { FormTextField } from "../../../components/form";
 import { Button, Tooltip } from "@mui/material";
 import TaskStatusItem from "../../../components/tasks/TaskStatusItem";
 
 interface TaskEditFormProps {
-  project: IToDoProject;
+  projectId: string;
   task: IToDoTask;
 }
 
 export const TaskEditForm: React.FC<TaskEditFormProps> = ({
-  project,
+  projectId,
   task,
 }) => {
   const { editTask } = useTasks();
+  const { trigger } = editTask(task.id, projectId);
+
   const formMethods = useForm<EditToDoTaskFormValues>({
     defaultValues: {
       description: task.description,
@@ -32,15 +30,16 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 
   const handleClickForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
-      editTask(task.id, project.id, values);
+      console.log(values);
+      trigger(values as any);
     },
-    [editTask, task.id, project.id]
+    [trigger, task.id, projectId]
   );
 
   return (
     <>
-      <TaskStatusItem task={task} project={project} />
       <FormProvider {...formMethods}>
+        <TaskStatusItem taskStatus={task.status} />
         <FormTextField
           sx={{
             width: "100%",
@@ -48,6 +47,7 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
           name={"description"}
           spellCheck="false"
           variant="standard"
+          label="Description"
           placeholder="Description in several rows"
           multiline
         />
