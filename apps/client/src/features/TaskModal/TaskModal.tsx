@@ -19,17 +19,18 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
     projectId: string;
   }>();
   const [searchParams] = useSearchParams();
-  const { findProject } = useProjects();
+  const { findProject, getProjects } = useProjects();
   const { findTask, getTasks } = useTasks();
 
   const { isLoading, data } = getTasks(projectId!);
-
-  const navigate = useNavigate();
+  const { data: projects } = getProjects();
 
   const taskId = searchParams.get("taskId");
 
-  const project = findProject(projectId);
+  const project = findProject(projectId, projects);
   const task = findTask(projectId, taskId!, data);
+
+  const navigate = useNavigate();
 
   const goBack = () => {
     navigate(`/projects/${projectId}`);

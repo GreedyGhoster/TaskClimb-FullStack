@@ -9,7 +9,7 @@ import _orderBy from "lodash/orderBy";
 export const useProjects = () => {
   const { fetcher, getData, postItem, deleteItem, patchItem } = useFetcher();
 
-  const { projects, setProjects } = useStore();
+  const { setProjects } = useStore();
 
   const getProjects = useCallback(() => {
     const { data, isLoading, error } = useSWR<IToDoProject[]>(

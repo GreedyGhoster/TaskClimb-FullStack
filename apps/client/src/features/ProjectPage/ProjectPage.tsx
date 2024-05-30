@@ -29,7 +29,6 @@ export function ProjectPage() {
   }, [tasks]);
 
   if (!project) {
-    console.log(project);
     return <NotFound />;
   }
 

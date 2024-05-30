@@ -19,8 +19,6 @@ export const useTasks = () => {
 
     if (error) null;
 
-    console.log(data);
-
     return {
       isLoading,
       data,

@@ -11,9 +11,8 @@ import { FormTextField } from "../../../components/form";
 import { AddToDoProjectFormValues } from "../../../types";
 import { useProjects } from "../../../hooks";
 import { useSearchParams } from "react-router-dom";
-import { AppProjectItem } from "./AppProjectItem";
 
-// const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
+const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 
 export const AppSidebar = () => {
   const { createProject, getProjects, filterProjects } = useProjects();
