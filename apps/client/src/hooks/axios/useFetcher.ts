@@ -18,12 +18,16 @@ export const useFetcher = () => {
   });
 
   const getData = useCallback(
-    async (url: string) => fetcher.get(url).then((res) => res.data),
+    async (url: string) => {
+      return fetcher.get(url).then((res) => res.data);
+    },
     [fetcher]
   );
 
   const deleteItem = useCallback(
-    async (url: string) => fetcher.delete(url),
+    async (url: string) => {
+      return fetcher.delete(url).then((res) => res.data);
+    },
     [fetcher]
   );
 

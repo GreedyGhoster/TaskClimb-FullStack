@@ -8,10 +8,10 @@ import useSWRMutation from "swr/mutation";
 import { useParams, useSearchParams } from "react-router-dom";
 
 export const useTasks = () => {
-  const { fetcher, getData, postItem } = useFetcher();
+  const { fetcher, getData, postItem, deleteItem } = useFetcher();
   const { setTasks } = useStore();
 
-  const getTasks = useCallback((projectId: string) => {
+  const getTasks = useCallback((projectId?: string) => {
     const { data, isLoading, error } = useSWR<IToDoTask[]>(
       `/projects/${projectId}`,
       getData
@@ -112,20 +112,21 @@ export const useTasks = () => {
     []
   );
 
-  const deleteTask = useCallback(async (taskId: string, projectId: string) => {
-    try {
-      const res = await fetcher.delete(`/projects/${projectId}/${taskId}`);
+  const deleteTask = useCallback((taskId: string, projectId: string) => {
+    const { data, trigger, error } = useSWRMutation<any>(
+      `/projects/${projectId}/${taskId}`,
+      deleteItem
+    );
 
-      if (res.status === 204) {
-        setTasks((prev) => {
-          return prev.filter((task) => task.id !== taskId);
-        });
-      }
-    } catch (err) {
+    if (error)
       alert(
         "Error: Failed to delete the task. Reload the page or log in again"
       );
-    }
+
+    return {
+      trigger,
+      data,
+    };
   }, []);
 
   const statusSwitcher = useCallback(

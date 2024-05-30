@@ -3,7 +3,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FC, useState } from "react";
 import { UseRenderModeProvider, useTasks } from "../../../hooks";
-import { IToDoProject, IToDoTask, RenderMode } from "../../../types";
+import { IToDoTask, RenderMode } from "../../../types";
 import { RenderModeController } from "../../../components/ctrl";
 import { EditTaskInlineForm } from "./EditTaskInlineForm";
 import { TaskRoute } from "../../../routes";
@@ -19,16 +19,18 @@ import { TaskModal } from "../../TaskModal";
 
 interface Props {
   task: IToDoTask;
-  project: IToDoProject;
+  projectId: string;
 }
 
-const TaskListItem: FC<Props> = ({ task, project }) => {
-  const { deleteTask } = useTasks();
+const TaskListItem: FC<Props> = ({ task, projectId }) => {
   const [searchParams] = useSearchParams();
 
-  const taskId = searchParams.get("taskId");
+  const { deleteTask } = useTasks();
+  const { trigger } = deleteTask(task.id, projectId);
 
   const [open, setOpen] = useState(false);
+
+  const taskId = searchParams.get("taskId");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -101,7 +103,7 @@ const TaskListItem: FC<Props> = ({ task, project }) => {
                   </Box>
                   <Box>
                     <IconButton
-                      onClick={() => deleteTask(task.id, project.id)}
+                      onClick={async () => await trigger()}
                       color="error"
                     >
                       <DeleteIcon />
@@ -113,7 +115,7 @@ const TaskListItem: FC<Props> = ({ task, project }) => {
             renderEdit={(onChangeRenderMode) => (
               <EditTaskInlineForm
                 task={task}
-                project={project}
+                projectId={projectId}
                 onCancel={() => onChangeRenderMode(RenderMode.View)}
               />
             )}
