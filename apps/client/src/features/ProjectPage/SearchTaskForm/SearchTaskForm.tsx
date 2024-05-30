@@ -1,22 +1,19 @@
 import TextField from "@mui/material/TextField";
-import { FC, useCallback, useState } from "react";
+import { useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
-interface Props {
-  projectId: string;
-  onSearch: (searchTerm: string) => void;
-}
+const SearchTaskForm = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-const SearchTaskForm: FC<Props> = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const searchTasks = searchParams.get("searchTasks") || "";
 
-  const handleChange = useCallback(
-    (e: any) => {
-      const value = e.target.value;
-      setSearchTerm(value);
-      onSearch(value);
-    },
-    [onSearch]
-  );
+  const handleChange = useCallback((e: any) => {
+    const value = e.target.value;
+    setSearchParams((prev) => {
+      prev.set("searchTasks", value);
+      return prev;
+    });
+  }, []);
 
   return (
     <TextField
@@ -24,7 +21,7 @@ const SearchTaskForm: FC<Props> = ({ onSearch }) => {
         marginTop: "7px",
       }}
       inputProps={{ maxLength: 43 }}
-      value={searchTerm}
+      value={searchTasks}
       label={"Find task"}
       onChange={handleChange}
       name={"title"}

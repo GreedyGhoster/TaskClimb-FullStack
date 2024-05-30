@@ -5,6 +5,7 @@ import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
 import { useStore } from "..";
 import useSWRMutation from "swr/mutation";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export const useTasks = () => {
   const { fetcher, getData, postItem } = useFetcher();
@@ -24,26 +25,28 @@ export const useTasks = () => {
     };
   }, []);
 
-  const getTasksByProject = useCallback(
-    (projectId?: string, searchTerm?: string, tasks?: IToDoTask[]) => {
-      let filteredTasks = tasks;
-      // поиск по названию
-      if (searchTerm) {
-        filteredTasks = tasks?.filter((task) =>
-          task.title.toLowerCase().includes(searchTerm)
-        );
-      }
+  const filterTasks = useCallback((tasks?: IToDoTask[]) => {
+    const { projectId } = useParams<{ projectId: string }>();
+    const [searchParams] = useSearchParams();
 
-      return _orderBy(
-        filteredTasks?.filter(
-          (filteredTask) => filteredTask.projectId === projectId
-        ),
-        ["createdAt"],
-        ["desc"]
+    const searchTasks = searchParams.get("searchTasks") || "";
+
+    let filteredTasks = tasks;
+    // поиск по названию
+    if (searchTasks) {
+      filteredTasks = tasks?.filter((task) =>
+        task.title.toLowerCase().includes(searchTasks)
       );
-    },
-    []
-  );
+    }
+
+    return _orderBy(
+      filteredTasks?.filter(
+        (filteredTask) => filteredTask.projectId === projectId
+      ),
+      ["createdAt"],
+      ["desc"]
+    );
+  }, []);
 
   const addTask = useCallback((projectId: string) => {
     const { trigger, error } = useSWRMutation(
@@ -160,7 +163,7 @@ export const useTasks = () => {
   return useMemo(
     () => ({
       getTasks,
-      getTasksByProject,
+      filterTasks,
       addTask,
       findTask,
       editTask,
@@ -169,7 +172,7 @@ export const useTasks = () => {
     }),
     [
       getTasks,
-      getTasksByProject,
+      filterTasks,
       addTask,
       findTask,
       editTask,

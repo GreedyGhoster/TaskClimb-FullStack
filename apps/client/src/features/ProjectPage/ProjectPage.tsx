@@ -2,14 +2,7 @@ import { useParams } from "react-router-dom";
 import { useProjects, useTasks } from "../../hooks";
 import { AddTaskForm } from "./AddTaskForm";
 import { SearchTaskForm } from "./SearchTaskForm";
-import {
-  Suspense,
-  lazy,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Suspense, lazy, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
@@ -19,21 +12,12 @@ import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
 const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
 
 export function ProjectPage() {
-  const [searchTerm, setSearchTerm] = useState<string>();
   const { findProject } = useProjects();
-  const { getTasksByProject, getTasks } = useTasks();
+  const { filterTasks, getTasks } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
   const project = findProject(projectId);
   const { isLoading, data } = getTasks(projectId!);
-  const tasks = getTasksByProject(projectId, searchTerm, data);
-
-  const handleSearch = useCallback((newSearchTerm: string) => {
-    setSearchTerm(newSearchTerm);
-  }, []);
-
-  useEffect(() => {
-    setSearchTerm(undefined);
-  }, [projectId]);
+  const tasks = filterTasks(data);
 
   const countTasksByStatus = useMemo(() => {
     return {
@@ -63,7 +47,7 @@ export function ProjectPage() {
         {project.title}
       </Typography>
       <InputsTemplate>
-        <SearchTaskForm projectId={project.id} onSearch={handleSearch} />
+        <SearchTaskForm />
         <AddTaskForm projectId={project.id} />
       </InputsTemplate>
       <Counter>

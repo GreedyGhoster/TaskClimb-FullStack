@@ -1,5 +1,5 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useProjects } from "../../hooks";
+import { useProjects, useTasks } from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -8,26 +8,28 @@ import { TaskEditForm } from "./EditForm";
 import { TaskPageTemplate } from "../../components/styled/TaskPage";
 import { FC } from "react";
 import { Modal } from "@mui/material";
-import { IToDoTask } from "../../types";
 
 type Props = {
   open: boolean;
-  task: IToDoTask;
   handleClose: () => void;
 };
 
-export const TaskModal: FC<Props> = ({ open, handleClose, task }) => {
+export const TaskModal: FC<Props> = ({ open, handleClose }) => {
   const { projectId } = useParams<{
     projectId: string;
   }>();
   const [searchParams] = useSearchParams();
   const { findProject } = useProjects();
+  const { findTask, getTasks } = useTasks();
+
+  const { isLoading, data } = getTasks(projectId!);
 
   const navigate = useNavigate();
 
   const taskId = searchParams.get("taskId");
 
   const project = findProject(projectId);
+  const task = findTask(projectId, taskId!, data);
 
   const goBack = () => {
     navigate(`/projects/${projectId}`);
@@ -35,6 +37,10 @@ export const TaskModal: FC<Props> = ({ open, handleClose, task }) => {
 
   if (!project || !task) {
     return null;
+  }
+
+  if (isLoading) {
+    return <h4>Loading</h4>;
   }
 
   return (

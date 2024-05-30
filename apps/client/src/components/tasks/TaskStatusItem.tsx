@@ -61,10 +61,6 @@ const TaskStatusItem: FC<Props> = ({ task, project }) => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    statusSwitcher(task.id, project.id, options[selectedIndex]);
-  }, [selectedIndex]);
-
   return (
     <Box>
       <Button
