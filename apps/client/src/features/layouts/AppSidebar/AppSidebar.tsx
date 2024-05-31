@@ -1,6 +1,6 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
 import { FormProvider, useForm } from "react-hook-form";
-import { Suspense, lazy, useCallback } from "react";
+import { useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -11,13 +11,12 @@ import { FormTextField } from "../../../components/form";
 import { AddToDoProjectFormValues } from "../../../types";
 import { useProjects } from "../../../hooks";
 import { useSearchParams } from "react-router-dom";
-
-const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
+import { AppProjectItem } from "./AppProjectItem";
 
 export const AppSidebar = () => {
-  const { createProject, getProjects, filterProjects } = useProjects();
-  const { isLoading } = getProjects();
-  const projects = filterProjects();
+  const { createProject, filterProjects } = useProjects();
+  const { trigger } = createProject();
+  const { projects, isLoading } = filterProjects();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -35,7 +34,8 @@ export const AppSidebar = () => {
   const handleSubmitForm = useCallback(
     async (values: AddToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
-        createProject(values.title);
+        const data = { title: values.title };
+        trigger(data as any);
         reset({ title: "" });
       }
     },
@@ -94,32 +94,28 @@ export const AppSidebar = () => {
             placeholder="Find project"
           />
         </Stack>
-        <Suspense fallback={<h3>Loading...</h3>}>
-          <List
-            sx={{
-              display: "flex",
-              flexDirection: "column-reverse",
-            }}
-          >
-            {!isLoading ? (
-              projects && projects.length > 0 ? (
-                <>
-                  {projects.map((project) => (
-                    <AppProjectItem key={project.id} project={project} />
-                  ))}
-                </>
-              ) : (
-                <Box sx={{ textAlign: "center" }} component={"h2"}>
-                  No projects
-                </Box>
-              )
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
+        >
+          {!isLoading ? (
+            projects && projects.length > 0 ? (
+              <>
+                {projects.map((project) => (
+                  <AppProjectItem key={project.id} project={project} />
+                ))}
+              </>
             ) : (
-              <Box sx={{ textAlign: "center" }} component={"h2"}>
-                Loading...
+              <Box sx={{ textAlign: "center" }} component={"h3"}>
+                No projects
               </Box>
-            )}
-          </List>
-        </Suspense>
+            )
+          ) : (
+            <Box component={"h3"}>Loading...</Box>
+          )}
+        </List>
       </Box>
     </Box>
   );

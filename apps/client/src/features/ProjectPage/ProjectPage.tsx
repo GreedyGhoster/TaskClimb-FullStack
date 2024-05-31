@@ -2,14 +2,13 @@ import { useParams } from "react-router-dom";
 import { useProjects, useTasks } from "../../hooks";
 import { AddTaskForm } from "./AddTaskForm";
 import { SearchTaskForm } from "./SearchTaskForm";
-import { Suspense, lazy, useMemo } from "react";
+import { useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import { NotFound } from "../../components/NotFound";
 import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
-
-const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
+import { TaskListItem } from "./TaskListItem";
 
 export function ProjectPage() {
   const { findProject } = useProjects();
@@ -55,30 +54,34 @@ export function ProjectPage() {
       <Counter>
         <span>Done: {countTasksByStatus.Done}</span>
       </Counter>
-      <Suspense fallback={<h3>Loading...</h3>}>
-        <List
-          sx={{
-            width: "100%",
-            paddingTop: "0px",
-            display: "flex",
-            flexDirection: "column-reverse",
-          }}
-        >
-          {!isLoading ? (
-            tasks && tasks.length > 0 ? (
-              tasks.map((task) => <TaskListItem key={task.id} task={task} />)
-            ) : (
-              <Box sx={{ textAlign: "center" }} component={"h2"}>
-                No tasks
-              </Box>
-            )
+
+      <List
+        sx={{
+          width: "100%",
+          paddingTop: "0px",
+          display: "flex",
+          flexDirection: "column-reverse",
+        }}
+      >
+        {!isLoading ? (
+          tasks && tasks.length > 0 ? (
+            tasks.map((task) => <TaskListItem key={task.id} task={task} />)
           ) : (
             <Box sx={{ textAlign: "center" }} component={"h2"}>
-              Loading...
+              No tasks
             </Box>
-          )}
-        </List>
-      </Suspense>
+          )
+        ) : (
+          <Box
+            sx={{
+              textAlign: "center",
+            }}
+            component={"h3"}
+          >
+            Loading...
+          </Box>
+        )}
+      </List>
     </Box>
   );
 }
