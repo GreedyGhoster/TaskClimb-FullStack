@@ -12,15 +12,14 @@ import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
 const TaskListItem = lazy(() => import("./TaskListItem/TaskListItem"));
 
 export function ProjectPage() {
-  const { findProject, getProjects } = useProjects();
+  const { findProject } = useProjects();
   const { filterTasks, getTasks } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
 
-  const { isLoading, data } = getTasks(projectId!);
-  const { data: projects } = getProjects();
+  const { isLoading } = getTasks(projectId!);
 
-  const project = findProject(projectId, projects);
-  const tasks = filterTasks(data);
+  const project = findProject(projectId);
+  const tasks = filterTasks();
 
   const countTasksByStatus = useMemo(() => {
     return {
@@ -67,15 +66,7 @@ export function ProjectPage() {
         >
           {!isLoading ? (
             tasks && tasks.length > 0 ? (
-              <>
-                {tasks.map((task) => (
-                  <TaskListItem
-                    key={task.id}
-                    task={task}
-                    projectId={project.id}
-                  />
-                ))}
-              </>
+              tasks.map((task) => <TaskListItem key={task.id} task={task} />)
             ) : (
               <Box sx={{ textAlign: "center" }} component={"h2"}>
                 No tasks

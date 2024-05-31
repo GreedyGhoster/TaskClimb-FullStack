@@ -10,13 +10,12 @@ import CheckIcon from "@mui/icons-material/Check";
 
 interface Props {
   task: IToDoTask;
-  projectId: string;
   onCancel: () => void;
 }
 
-const EditTaskInlineForm: FC<Props> = ({ task, projectId, onCancel }) => {
+const EditTaskInlineForm: FC<Props> = ({ task, onCancel }) => {
   const { editTask } = useTasks();
-  const { trigger } = editTask(task.id, projectId);
+  const { trigger } = editTask(task.id, task.projectId);
 
   const formMethods = useForm<EditToDoTaskFormValues>({
     defaultValues: {

@@ -45,17 +45,6 @@ export class ProjectController {
     return this.projectService.createProject(userId, dto);
   }
 
-  @Get('tasks')
-  @ApiOperation({ description: 'Get all tasks' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'You should log in to your account',
-  })
-  getTasks(@GetUser('id') userId: string) {
-    return this.projectService.getTasks(userId);
-  }
-
   @Get()
   @ApiOperation({ description: 'Get all projects' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Success' })

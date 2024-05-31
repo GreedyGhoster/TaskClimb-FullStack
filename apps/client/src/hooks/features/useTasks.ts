@@ -14,7 +14,13 @@ export const useTasks = () => {
   const getTasks = useCallback((projectId?: string) => {
     const { data, isLoading, error } = useSWR<IToDoTask[]>(
       `/projects/${projectId}`,
-      getData
+      getData,
+      {
+        compare: (a, b) => {
+          return a === b;
+        },
+        keepPreviousData: true,
+      }
     );
 
     if (error) null;
@@ -25,8 +31,10 @@ export const useTasks = () => {
     };
   }, []);
 
-  const filterTasks = useCallback((tasks?: IToDoTask[]) => {
+  const filterTasks = useCallback(() => {
     const { projectId } = useParams<{ projectId: string }>();
+    const { data: tasks } = getTasks(projectId);
+
     const [searchParams] = useSearchParams();
 
     const searchTasks = searchParams.get("searchTasks") || "";
@@ -62,16 +70,13 @@ export const useTasks = () => {
     };
   }, []);
 
-  const findTask = useCallback(
-    (projectId?: string, taskId?: string, tasks?: IToDoTask[]) => {
-      return tasks
-        ? tasks.find(
-            (task) => task.id === taskId && task.projectId === projectId
-          )
-        : null;
-    },
-    []
-  );
+  const findTask = useCallback((projectId?: string, taskId?: string) => {
+    const { data: tasks } = getTasks(projectId);
+
+    return tasks
+      ? tasks.find((task) => task.id === taskId && task.projectId === projectId)
+      : null;
+  }, []);
 
   const editTask = useCallback((taskId: string, projectId: string) => {
     const { trigger, error } = useSWRMutation(

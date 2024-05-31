@@ -16,8 +16,8 @@ const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
 
 export const AppSidebar = () => {
   const { createProject, getProjects, filterProjects } = useProjects();
-  const { isLoading, data } = getProjects();
-  const projects = filterProjects(data);
+  const { isLoading } = getProjects();
+  const projects = filterProjects();
 
   const [searchParams, setSearchParams] = useSearchParams();
 

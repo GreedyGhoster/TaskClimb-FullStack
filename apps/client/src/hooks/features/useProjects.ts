@@ -14,7 +14,12 @@ export const useProjects = () => {
   const getProjects = useCallback(() => {
     const { data, isLoading, error } = useSWR<IToDoProject[]>(
       `/projects`,
-      getData
+      getData,
+      {
+        compare: (a, b) => {
+          return a === b;
+        },
+      }
     );
 
     if (error) null;
@@ -89,7 +94,8 @@ export const useProjects = () => {
     []
   );
 
-  const filterProjects = useCallback((projects?: IToDoProject[]) => {
+  const filterProjects = useCallback(() => {
+    const { data: projects } = getProjects();
     const [searchParams] = useSearchParams();
 
     const searchProjects = searchParams.get("searchProjects") || "";
@@ -105,14 +111,13 @@ export const useProjects = () => {
     return _orderBy(filteredProjects, ["createdAt"], ["desc"]);
   }, []);
 
-  const findProject = useCallback(
-    (projectId?: string, projects?: IToDoProject[]) => {
-      return projects
-        ? projects.find((project) => project.id === projectId)
-        : null;
-    },
-    []
-  );
+  const findProject = useCallback((projectId?: string) => {
+    const { data: projects } = getProjects();
+
+    return projects
+      ? projects.find((project) => project.id === projectId)
+      : null;
+  }, []);
 
   return useMemo(
     () => ({
