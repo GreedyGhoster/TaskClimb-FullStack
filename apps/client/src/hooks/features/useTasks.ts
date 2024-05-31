@@ -5,7 +5,6 @@ import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
 import useSWRMutation from "swr/mutation";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Message } from "../../components/Message";
 
 export const useTasks = () => {
   const { getData, postItem, deleteItem, patchItem } = useFetcher();
@@ -61,17 +60,13 @@ export const useTasks = () => {
   }, []);
 
   const addTask = useCallback((projectId: string) => {
-    const { trigger, error, data } = useSWRMutation(
+    const { trigger, error } = useSWRMutation(
       `/projects/${projectId}`,
       (url, arg) => postItem(url, arg)
     );
 
     if (error)
       alert("Error: Failed to add the task. Reload the page or log in again");
-
-    if (data) {
-      return <Message open={true} type="info" message="Task was added" />;
-    }
 
     return {
       trigger,
