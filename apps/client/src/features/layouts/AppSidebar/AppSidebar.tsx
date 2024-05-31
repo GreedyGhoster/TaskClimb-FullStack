@@ -1,6 +1,6 @@
 import { APP_SIDEBAR_WIDTH } from "./AppSidebar.constants";
 import { FormProvider, useForm } from "react-hook-form";
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -9,14 +9,19 @@ import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 import { FormTextField } from "../../../components/form";
 import { AddToDoProjectFormValues } from "../../../types";
-import { useProjects, useStore } from "../../../hooks";
-
-const AppProjectItem = lazy(() => import("./AppProjectItem/AppProjectItem"));
+import { useProjects } from "../../../hooks";
+import { useSearchParams } from "react-router-dom";
+import { AppProjectItem } from "./AppProjectItem";
 
 export const AppSidebar = () => {
-  const { projects } = useStore();
-  const { createProject, getProjects } = useProjects();
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const { createProject, filterProjects } = useProjects();
+  const { trigger } = createProject();
+  const { projects, isLoading } = filterProjects();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchProjects = searchParams.get("searchProjects") || "";
+
   const theme = useTheme();
 
   const formMethods = useForm<AddToDoProjectFormValues>({
@@ -29,16 +34,13 @@ export const AppSidebar = () => {
   const handleSubmitForm = useCallback(
     async (values: AddToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
-        createProject(values.title);
+        const data = { title: values.title };
+        trigger(data as any);
         reset({ title: "" });
       }
     },
     [createProject, reset]
   );
-
-  useEffect(() => {
-    getProjects();
-  }, []);
 
   return (
     <Box
@@ -81,33 +83,39 @@ export const AppSidebar = () => {
           </FormProvider>
           <TextField
             inputProps={{ maxLength: 46 }}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchProjects}
+            onChange={(e) =>
+              setSearchParams((prev) => {
+                prev.set("searchProjects", e.target.value);
+                return prev;
+              })
+            }
             name={"title"}
             placeholder="Find project"
           />
         </Stack>
-        <Suspense fallback={<h3>Loading...</h3>}>
-          <List
-            sx={{
-              display: "flex",
-              flexDirection: "column-reverse",
-            }}
-          >
-            {projects
-              .filter((val) => {
-                if (
-                  searchTerm === "" ||
-                  val.title.toLowerCase().includes(searchTerm.toLowerCase())
-                ) {
-                  return val;
-                }
-              })
-              .map((project) => (
-                <AppProjectItem key={project.id} project={project} />
-              ))}
-          </List>
-        </Suspense>
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
+        >
+          {!isLoading ? (
+            projects && projects.length > 0 ? (
+              <>
+                {projects.map((project) => (
+                  <AppProjectItem key={project.id} project={project} />
+                ))}
+              </>
+            ) : (
+              <Box sx={{ textAlign: "center" }} component={"h3"}>
+                No projects
+              </Box>
+            )
+          ) : (
+            <Box component={"h3"}>Loading...</Box>
+          )}
+        </List>
       </Box>
     </Box>
   );

@@ -3,7 +3,8 @@
     "turbo": "^1.12.4"
   },
   "scripts": {
-    "dev": "turbo dev"
+    "dev": "turbo dev",
+    "build": "turbo build"
   },
   "workspaces": [
     "apps/*"

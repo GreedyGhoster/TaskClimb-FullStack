@@ -1,9 +1,5 @@
 import { FC, useCallback } from "react";
-import {
-  EditToDoTaskFormValues,
-  IToDoProject,
-  IToDoTask,
-} from "../../../../types";
+import { EditToDoTaskFormValues, IToDoTask } from "../../../../types";
 import { useTasks } from "../../../../hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormTextField } from "../../../../components/form";
@@ -14,12 +10,12 @@ import CheckIcon from "@mui/icons-material/Check";
 
 interface Props {
   task: IToDoTask;
-  project: IToDoProject;
   onCancel: () => void;
 }
 
-const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
+const EditTaskInlineForm: FC<Props> = ({ task, onCancel }) => {
   const { editTask } = useTasks();
+  const { trigger } = editTask(task.id, task.projectId);
 
   const formMethods = useForm<EditToDoTaskFormValues>({
     defaultValues: {
@@ -34,11 +30,11 @@ const EditTaskInlineForm: FC<Props> = ({ task, project, onCancel }) => {
   const handleSubmitForm = useCallback(
     async (values: EditToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        editTask(task.id, project.id, values);
+        trigger(values as any);
         onCancel();
       }
     },
-    [editTask, onCancel, task.id]
+    [trigger, onCancel, task.id]
   );
 
   return (

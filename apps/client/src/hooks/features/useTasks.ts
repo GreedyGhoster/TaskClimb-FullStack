@@ -1,195 +1,128 @@
+import useSWR, { useSWRConfig } from "swr";
 import { useCallback, useMemo } from "react";
-import {
-  AddToDoTaskFormValues,
-  EditToDoTaskFormValues,
-  IToDoTask,
-} from "../../types";
+import { IToDoTask } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
-import { useStore } from "..";
+import useSWRMutation from "swr/mutation";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export const useTasks = () => {
-  const { fetcher } = useFetcher();
-  const { tasks, setTasks } = useStore();
+  const { getData, postItem, deleteItem, patchItem } = useFetcher();
 
-  const getTasks = useCallback(async () => {
-    try {
-      const res = await fetcher.get<IToDoTask[]>("/projects/tasks");
+  const { mutate } = useSWRConfig();
 
-      if (res.status === 200) {
-        setTasks(res.data);
+  const getTasks = useCallback((projectId?: string) => {
+    const { data, isLoading, error } = useSWR<IToDoTask[]>(
+      `/projects/${projectId}`,
+      getData,
+      {
+        compare: (a, b) => {
+          return a === b;
+        },
+        keepPreviousData: true,
       }
-    } catch (err) {
-      null;
-    }
+    );
+
+    if (error) null;
+
+    return {
+      isLoading,
+      data,
+    };
   }, []);
 
-  const getTasksByProject = useCallback(
-    (projectId?: string, searchTerm?: string) => {
-      let filteredTasks = tasks;
-      // поиск по названию
-      if (searchTerm) {
-        filteredTasks = tasks.filter((task) =>
-          task.title.toLowerCase().includes(searchTerm)
-        );
-      }
+  const filterTasks = useCallback(() => {
+    const { projectId } = useParams<{ projectId: string }>();
+    const { data: tasks, isLoading } = getTasks(projectId);
 
-      return _orderBy(
-        filteredTasks.filter(
+    const [searchParams] = useSearchParams();
+
+    const searchTasks = searchParams.get("searchTasks") || "";
+
+    let filteredTasks = tasks;
+    // поиск по названию
+    if (searchTasks) {
+      filteredTasks = tasks?.filter((task) =>
+        task.title.toLowerCase().includes(searchTasks)
+      );
+    }
+
+    return {
+      tasks: _orderBy(
+        filteredTasks?.filter(
           (filteredTask) => filteredTask.projectId === projectId
         ),
         ["createdAt"],
         ["desc"]
+      ),
+      isLoading,
+    };
+  }, []);
+
+  const addTask = useCallback((projectId: string) => {
+    const { trigger, error } = useSWRMutation(
+      `/projects/${projectId}`,
+      (url, arg) => postItem(url, arg)
+    );
+
+    if (error)
+      alert("Error: Failed to add the task. Reload the page or log in again");
+
+    return {
+      trigger,
+    };
+  }, []);
+
+  const findTask = useCallback((projectId?: string, taskId?: string) => {
+    const { data: tasks } = getTasks(projectId);
+
+    return tasks
+      ? tasks.find((task) => task.id === taskId && task.projectId === projectId)
+      : null;
+  }, []);
+
+  const editTask = useCallback((taskId: string, projectId: string) => {
+    const { trigger, error } = useSWRMutation(
+      `/projects/${projectId}/${taskId}`,
+      (url, arg) => patchItem(url, arg),
+      { onSuccess: () => mutate(`/projects/${projectId}`) }
+    );
+
+    if (error)
+      alert(
+        "Error: Failed to change the task. Reload the page or log in again"
       );
-    },
-    [tasks]
-  );
 
-  const addTask = useCallback(
-    async (projectId: string, newTask: AddToDoTaskFormValues) => {
-      try {
-        const data = {
-          title: newTask.title,
-          status: newTask.status,
-          description: newTask.description,
-        };
+    return {
+      trigger,
+    };
+  }, []);
 
-        const res = await fetcher.post(`/projects/${projectId}`, data);
-        const taskId = await res.data.id;
+  const deleteTask = useCallback((taskId: string, projectId: string) => {
+    const { trigger, error } = useSWRMutation<any>(
+      `/projects/${projectId}/${taskId}`,
+      deleteItem,
+      { onSuccess: () => mutate(`/projects/${projectId}`) }
+    );
 
-        if (res.status === 201) {
-          setTasks((prev) => {
-            return [
-              {
-                id: taskId,
-                projectId: projectId,
-                ...newTask,
-              },
-              ...prev,
-            ];
-          });
-        }
-      } catch (err) {
-        alert("Error: Failed to add the task. Reload the page or log in again");
-      }
-    },
-    []
-  );
-
-  const findTask = useCallback(
-    (projectId?: string, taskId?: string) => {
-      return tasks.find(
-        (task) => task.id === taskId && task.projectId === projectId
-      );
-    },
-    [tasks]
-  );
-
-  const editTask = useCallback(
-    async (
-      taskId: string,
-      projectId: string,
-      editingTask: EditToDoTaskFormValues
-    ) => {
-      try {
-        const data = {
-          title: editingTask.title,
-          description: editingTask.description,
-        };
-        const res = await fetcher.patch(
-          `/projects/${projectId}/${taskId}`,
-          data
-        );
-
-        if (res.status === 200) {
-          setTasks((prev) => {
-            const next = [...prev];
-            const task = next.find((val) => val.id === taskId);
-            if (task) {
-              task.title = editingTask.title;
-              task.description = editingTask.description;
-              return next;
-            } else {
-              console.log(`Задача ${taskId} не найдена`);
-              return prev;
-            }
-          });
-        }
-      } catch (err) {
-        alert(
-          "Error: Failed to change the task. Reload the page or log in again"
-        );
-      }
-    },
-    []
-  );
-
-  const deleteTask = useCallback(async (taskId: string, projectId: string) => {
-    try {
-      const res = await fetcher.delete(`/projects/${projectId}/${taskId}`);
-
-      if (res.status === 204) {
-        setTasks((prev) => {
-          return prev.filter((task) => task.id !== taskId);
-        });
-      }
-    } catch (err) {
+    if (error)
       alert(
         "Error: Failed to delete the task. Reload the page or log in again"
       );
-    }
+
+    return {
+      trigger,
+    };
   }, []);
-
-  const statusSwitcher = useCallback(
-    async (taskId: string, projectId: string, statusName: string) => {
-      try {
-        const data = { status: statusName };
-        const res = await fetcher.patch(
-          `/projects/${projectId}/${taskId}`,
-          data
-        );
-
-        if (res.status === 200) {
-          setTasks((prev) => {
-            const next = [...prev];
-            const task = next.find((val) => val.id === taskId);
-
-            if (task) {
-              task.status = statusName;
-              return next;
-            } else {
-              console.log(`Задача ${taskId} не найдена`);
-              return prev;
-            }
-          });
-        }
-      } catch (err) {
-        alert(
-          "Error: Failed to change the task. Reload the page or log in again"
-        );
-      }
-    },
-    []
-  );
 
   return useMemo(
     () => ({
-      getTasks,
-      getTasksByProject,
+      filterTasks,
       addTask,
       findTask,
       editTask,
       deleteTask,
-      statusSwitcher,
     }),
-    [
-      getTasks,
-      getTasksByProject,
-      addTask,
-      findTask,
-      editTask,
-      deleteTask,
-      statusSwitcher,
-    ]
+    [filterTasks, addTask, findTask, editTask, deleteTask]
   );
 };

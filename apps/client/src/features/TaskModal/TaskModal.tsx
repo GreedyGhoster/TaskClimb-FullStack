@@ -6,15 +6,9 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import { TaskEditForm } from "./EditForm";
 import { TaskPageTemplate } from "../../components/styled/TaskPage";
-import { FC } from "react";
 import { Modal } from "@mui/material";
 
-type Props = {
-  open: boolean;
-  handleClose: () => void;
-};
-
-export const TaskModal: FC<Props> = ({ open, handleClose }) => {
+export const TaskModal = () => {
   const { projectId } = useParams<{
     projectId: string;
   }>();
@@ -22,12 +16,12 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
   const { findProject } = useProjects();
   const { findTask } = useTasks();
 
-  const navigate = useNavigate();
-
   const taskId = searchParams.get("taskId");
 
   const project = findProject(projectId);
   const task = findTask(projectId, taskId!);
+
+  const navigate = useNavigate();
 
   const goBack = () => {
     navigate(`/projects/${projectId}`);
@@ -39,11 +33,10 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
 
   return (
     <Modal
-      open={!!taskId || open}
+      open={!!taskId}
       style={{
-        backgroundColor: "rgba(30, 30, 30, 0.5)",
+        backgroundColor: "rgba(30, 30, 30, 0.15)",
       }}
-      onClose={handleClose}
       hideBackdrop
       keepMounted
       disableAutoFocus
@@ -87,7 +80,7 @@ export const TaskModal: FC<Props> = ({ open, handleClose }) => {
             alignSelf: "center",
           }}
         >
-          <TaskEditForm task={task} project={project} />
+          <TaskEditForm task={task} projectId={project.id} />
         </Box>
       </TaskPageTemplate>
     </Modal>

@@ -11,6 +11,7 @@ interface Props {
 
 const AddTaskForm: FC<Props> = ({ projectId }) => {
   const { addTask } = useTasks();
+  const { trigger } = addTask(projectId);
 
   const formMethods = useForm<AddToDoTaskFormValues>({
     defaultValues: {
@@ -24,7 +25,7 @@ const AddTaskForm: FC<Props> = ({ projectId }) => {
   const handleSubmitForm = useCallback(
     async (values: AddToDoTaskFormValues) => {
       if (values.title.trim() !== "") {
-        addTask(projectId, values);
+        trigger(values as any);
         reset({
           ...values,
           title: "",

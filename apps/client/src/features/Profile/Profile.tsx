@@ -1,8 +1,7 @@
 import { ListItem, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import { useProfile, useStore } from "../../hooks";
-import { useEffect } from "react";
+import { useProfile } from "../../hooks";
 import { ProfileTemplate } from "../../components/styled/Profile";
 import {
   ChangeNickname,
@@ -11,12 +10,8 @@ import {
 } from "./ProfileFeatures";
 
 export default function Profile() {
-  const { profileData, projects, tasks } = useStore();
   const { getProfileData } = useProfile();
-
-  useEffect(() => {
-    getProfileData();
-  }, [projects.length, tasks.length]);
+  const { profileData, isLoading } = getProfileData();
 
   return (
     <ProfileTemplate>
@@ -32,12 +27,16 @@ export default function Profile() {
         <Typography variant="h5">Profile</Typography>
       </Box>
 
-      <List>
-        <ListItem>CreatedAt: {profileData?.createdAt}</ListItem>
-        <ListItem>UpdatedAt: {profileData?.updatedAt}</ListItem>
-        <ListItem>Projects: {profileData?.projects}</ListItem>
-        <ListItem>Tasks: {profileData?.tasks}</ListItem>
-      </List>
+      {!isLoading ? (
+        <List>
+          <ListItem>CreatedAt: {profileData?.createdAt}</ListItem>
+          <ListItem>UpdatedAt: {profileData?.updatedAt}</ListItem>
+          <ListItem>Projects: {profileData?.projects}</ListItem>
+          <ListItem>Tasks: {profileData?.tasks}</ListItem>
+        </List>
+      ) : (
+        <h4>Loading...</h4>
+      )}
 
       <Stack alignSelf="center" direction="column" spacing={2}>
         <ChangeNickname />

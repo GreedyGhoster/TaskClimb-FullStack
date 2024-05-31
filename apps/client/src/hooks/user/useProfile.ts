@@ -1,96 +1,86 @@
 import { useCallback, useMemo } from "react";
-import { EditProfileNickName, EditProfilePassword } from "../../types";
+import { ProfileData } from "../../types";
 import { useFetcher } from "../axios/useFetcher";
-import { useStore } from "..";
 import { useSignOut } from "react-auth-kit";
+import useSWR, { useSWRConfig } from "swr";
+import useSWRMutation from "swr/mutation";
 
 export const useProfile = () => {
   const signOut = useSignOut();
-  const { fetcher } = useFetcher();
-  const { profileData, setProfileData } = useStore();
 
-  const getProfileData = useCallback(async () => {
-    try {
-      const res = await fetcher.get("/users/me");
+  const { getData, deleteItem, patchItem } = useFetcher();
 
-      if (res.status === 200) {
-        setProfileData(res.data);
-      }
-    } catch (err) {
-      signOut();
-    }
+  const { mutate } = useSWRConfig();
+
+  const getProfileData = useCallback(() => {
+    const {
+      data: profileData,
+      isLoading,
+      error,
+    } = useSWR<ProfileData>("/users/me", getData, {
+      compare: (a, b) => {
+        return a === b;
+      },
+      keepPreviousData: true,
+    });
+
+    if (error) signOut();
+
+    return {
+      isLoading,
+      profileData,
+    };
   }, []);
 
-  const deleteAccount = useCallback(async () => {
-    try {
-      const res = await fetcher.delete("/users/me");
+  const deleteAccount = useCallback(() => {
+    const { trigger, error } = useSWRMutation<any>("/users/me", deleteItem, {
+      onSuccess: () => signOut(),
+    });
 
-      if (res.status === 204) {
-        setProfileData(undefined);
-      }
-    } catch (err) {
-      signOut();
-    }
+    if (error) signOut();
+
+    return {
+      trigger,
+    };
   }, []);
 
-  const updateAccountNickName = useCallback(
-    async (newData: EditProfileNickName) => {
-      try {
-        const data = {
-          nickName: newData.nickName,
-        };
+  const updateAccountNickName = useCallback(() => {
+    const { trigger, error } = useSWRMutation(
+      "/users/me/edit/nickname",
+      (url, arg) => patchItem(url, arg),
+      { onSuccess: () => mutate("/users/me") }
+    );
 
-        const res = await fetcher.patch("/users/me/edit/nickname", data);
+    if (error) alert("Error: The nickname is occupied by another user");
 
-        if (res.status === 200) {
-          getProfileData();
-        }
-      } catch (err: any) {
-        if (err.response.status === 403) {
-          alert("Error: The nickname is occupied by another user");
-        } else {
-          alert("Forbidden: Access to the resource is denied");
-        }
-      }
-    },
-    []
-  );
+    return {
+      trigger,
+    };
+  }, []);
 
-  const updateAccountPassword = useCallback(
-    async (newData: EditProfilePassword) => {
-      try {
-        const data = {
-          oldPassword: newData.oldPassword,
-          newPassword: newData.newPassword,
-        };
+  const updateAccountPassword = useCallback(() => {
+    const { trigger, error } = useSWRMutation(
+      "/users/me/edit/password",
+      (url, arg) => patchItem(url, arg),
+      { onSuccess: () => mutate("/users/me") }
+    );
 
-        const res = await fetcher.patch("/users/me/edit/password", data);
+    if (error) alert("Error: The old possword is incorrect");
 
-        if (res.status === 200) {
-          getProfileData();
-        }
-      } catch (err: any) {
-        if (err.response.status === 403) {
-          alert("Error: The old possword is incorrect");
-        } else {
-          alert("Forbidden: Access to the resource is denied");
-        }
-      }
-    },
-    []
-  );
+    return {
+      trigger,
+    };
+  }, []);
 
   return useMemo(
     () => ({
       getProfileData,
-      profileData,
       deleteAccount,
       updateAccountNickName,
       updateAccountPassword,
     }),
     [
       getProfileData,
-      profileData,
       deleteAccount,
       updateAccountNickName,
       updateAccountPassword,

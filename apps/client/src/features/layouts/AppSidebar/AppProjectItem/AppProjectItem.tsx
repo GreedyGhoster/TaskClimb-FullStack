@@ -20,8 +20,12 @@ interface Props {
 
 const AppProjectItem: FC<Props> = ({ project }) => {
   const { deleteProject } = useProjects();
-  const theme = useTheme();
+
   const { projectId: currentProjectId } = useParams<{ projectId: string }>();
+
+  const { trigger } = deleteProject(project.id);
+
+  const theme = useTheme();
 
   return (
     <ListItem
@@ -68,7 +72,7 @@ const AppProjectItem: FC<Props> = ({ project }) => {
                           color="secondary"
                         />
                       </Button>
-                      <Button onClick={() => deleteProject(project.id)}>
+                      <Button onClick={() => trigger()}>
                         <DeleteForeverIcon color="error" />
                       </Button>
                     </Box>

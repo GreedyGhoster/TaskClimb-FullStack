@@ -14,9 +14,9 @@ export const TaskPageTemplate = styled("div")(({ theme }) => ({
   margin: "auto",
   padding: "0",
   [theme.breakpoints.down("laptop")]: {
-    width: "85%",
+    width: "85vw",
   },
   [theme.breakpoints.up("laptop")]: {
-    width: "50%",
+    width: "30vw",
   },
 }));

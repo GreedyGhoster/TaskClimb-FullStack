@@ -16,13 +16,13 @@
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.7",
     "axios": "^1.6.7",
-    "constate": "^3.3.2",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-auth-kit": "^2.12.7",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.1",
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
