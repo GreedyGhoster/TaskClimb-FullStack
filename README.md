@@ -2,7 +2,7 @@
 
 ## Note
 
-If you need clear axios (without swr), go to the [only-axios](https://github.com/GreedyGhoster/TaskClimb-FullStack/tree/only-axios) branch
+If you need pure axios (without swr), go to the [only-axios](https://github.com/GreedyGhoster/TaskClimb-FullStack/tree/only-axios) branch
 
 ## Quick Start
 
