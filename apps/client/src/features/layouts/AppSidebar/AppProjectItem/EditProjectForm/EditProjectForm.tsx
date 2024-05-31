@@ -15,6 +15,7 @@ interface Props {
 
 const EditProjectForm: FC<Props> = ({ project, onCancel }) => {
   const { editProject } = useProjects();
+  const { trigger } = editProject(project.id);
 
   const formMethods = useForm<EditToDoProjectFormValues>({
     defaultValues: {
@@ -27,7 +28,8 @@ const EditProjectForm: FC<Props> = ({ project, onCancel }) => {
   const handleSubmitForm = useCallback(
     async (values: EditToDoProjectFormValues) => {
       if (values.title.trim() !== "") {
-        editProject(project.id, values.title);
+        const data = { title: values.title };
+        trigger(data as any);
         onCancel();
       }
     },

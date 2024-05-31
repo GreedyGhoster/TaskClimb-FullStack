@@ -7,7 +7,7 @@ import _orderBy from "lodash/orderBy";
 import useSWRMutation from "swr/mutation";
 
 export const useProjects = () => {
-  const { fetcher, getData, postItem, deleteItem, patchItem } = useFetcher();
+  const { getData, postItem, deleteItem, patchItem } = useFetcher();
 
   const { mutate } = useSWRConfig();
 
@@ -62,23 +62,22 @@ export const useProjects = () => {
     };
   }, []);
 
-  const editProject = useCallback(
-    async (projectId: string, newTitle: string) => {
-      try {
-        const data = { title: newTitle };
-        const res = await fetcher.patch(`/projects/${projectId}`, data);
+  const editProject = useCallback((projectId: string) => {
+    const { trigger, error } = useSWRMutation(
+      `/projects/${projectId}`,
+      (url, arg) => patchItem(url, arg),
+      { onSuccess: () => mutate("/projects") }
+    );
 
-        if (res.status === 200) {
-          null;
-        }
-      } catch (err) {
-        alert(
-          "Error: Failed to change the project. Reload the page or log in again"
-        );
-      }
-    },
-    []
-  );
+    if (error)
+      alert(
+        "Error: Failed to change the project. Reload the page or log in again"
+      );
+
+    return {
+      trigger,
+    };
+  }, []);
 
   const filterProjects = useCallback(() => {
     const { data: projects, isLoading } = getProjects();
