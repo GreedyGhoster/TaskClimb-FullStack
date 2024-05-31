@@ -12,13 +12,12 @@ import { TaskListItem } from "./TaskListItem";
 
 export function ProjectPage() {
   const { findProject } = useProjects();
-  const { filterTasks, getTasks } = useTasks();
+  const { filterTasks } = useTasks();
   const { projectId } = useParams<{ projectId: string }>();
 
-  const { isLoading } = getTasks(projectId!);
-
   const project = findProject(projectId);
-  const tasks = filterTasks();
+
+  const { tasks, isLoading } = filterTasks();
 
   const countTasksByStatus = useMemo(() => {
     return {

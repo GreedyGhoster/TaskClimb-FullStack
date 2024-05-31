@@ -109,20 +109,12 @@ export const useProjects = () => {
 
   return useMemo(
     () => ({
-      getProjects,
       createProject,
       filterProjects,
       deleteProject,
       editProject,
       findProject,
     }),
-    [
-      getProjects,
-      createProject,
-      filterProjects,
-      deleteProject,
-      editProject,
-      findProject,
-    ]
+    [createProject, filterProjects, deleteProject, editProject, findProject]
   );
 };

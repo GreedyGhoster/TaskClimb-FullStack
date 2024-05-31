@@ -5,6 +5,7 @@ import { useFetcher } from "../axios/useFetcher";
 import _orderBy from "lodash/orderBy";
 import useSWRMutation from "swr/mutation";
 import { useParams, useSearchParams } from "react-router-dom";
+import { Message } from "../../components/Message";
 
 export const useTasks = () => {
   const { getData, postItem, deleteItem, patchItem } = useFetcher();
@@ -33,7 +34,7 @@ export const useTasks = () => {
 
   const filterTasks = useCallback(() => {
     const { projectId } = useParams<{ projectId: string }>();
-    const { data: tasks } = getTasks(projectId);
+    const { data: tasks, isLoading } = getTasks(projectId);
 
     const [searchParams] = useSearchParams();
 
@@ -47,23 +48,30 @@ export const useTasks = () => {
       );
     }
 
-    return _orderBy(
-      filteredTasks?.filter(
-        (filteredTask) => filteredTask.projectId === projectId
+    return {
+      tasks: _orderBy(
+        filteredTasks?.filter(
+          (filteredTask) => filteredTask.projectId === projectId
+        ),
+        ["createdAt"],
+        ["desc"]
       ),
-      ["createdAt"],
-      ["desc"]
-    );
+      isLoading,
+    };
   }, []);
 
   const addTask = useCallback((projectId: string) => {
-    const { trigger, error } = useSWRMutation(
+    const { trigger, error, data } = useSWRMutation(
       `/projects/${projectId}`,
       (url, arg) => postItem(url, arg)
     );
 
     if (error)
       alert("Error: Failed to add the task. Reload the page or log in again");
+
+    if (data) {
+      return <Message open={true} type="info" message="Task was added" />;
+    }
 
     return {
       trigger,
@@ -114,13 +122,12 @@ export const useTasks = () => {
 
   return useMemo(
     () => ({
-      getTasks,
       filterTasks,
       addTask,
       findTask,
       editTask,
       deleteTask,
     }),
-    [getTasks, filterTasks, addTask, findTask, editTask, deleteTask]
+    [filterTasks, addTask, findTask, editTask, deleteTask]
   );
 };

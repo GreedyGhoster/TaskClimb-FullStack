@@ -21,6 +21,8 @@ export const DialogEditNick: FC<Props> = ({
   handleCloseEditNick,
 }) => {
   const { updateAccountNickName } = useProfile();
+  const { trigger } = updateAccountNickName();
+
   const {
     register,
     formState: { errors, isValid },
@@ -30,7 +32,7 @@ export const DialogEditNick: FC<Props> = ({
 
   const FetchData: SubmitHandler<EditProfileNickName> = useCallback(
     async (nickName: EditProfileNickName) => {
-      await updateAccountNickName(nickName);
+      await trigger(nickName as any);
       reset();
     },
     [updateAccountNickName, reset]

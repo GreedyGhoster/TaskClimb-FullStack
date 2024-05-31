@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import { UseStoreProvider } from "../../../hooks";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Drawer from "@mui/material/Drawer";
@@ -36,37 +35,35 @@ export function AppLayout() {
         transition: "0.7s",
       }}
     >
-      <UseStoreProvider>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <AppNavbar
-            open={open}
-            colorMode={colorMode}
-            handleDrawerClose={handlers.handleDrawerClose}
-            handleDrawerOpen={handlers.handleDrawerOpen}
-            theme={theme}
-          />
-        </AppBar>
-        <Drawer
-          sx={{
-            width: APP_SIDEBAR_WIDTH,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: APP_SIDEBAR_WIDTH,
-              boxSizing: "border-box",
-            },
-          }}
-          variant="persistent"
-          anchor="left"
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <AppNavbar
           open={open}
-        >
-          <AppSidebar />
-        </Drawer>
-        <DrawerAnimation open={open}>
-          <DrawerHeader />
-          <Outlet />
-        </DrawerAnimation>
-      </UseStoreProvider>
+          colorMode={colorMode}
+          handleDrawerClose={handlers.handleDrawerClose}
+          handleDrawerOpen={handlers.handleDrawerOpen}
+          theme={theme}
+        />
+      </AppBar>
+      <Drawer
+        sx={{
+          width: APP_SIDEBAR_WIDTH,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: APP_SIDEBAR_WIDTH,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <AppSidebar />
+      </Drawer>
+      <DrawerAnimation open={open}>
+        <DrawerHeader />
+        <Outlet />
+      </DrawerAnimation>
     </Box>
   );
 }

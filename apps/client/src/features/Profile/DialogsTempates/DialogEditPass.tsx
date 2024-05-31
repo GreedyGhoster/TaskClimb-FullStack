@@ -21,6 +21,8 @@ export const DialogEditPass: FC<Props> = ({
   handleCloseEditPass,
 }) => {
   const { updateAccountPassword } = useProfile();
+  const { trigger } = updateAccountPassword();
+
   const {
     register,
     formState: { errors, isValid },
@@ -30,7 +32,7 @@ export const DialogEditPass: FC<Props> = ({
 
   const FetchData: SubmitHandler<EditProfilePassword> = useCallback(
     async (passwords: EditProfilePassword) => {
-      await updateAccountPassword(passwords);
+      await trigger(passwords as any);
       reset();
     },
     [updateAccountPassword, reset]

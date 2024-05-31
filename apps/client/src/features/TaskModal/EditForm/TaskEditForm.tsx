@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { EditToDoTaskFormValues, IToDoTask } from "../../../types";
 import { useTasks } from "../../../hooks";
 import { FormTextField } from "../../../components/form";
-import { Button, Tooltip } from "@mui/material";
+import { Button, Stack, Tooltip } from "@mui/material";
 import TaskStatusItem from "../../../components/tasks/TaskStatusItem";
 
 interface TaskEditFormProps {
@@ -37,27 +37,29 @@ export const TaskEditForm: React.FC<TaskEditFormProps> = ({
 
   return (
     <>
-      <FormProvider {...formMethods}>
-        <TaskStatusItem />
-        <FormTextField
-          sx={{
-            width: "100%",
-            marginTop: "1rem",
-          }}
-          name={"description"}
-          spellCheck="false"
-          variant="standard"
-          label="Description"
-          placeholder="Description in several rows"
-          multiline
-        />
-      </FormProvider>
+      <Stack>
+        <FormProvider {...formMethods}>
+          <TaskStatusItem />
+          <FormTextField
+            sx={{
+              width: "100%",
+              marginTop: "5px",
+            }}
+            name={"description"}
+            spellCheck="false"
+            variant="standard"
+            label="Description"
+            placeholder="Description in several rows"
+            multiline
+          />
+        </FormProvider>
+      </Stack>
       <Tooltip title="Save changes">
         <Button
           sx={{
             float: "right",
             marginBottom: "2%",
-            marginTop: "2%",
+            marginTop: "5px",
             marginRight: "1%",
           }}
           color="success"

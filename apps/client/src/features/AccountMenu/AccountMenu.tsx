@@ -3,22 +3,23 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import { Suspense, lazy, useEffect, useState } from "react";
-import { ListItemButton } from "@mui/material";
+import { useState } from "react";
+import { ListItemButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 import { DialogLogout } from "../Profile/DialogsTempates";
-import { useStore, useProfile } from "../../hooks";
-
-const Typography = lazy(() => import("@mui/material/Typography"));
+import { useProfile } from "../../hooks";
 
 const AccountMenu = () => {
-  const signOut = useSignOut();
-  const { getProfileData } = useProfile();
-  const { profileData } = useStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const openMenu = Boolean(anchorEl);
+
+  const signOut = useSignOut();
+
+  const { getProfileData } = useProfile();
+  const { profileData, isLoading } = getProfileData();
+
   const navigate = useNavigate();
 
   const goRegister = () => {
@@ -49,15 +50,13 @@ const AccountMenu = () => {
     },
   };
 
-  useEffect(() => {
-    getProfileData();
-  }, []);
-
   return (
     <>
-      <Suspense fallback={<h4>Loading...</h4>}>
+      {!isLoading ? (
         <Typography>{profileData?.nickName}</Typography>
-      </Suspense>
+      ) : (
+        <h4>Loading...</h4>
+      )}
       <IconButton onClick={handlers.handleClick}>
         <AccountCircleIcon htmlColor="white" />
       </IconButton>
