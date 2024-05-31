@@ -39,7 +39,7 @@ Server side was built using Nest and "npm" package manager
 
 Client side was built using React(Vite) and "npm" package manager
 
-- Client: [React](https://ru.legacy.reactjs.org/)
+- Client: [React](https://ru.legacy.reactjs.org/) [SWR](https://swr.vercel.app/)
 
 ## Screenshots
 
