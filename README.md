@@ -10,7 +10,7 @@ If you need pure axios (without swr), go to the [only-axios](https://github.com/
 git clone https://github.com/GreedyGhoster/TaskClimb-FullStack.git
 ```
 
-Next add your data to `.env.example` and `docker-compose.example.yaml`. Then rename them to `.env` and `docker-compose.yaml`
+You can change data in `.env` and in `docker-compose.yaml` (Data must be same)
 
 ### _Open the root folder and enter `npm i` and turbo will install all dependencies_
 
