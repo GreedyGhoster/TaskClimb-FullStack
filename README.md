@@ -12,7 +12,7 @@ git clone https://github.com/GreedyGhoster/TaskClimb-FullStack.git
 
 You can change data in `.env` and in `docker-compose.yaml` (Data must be same)
 
-### _Open the root folder and enter `npm i` and turbo will install all dependencies_
+### _Open the root folder and enter `npm i` and turbo will install all dependencies (don't forget to run Docker)_
 
 Then in the root folder enter
 
