@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useProjects, useTasks } from "../../hooks";
 import { AddTaskForm } from "./AddTaskForm";
 import { SearchTaskForm } from "./SearchTaskForm";
@@ -9,11 +9,16 @@ import Box from "@mui/material/Box";
 import { NotFound } from "../../components/NotFound";
 import { Counter, InputsTemplate } from "../../components/styled/ProgectPage";
 import { TaskListItem } from "./TaskListItem";
+import { TaskModal } from "../TaskModal";
 
 export function ProjectPage() {
+  const { projectId } = useParams<{ projectId: string }>();
+  const [searchParams] = useSearchParams();
+
+  const taskId = searchParams.get("taskId");
+
   const { findProject } = useProjects();
   const { filterTasks } = useTasks();
-  const { projectId } = useParams<{ projectId: string }>();
 
   const project = findProject(projectId);
 
@@ -81,6 +86,7 @@ export function ProjectPage() {
           </Box>
         )}
       </List>
+      {taskId ? <TaskModal tasks={tasks} /> : null}
     </Box>
   );
 }

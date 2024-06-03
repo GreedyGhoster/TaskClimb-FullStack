@@ -7,8 +7,14 @@ import Tooltip from "@mui/material/Tooltip";
 import { TaskEditForm } from "./EditForm";
 import { TaskPageTemplate } from "../../components/styled/TaskPage";
 import { Modal } from "@mui/material";
+import { FC } from "react";
+import { IToDoTask } from "../../types";
 
-export const TaskModal = () => {
+type Props = {
+  tasks: IToDoTask[];
+};
+
+export const TaskModal: FC<Props> = ({ tasks }) => {
   const { projectId } = useParams<{
     projectId: string;
   }>();
@@ -19,7 +25,7 @@ export const TaskModal = () => {
   const taskId = searchParams.get("taskId");
 
   const project = findProject(projectId);
-  const task = findTask(projectId, taskId!);
+  const task = findTask(projectId, taskId!, tasks);
 
   const navigate = useNavigate();
 

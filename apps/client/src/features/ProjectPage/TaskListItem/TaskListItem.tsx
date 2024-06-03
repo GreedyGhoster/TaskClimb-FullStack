@@ -14,20 +14,14 @@ import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { TaskChip } from "../../../components/tasks";
 import { TaskListItemTemplate } from "../../../components/styled/TaskListItem";
-import { useSearchParams } from "react-router-dom";
-import { TaskModal } from "../../TaskModal";
 
 interface Props {
   task: IToDoTask;
 }
 
 const TaskListItem: FC<Props> = ({ task }) => {
-  const [searchParams] = useSearchParams();
-
   const { deleteTask } = useTasks();
   const { trigger } = deleteTask(task.id, task.projectId);
-
-  const taskId = searchParams.get("taskId");
 
   return (
     <UseRenderModeProvider defaultMode={RenderMode.View} key={task.id}>
@@ -40,7 +34,6 @@ const TaskListItem: FC<Props> = ({ task }) => {
               }}
               component={"div"}
             >
-              {taskId ? <TaskModal /> : null}
               <Tooltip title="Click to view the description" placement="left">
                 <ListItemButton
                   sx={{

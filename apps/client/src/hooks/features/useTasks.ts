@@ -73,13 +73,16 @@ export const useTasks = () => {
     };
   }, []);
 
-  const findTask = useCallback((projectId?: string, taskId?: string) => {
-    const { data: tasks } = getTasks(projectId);
-
-    return tasks
-      ? tasks.find((task) => task.id === taskId && task.projectId === projectId)
-      : null;
-  }, []);
+  const findTask = useCallback(
+    (projectId?: string, taskId?: string, tasks?: IToDoTask[]) => {
+      return tasks
+        ? tasks.find(
+            (task) => task.id === taskId && task.projectId === projectId
+          )
+        : null;
+    },
+    []
+  );
 
   const editTask = useCallback((taskId: string, projectId: string) => {
     const { trigger, error } = useSWRMutation(
