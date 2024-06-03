@@ -49,7 +49,7 @@
     "@prisma/client": "^5.14.0",
     "@types/node": "^20.12.12",
     "@types/supertest": "^6.0.2",
-    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^6.21.0",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
