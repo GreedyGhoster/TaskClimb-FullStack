@@ -18,25 +18,6 @@ export class ProjectService {
     return project;
   }
 
-  async getTasks(userId: string) {
-    try {
-      const tasks = await this.prisma.task.findMany({
-        where: {
-          userId: userId,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
-
-      return tasks;
-    } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        throw new ForbiddenException('The user does not exist');
-      }
-    }
-  }
-
   async getTasksByProjectId(projectId: string) {
     try {
       const tasks = await this.prisma.task.findMany({
