@@ -41,7 +41,7 @@ export const TaskModal: FC<Props> = ({ tasks }) => {
     <Modal
       open={!!taskId}
       style={{
-        backgroundColor: "rgba(30, 30, 30, 0.15)",
+        backgroundColor: "#161b2266",
       }}
       hideBackdrop
       keepMounted
