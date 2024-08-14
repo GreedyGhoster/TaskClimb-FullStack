@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
 import { EditTaskDto, TaskDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TaskService {
@@ -21,6 +21,25 @@ export class TaskService {
       delete task.projectId;
 
       return task;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException('The project does not exist');
+      }
+    }
+  }
+
+  async getTasksByProjectId(projectId: string) {
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: {
+          projectId: projectId,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      return tasks;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         throw new ForbiddenException('The project does not exist');

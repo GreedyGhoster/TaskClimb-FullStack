@@ -18,18 +18,18 @@ export class ProjectService {
     return project;
   }
 
-  async getTasksByProjectId(projectId: string) {
+  async getProjectInfo(userId: string) {
     try {
-      const tasks = await this.prisma.task.findMany({
+      const project = await this.prisma.project.findFirst({
         where: {
-          projectId: projectId,
-        },
-        orderBy: {
-          createdAt: 'desc',
+          userId: userId,
         },
       });
+      delete project.createdAt;
+      delete project.updatedAt;
+      delete project.userId;
 
-      return tasks;
+      return project;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         throw new ForbiddenException('The project does not exist');

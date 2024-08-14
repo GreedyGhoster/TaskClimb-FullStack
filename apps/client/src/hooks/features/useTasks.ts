@@ -13,7 +13,7 @@ export const useTasks = () => {
 
   const getTasks = useCallback((projectId?: string) => {
     const { data, isLoading, error } = useSWR<IToDoTask[]>(
-      `/projects/${projectId}`,
+      `/projects/${projectId}/tasks`,
       getData,
       {
         compare: (a, b) => {
@@ -61,7 +61,7 @@ export const useTasks = () => {
 
   const addTask = useCallback((projectId: string) => {
     const { trigger, error } = useSWRMutation(
-      `/projects/${projectId}`,
+      `/projects/${projectId}/tasks`,
       (url, arg) => postItem(url, arg)
     );
 
@@ -86,9 +86,9 @@ export const useTasks = () => {
 
   const editTask = useCallback((taskId: string, projectId: string) => {
     const { trigger, error } = useSWRMutation(
-      `/projects/${projectId}/${taskId}`,
+      `/projects/${projectId}/tasks/${taskId}`,
       (url, arg) => patchItem(url, arg),
-      { onSuccess: () => mutate(`/projects/${projectId}`) }
+      { onSuccess: () => mutate(`/projects/${projectId}/tasks`) }
     );
 
     if (error)
@@ -103,9 +103,9 @@ export const useTasks = () => {
 
   const deleteTask = useCallback((taskId: string, projectId: string) => {
     const { trigger, error } = useSWRMutation<any>(
-      `/projects/${projectId}/${taskId}`,
+      `/projects/${projectId}/tasks/${taskId}`,
       deleteItem,
-      { onSuccess: () => mutate(`/projects/${projectId}`) }
+      { onSuccess: () => mutate(`/projects/${projectId}/tasks`) }
     );
 
     if (error)
