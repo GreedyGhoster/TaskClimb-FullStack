@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   dev-db:
+    container_name: taskclimb-db
     image: postgres:13
     ports:
       - 5433:5432
