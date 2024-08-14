@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.19",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "constate": "^3.3.2",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
